@@ -1,0 +1,14 @@
+#!/bin/sh
+#
+# prpages: compute number of pages that pr will print
+#     -n <n> to set number of lines per page
+#     Assume 55 line pages by default
+
+# TODO: better command line processing
+
+case $1 in
+    -n) lines=$2; shift; shift;;
+    *) lines=55 ;;
+esac
+
+exec wc $* | awk '$0 !~ /total/ { n += int (($1+'$lines') / ('$lines'+1)) } END {print n}'

@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+# 411: search personal phonebook for a pattern
+
+grep -y "$*" $HOME/lib/phonebook

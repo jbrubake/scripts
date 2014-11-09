@@ -1,0 +1,13 @@
+#!/bin/sh
+#
+# field: print nth field from each input line
+#
+# Usage: field [n] to print nth whitespace delimited
+#     field (n defaults to 1)
+
+case $1 in
+    '') field=1 ;;
+    *) field=$1 ;;
+esac
+
+exec awk '{ print $'$field' }'

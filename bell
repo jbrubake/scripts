@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+# Ring the bell
+#
+/bin/echo -ne "\a"

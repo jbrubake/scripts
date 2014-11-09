@@ -1,0 +1,22 @@
+#!/usr/bin/awk -f
+#
+# double: report double words
+#
+# Output: filename:lineno: word
+#  (filename is - if reading stdin)
+
+FILENAME != prevfile { # new file
+    NR = 1             # reset line number
+    prevfile = FILENAME
+}
+
+NF > 0 {
+    if ($1 == lastword) # Check first word against last word of previous line
+        printf "%s:%d: %s\n", FILENAME, NR, $1
+    for (i = 2; i <= NF; i++) # Check each word with the previous word
+        if ($i == $(i-1))
+            printf "%s:%d: %s\n", FILENAME, NR, $1
+    if (NF > 0) # Set lastword to last word on line
+        lastword = $NF
+ }
+

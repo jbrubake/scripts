@@ -1,0 +1,33 @@
+#!/bin/sh
+#
+# watchwho: periodically report who has logged on and logged out
+
+new=/tmp/wwho1.$$
+old=/tmp/wwho2.$$
+
+case $* in
+    -h)
+        cat 1>&2 << USAGE
+Usage: watchwho [OPTION]
+Report logon activity
+
+  -i  do not report current logons
+  -h  display this help and exit
+USAGE
+        exit 1
+        ;;
+    -i) who >$old ;;
+    *) >$old ;;
+esac
+
+trap 'rm -f $new $old; exit 1' 1 2 15
+
+while :
+do
+    who >$new
+    diff $old $new
+    mv $new $old
+    sleep 10
+done | awk '/>/ { $1 = "in:\t"; print }
+            /</ { $1 = "out:\t"; print }'
+
