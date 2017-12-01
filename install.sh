@@ -84,11 +84,11 @@ do
             echo "Backup __$f already exists. Skipping" >&2
             continue
         else
-            echo mv $VERBOSE $FORCE "$DESTDIR/$f" "$DESTDIR/__$f"
+            mv $VERBOSE $FORCE "$DESTDIR/$f" "$DESTDIR/__$f"
         fi
     fi
 
     # install
-    echo cp $VERBOSE "$f" "$DESTDIR"
+    cp $VERBOSE "$f" "$DESTDIR"
 done
 
