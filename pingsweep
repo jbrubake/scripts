@@ -1,0 +1,32 @@
+#!/bin/sh
+################################################################################
+# file:		pingsweep.sh
+# usage:	./pingsweep.sh first.three.octets
+#		ex. # ./pingsweep 192.168.1
+# abstract:	Hasty pingsweep script when nmap is not available.
+################################################################################
+
+NETWORK=$1
+
+echo -e "\033[1;32mBeginning pingsweep of $NETWORK.0 ...\033[0m"
+echo "#pingsweep of $NETWORK.0 ... "		> $NETWORK.0.sweep
+echo "#start: `date`"				>> $NETWORK.0.sweep
+
+for HOST in `seq 1 254` ; do 
+
+	echo "trying $NETWORK.$HOST ... "
+
+	ISALIVE=`ping -c 1 $NETWORK.$HOST | grep received | cut -d " " -f 4` ; 
+
+	if [ $ISALIVE == "1" ] ; then
+
+		echo -e "\033[1;32m$NETWORK.$HOST is alive.\033[0m"
+		echo "$NETWORK.$HOST" 		>> $NETWORK.0.sweep ;
+		
+	fi ;
+
+done
+
+echo "#end: `date`" >> $NETWORK.0.sweep
+echo -e "\033[1;32mDone.\033[0m"
+

@@ -1,0 +1,19 @@
+#!/usr/bin/awk -f
+#
+# put commas in numbers
+# input: a number per line
+# output: the number with commas, rounded to two decimal places
+
+    { printf("%s\n", addcomma($0)) }
+
+function addcomma(x,    sum) {
+    if (x < 0)
+        return "-" addcomma(-x)
+
+    num = sprintf("%.2f", x)
+
+    while (num ~ /[0-9][0-9][0-9][0-9]/)
+        sub(/[0-9][0-9][0-9][,.]/, ",&", num)
+
+    return num
+}

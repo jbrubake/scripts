@@ -1,0 +1,10 @@
+#!/bin/sh
+
+if [ "$#" -lt 1 ]; then
+    echo "Usage: rlook host"
+    exit
+fi
+
+for addr in `host "$1" | grep address | grep -v IPv6 | cut -d' ' -f4`; do
+    host $addr
+done

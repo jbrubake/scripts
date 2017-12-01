@@ -1,0 +1,34 @@
+#!/usr/bin/awk -f
+#
+# check consistency of columns
+# input: rows of numbers and strings
+# output: lines with format different than first line
+
+NR == 1 {
+    nfld = NF
+    for (i = 1; i <= NF; i++)
+        type[i] = isnum($i)
+
+    printf("first line contains %d fields\n", nfld)
+    printf("%s", "fields are: ")
+    for (i = 1; i <= NF; i++)
+        printf("%s ", type[i] ? "NUM" : "STR")
+    print ""
+    print ""
+}
+
+{   if (NF != nfld) {
+        printf("%d: %s : %d fields\n",
+           NR, $0, NF)
+    }
+    for (i = 1; i <= (NF <= nfld ? NF : nfld); i++)
+        if (isnum($i) != type[i]) {
+            printf("%d: %s : field %d not a %s\n",
+                   NR, $0, i, type[i] ? "number" : "string")
+        }
+}
+
+function isnum(n) {
+    return n ~ /^[+-]?([0-9]+[.]?[0-9]*|[.][0-9]+)([eE][+-]?[0-9]*)?$/
+}
+

@@ -1,0 +1,4 @@
+#!/bin/sh
+#
+# (C) 2010 Ryan Tomayko <tomayko.com>
+exec chmod +x "$@"

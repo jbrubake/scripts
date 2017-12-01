@@ -1,0 +1,33 @@
+#!/bin/sh
+################################################################################
+# file:		portscan.sh
+# usage:	./portscan.sh host portsfile
+#		ex. # ./portscan.sh 192.168.1.1 commonports
+# abstract:	Hasty portscan script when nmap is not available.
+################################################################################
+
+HOST=$1
+PORTSFILE=$2
+
+echo -e "\033[1;32mstarting portscan of $HOST using portfile $PORTSFILE ...\033[0m"
+echo "# portscan of $HOST using portfile $PORTSFILE ... "		> $HOST.scan
+echo "# start: `date`"							>> $HOST.scan
+
+for PORT in `cat $PORTSFILE` ; do 
+
+	#echo "trying $HOST : $PORT ... "
+
+	ISOPEN=`nc -v -z -w 3 $HOST $PORT 2>&1 | grep open | wc -l`
+
+	if [ $ISOPEN == "1" ] ; then
+	
+		echo -e "\033[1;32m$HOST:$PORT is open.\033[0m"
+		echo "$HOST:$PORT" 		>> $HOST.scan ;
+		
+	fi ; 
+
+done
+
+echo "# end: `date`" >> $HOST.scan
+echo -e "\033[1;32mDone.\033[0m"
+
