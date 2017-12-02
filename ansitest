@@ -9,11 +9,12 @@ printf "  FG    ----------------------------------------------------------------
 printf " Codes   40m      41m      42m      43m      44m      45m      46m      47m\n"
 printf " -----------------------------------------------------------------------------\n"
 
+# XXX: Look at seq to make these clearer
 for fore in 30 31 32 33 34 35 36 37; do
     line1="   ${fore}m "
     line2=" 1;${fore}m "
 
-    for back in 40 41 42 43 44 45 46 47; do
+    for back in 40 41 42 43 44 45 46 47 48; do
         line1="${line1}${esc}${back};${fore}m Normal ${esc}0m "
         line2="${line2}${esc}${back};${fore};1m Light  ${esc}0m "
     done
@@ -22,16 +23,16 @@ for fore in 30 31 32 33 34 35 36 37; do
 done
 
 printf "\n"
-printf "                                     BG Codes\n"
+printf " Hi Intensity               High Intensity BG Codes\n"
 printf "  FG    ----------------------------------------------------------------------\n"
 printf " Codes   100m     101m     102m     103m     104m     105m     106m     107m\n"
 printf " -----------------------------------------------------------------------------\n"
 
-for fore in 30 31 32 33 34 35 36 37; do
+for fore in 90 91 92 93 94 95 96 97; do
     line1="   ${fore}m "
     line2=" 1;${fore}m "
 
-    for back in 100 101 102 103 104 105 106 107; do
+    for back in 100 101 102 103 104 105 106 107 108; do
         line1="${line1}${esc}${back};${fore}m Normal ${esc}0m "
         line2="${line2}${esc}${back};${fore};1m Light  ${esc}0m "
     done
@@ -50,23 +51,23 @@ printf " Formatting Codes\t\tReset Codes\n"
 printf " -----------------------------  -----------------------------------------\n"
 printf " 1m : ${esc}1mBold${esc}0m\t2m : ${esc}2mDim${esc}0m"
 printf "\t"
-printf "21m : ${esc}1mReset ${esc}0mBold\t22m : ${esc}2mReset${esc}22m Dim"
+printf "21m : ${esc}1mBold ${esc}0moff\t\t22m : ${esc}2mIntensity${esc}22m reset"
 printf "\n"
 printf " 3m : ${esc}3mItalic${esc}0m\t4m : ${esc}4mUnderline${esc}0m"
 printf "\t"
-printf "23m : ${esc}3mReset${esc}23m Italic\t24m : ${esc}4mReset${esc}24m Underline"
+printf "23m : ${esc}3mItalic${esc}23m off\t24m : ${esc}4mUnderline${esc}24m off"
 printf "\n"
-printf " 5m : ${esc}5mBlink${esc}0m\t6m : ${esc}6mOverline${esc}0m"
+printf " 5m : ${esc}5mBlink${esc}0m\t6m : ${esc}6mBlink Fast${esc}0m"
 printf "\t"
-printf "25m : ${esc}5mReset${esc}25m Blink\t26m : ${esc}6mReset${esc}26m Overline"
+printf "25m : ${esc}5mBlink${esc}25m off"
 printf "\n"
 printf " 7m : ${esc}7mReverse${esc}0m\t8m : Hidden (${esc}8mx${esc}0m)"
 printf "\t"
-printf "27m : ${esc}7mReset${esc}27m Reverse\t28m : ${esc}8mReset${esc}28m Hidden"
+printf "27m : ${esc}7mReverse${esc}27m off\t28m : (${esc}8m ${esc}28m) off"
 printf "\n"
 printf " 9m : ${esc}9mStrikeout${esc}0m"
 printf "\t\t\t"
-printf "29m : ${esc}9mReset${esc}29m Strikeout\t 0m : Reset All"
+printf "29m : ${esc}9mStrikeout${esc}29m off\t 0m : Reset all"
 
 printf "${esc}0m\n"
 
