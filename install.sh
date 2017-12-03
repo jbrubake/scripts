@@ -67,18 +67,17 @@ fi
 #
 for f in *
 do
-    # skip ignored files
-    test -e "$IGNOREFILE" &&
-        grep "$f$" "$IGNOREFILE" >/dev/null && continue
-    test -e "$HOSTIGNORE" &&
-        grep "$f$" "$HOSTIGNORE" >/dev/null && continue
+
+    # skip ignored files. Works with shell globs
+    for p in $(cat $IGNOREFILE $HOSTIGNORE 2>/dev/null); do
+        test $f = $p && continue
+    done
 
     # if file exists and -f not specified, make backups
     if test -e "$DESTDIR/$f" || test -L "$DESTDIR/$f" &&
         test -z $FORCE
     then
         # backup existing files
-        # FIXME: This doesn't work if $f contains a pathname
         if test -e "$DESTDIR/__$f"
         then
             echo "Backup __$f already exists. Skipping" >&2
