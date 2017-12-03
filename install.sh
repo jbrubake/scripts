@@ -35,7 +35,7 @@ HOSTIGNORE="$IGNOREFILE.$HOST"    # host-specific ignore file
 
 process_options ()
 {
-    while getopts "n:fd:i:v" opt; do
+    while getopts "n:fd:v" opt; do
         case $opt in
           n) HOST=$OPTARG; HOSTIGNORE="$IGNOREFILE.$OPTARG" ;;
           f) FORCE='-f' ;;
