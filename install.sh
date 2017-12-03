@@ -1,10 +1,12 @@
 #!/bin/sh
 #
-# XXX: Description
+# Install all files to DESTDIR (default is $HOME/bin),
+# excluding any files in .ignore and .ignore.<hostname>.
+# The ignore files support shell globbing.
 #
 #
 # Usage:
-#     install [OPTIONS]
+#     install.sh [OPTIONS]
 #
 # -n, --hostname         Override hostname
 # -f, --force            Overwrite existing files and links
@@ -15,8 +17,6 @@
 #  1 = invalid option
 #  3 = destdir not found
 #
-# TODO:
-#  Only install if files are newer
 
 ## Reset just in case
 # No other security precautions. This is a trusting script
