@@ -14,8 +14,8 @@
 # -v, --verbose
 #
 # Exit codes:
-#  1 = invalid option
-#  3 = destdir not found
+   ERR_INVALID_OPTION=1
+   ERR_DESTDIR_NOT_FOUND=2
 #
 
 ## Reset just in case
@@ -33,25 +33,20 @@ HOST=`hostname`
 IGNOREFILE=.ignore  # list of files that shouldn't be linked
 HOSTIGNORE="$IGNOREFILE.$HOST"    # host-specific ignore file
 
-process_options ()
-{
-    while getopts "n:fd:v" opt; do
-        case $opt in
-          n) HOST=$OPTARG; HOSTIGNORE="$IGNOREFILE.$OPTARG" ;;
-          f) FORCE='-f' ;;
-          d) DESTDIR=$OPTARG ;;
-          v) VERBOSE='-v' ;;
-          ?) exit 1 ;;
-        esac
-    done
-}
-
-process_options "$@"
+while getopts "n:fd:v" opt; do
+    case $opt in
+        n) HOST=$OPTARG; HOSTIGNORE="$IGNOREFILE.$OPTARG" ;;
+        f) FORCE='-f' ;;
+        d) DESTDIR=$OPTARG ;;
+        v) VERBOSE='-v' ;;
+        ?) exit $ERR_INVALID_OPTION ;;
+    esac
+done
 
 if ! test -d "$DESTDIR" && ! mkdir -p "$DESTDIR"
 then
     echo "Could not create $DESTDIR" >&2
-    exit 3
+    exit $ERR_DESTDIR_NOT_FOUND 
 fi
 
 # Action happens here, following these rules:
@@ -88,6 +83,7 @@ do
     fi
 
     # install
+    # TODO: should really use install(1)
     cp $VERBOSE "$f" "$DESTDIR"
 done
 
