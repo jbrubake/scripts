@@ -9,14 +9,13 @@ printf "  FG    ----------------------------------------------------------------
 printf " Codes   40m      41m      42m      43m      44m      45m      46m      47m\n"
 printf " -----------------------------------------------------------------------------\n"
 
-# XXX: Look at seq to make these clearer
-for fore in 30 31 32 33 34 35 36 37; do
+for fore in $( seq 30 37 ); do
     line1="   ${fore}m "
     line2=" 1;${fore}m "
 
-    for back in 40 41 42 43 44 45 46 47 48; do
+    for back in $( seq 40 47 ); do
         line1="${line1}${esc}${back};${fore}m Normal ${esc}0m "
-        line2="${line2}${esc}${back};${fore};1m Light  ${esc}0m "
+        line2="${line2}${esc}${back};${fore};1m Bold   ${esc}0m "
     done
 
     printf "$line1\n$line2\n"
@@ -28,13 +27,13 @@ printf "  FG    ----------------------------------------------------------------
 printf " Codes   100m     101m     102m     103m     104m     105m     106m     107m\n"
 printf " -----------------------------------------------------------------------------\n"
 
-for fore in 90 91 92 93 94 95 96 97; do
+for fore in $( seq 30 37 ); do
     line1="   ${fore}m "
     line2=" 1;${fore}m "
 
-    for back in 100 101 102 103 104 105 106 107 108; do
+    for back in $( seq 100 107 ); do
         line1="${line1}${esc}${back};${fore}m Normal ${esc}0m "
-        line2="${line2}${esc}${back};${fore};1m Light  ${esc}0m "
+        line2="${line2}${esc}${back};${fore};1m Bold   ${esc}0m "
     done
 
     printf "$line1\n$line2\n"
