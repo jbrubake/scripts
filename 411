@@ -2,4 +2,4 @@
 #
 # 411: search personal phonebook for a pattern
 
-grep -y "$*" $HOME/lib/phonebook
+grep -i "$*" $HOME/lib/phonebook
