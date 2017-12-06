@@ -6,8 +6,11 @@
 #
 #
 # Usage:
-#     install[OPTIONS]
+#     install.sh [OPTIONS]
 #
+# TODO: Call this via 'make install'
+# TODO: Install only if dest is older
+# TODO: Add help option
 # -n, --hostname         Override hostname
 # -f, --force            Overwrite existing files and links
 # -d, --destination=dest Install to dest instead of ~/bin
