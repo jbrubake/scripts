@@ -68,7 +68,7 @@ do
 
     # skip ignored files. Works with shell globs
     for p in $(cat $IGNOREFILE $HOSTIGNORE 2>/dev/null); do
-        test $f = $p && continue
+        test $f = $p && continue 2 # continue OUTER loop
     done
 
     # if file exists and -f not specified, make backups
