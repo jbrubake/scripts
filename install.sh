@@ -8,27 +8,30 @@
 # TODO: Install only if dest is older
 show_help() {
     cat <<EOF
-Usage:
-    install.sh [OPTIONS]
+Usage: install.sh [OPTION]
+Install scripts and binaries to DESTDIR (default is ~/bin).
 
--n, --hostname         Override hostname
--f, --force            Overwrite existing files and links
--d, --destination=dest Install to dest instead of ~/bin
--v, --verbose
--h, --help
+    -n, --hostname         Override hostname
+    -f, --force            Overwrite existing files and links
+    -d, --destination=dest Install to dest instead of ~/bin
+    -v, --verbose
+    -h, --help
+
+Exit status:
+ 0  if OK,
+ 1  if minor problems (e.g., invalid option).
+ 2  if serious trouble (e.g., cannot create destination directory).
 EOF
     exit
 }
-#
-# Exit codes:
-   ERR_INVALID_OPTION=1
-   ERR_DESTDIR_NOT_FOUND=2
-#
 
 ## Reset just in case
 # No other security precautions. This is a trusting script
 IFS='
  	'
+
+ERR_MINOR=1
+ERR_MAJOR=2
 
 ##
 ## Command line options
@@ -47,14 +50,14 @@ while getopts "n:fd:vh" opt; do
         d) DESTDIR=$OPTARG ;;
         v) VERBOSE='-v' ;;
         h) show_help ;;
-        ?) exit $ERR_INVALID_OPTION ;;
+        ?) exit $ERR_MINOR` ;;
     esac
 done
 
 if ! test -d "$DESTDIR" && ! mkdir -p "$DESTDIR"
 then
     echo "Could not create $DESTDIR" >&2
-    exit $ERR_DESTDIR_NOT_FOUND 
+    exit $ERR_MAJOR
 fi
 
 # Action happens here, following these rules:
