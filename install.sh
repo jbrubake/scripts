@@ -5,16 +5,20 @@
 # The ignore files support shell globbing.
 #
 #
-# Usage:
-#     install.sh [OPTIONS]
-#
-# TODO: Call this via 'make install'
 # TODO: Install only if dest is older
-# TODO: Add help option
-# -n, --hostname         Override hostname
-# -f, --force            Overwrite existing files and links
-# -d, --destination=dest Install to dest instead of ~/bin
-# -v, --verbose
+show_help() {
+    cat <<EOF
+Usage:
+    install.sh [OPTIONS]
+
+-n, --hostname         Override hostname
+-f, --force            Overwrite existing files and links
+-d, --destination=dest Install to dest instead of ~/bin
+-v, --verbose
+-h, --help
+EOF
+    exit
+}
 #
 # Exit codes:
    ERR_INVALID_OPTION=1
@@ -36,12 +40,13 @@ HOST=`hostname`
 IGNOREFILE=.ignore  # list of files that shouldn't be linked
 HOSTIGNORE="$IGNOREFILE.$HOST"    # host-specific ignore file
 
-while getopts "n:fd:v" opt; do
+while getopts "n:fd:vh" opt; do
     case $opt in
         n) HOST=$OPTARG; HOSTIGNORE="$IGNOREFILE.$OPTARG" ;;
         f) BACKUP= ;;
         d) DESTDIR=$OPTARG ;;
         v) VERBOSE='-v' ;;
+        h) show_help ;;
         ?) exit $ERR_INVALID_OPTION ;;
     esac
 done
