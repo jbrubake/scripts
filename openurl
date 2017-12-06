@@ -46,8 +46,11 @@ case "$BROWSER" in
     glinks)
         case "$TERM" in
             # In VTY use links -g
-            # FIXME: What is $TERM under ssh?
             linux)
+                links -g $url
+                ;;
+            # Remote shell
+            putty*)
                 links -g $url
                 ;;
             # Running under X
