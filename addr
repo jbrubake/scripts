@@ -5,8 +5,18 @@
 #
 # (C) 2010 Ryan Tomayko <tomayko.com>
 
-/sbin/ifconfig -a $1     |
-grep 'inet '       |
-grep Bcast         |
-sed 's/addr://'    |
-awk '{ print $2 }'
+if type ifconfig >/dev/null; then
+    ifconfig -a $1     |
+    grep 'inet '       |
+    grep Bcast         |
+    sed 's/addr://'    |
+    awk '{ print $2 }'
+elif type ip >/dev/null; then
+    ip address show $1 |
+    grep 'inet '       |
+    sed -e 's/inet //' |
+    sed -e 's@/.*@@'   |
+    sed -e 's/[ ]*//'
+else
+    echo "I don't know how to list your IP addresses." >&2
+fi
