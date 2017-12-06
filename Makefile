@@ -77,3 +77,5 @@ endif
 ##
 rebuild: veryclean all
 
+install: all
+	./install.sh -v
