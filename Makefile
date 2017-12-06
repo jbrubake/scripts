@@ -68,14 +68,14 @@ endif
 ##
 ## $(OBJS) should be automagically removed right after linking.
 ##
-veryclean:
+clean:
 ifeq ($(PRG_SUFFIX_FLAG),0)
 	$(RM) $(PRGS)
 else
 	$(RM) $(BINS)
 endif
 ##
-rebuild: veryclean all
+rebuild: clean all
 
 install: all
 	./install.sh -v
