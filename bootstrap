@@ -1,0 +1,341 @@
+#!/bin/sh
+#
+# XXX: Description
+#
+#
+# Usage:
+#     install [OPTIONS]
+#
+# -n, --hostname         Override hostname
+# -f, --force            Overwrite existing files and links
+# -d, --destination=dest Install to dest instead of ~
+# -i, --inifile=file     Use file instead of the default
+# -v, --verbose
+#
+# Exit codes:
+#  1 = invalid option
+#  2 = inifile not found
+#  3 = destdir not found
+#
+# BUGS:
+#     - Does not handle quoted file names
+#     - Does not handle relative pathnames in INIFILE
+#     - Sloppy and has minimal error checking
+
+# TODO: Should this script just be run under sudo?
+# TODO: Change ini format to allow full configuration
+# TODO: Clone (optionally install) arbitrary git repos
+# TODO: Optionally install Dropbox
+# TODO: Print a default ini file for locl configuration
+
+## Reset just in case
+# No other security precautions. This is a trusting script
+# Write the ini file correctly...or else
+IFS='
+ 	'
+
+##
+## Command line options
+##
+FORCE=              # empty means do not overwrite files
+VERBOSE=            # empty means not verbose
+DESTDIR="$HOME"     # where to install everything
+HOST=$( hostname )
+INIFILE=$( pwd )/bootstrap.ini
+IGNOREFILE=.ignore  # list of files that shouldn't be linked
+HOSTIGNORE="$IGNOREFILE.$HOST"    # host-specific ignore file
+
+process_options ()
+{
+    while getopts "n:fd:i:v" opt; do
+        case $opt in
+          n) HOST=$OPTARG; HOSTIGNORE="$IGNOREFILE.$h" ;;
+          f) FORCE='-f' ;;
+          d) DESTDIR=$OPTARG ;;
+          i) INIFILE=$OPTARG ;;
+          v) VERBOSE='-v' ;;
+          ?) exit 1 ;;
+        esac
+    done
+}
+
+process_options "$@"
+
+if ! test -d "$DESTDIR" && ! mkdir -p "$DESTDIR"
+then
+    echo "Could not create $DESTDIR" >&2
+    exit 3
+fi
+cd $DESTDIR || exit 3
+
+if ! test -e "$INIFILE" && ! test -L "$INIFILE"
+then
+    echo "$INIFILE not found" >&2
+    exit 2
+fi
+
+####
+# Install Dropbox
+####
+dropbox_url="https://www.dropbox.com/download?plat=lnx.x86"
+dropbox_cli_url="https://www.dropbox.com/download?dl=packages/dropbox.py"
+# Skip if already installed
+if [ ! -e $DESTDIR/.dropbox-dist ]; then
+
+	# Check for wget or curl. Install curl if necessary
+	if type wget > /dev/null 2>&1; then
+		get_cmd="wget -O -"
+	elif type curl > /dev/null 2>&1; then
+		get_cmd="curl"
+	else
+		sudo apt install curl
+		get_cmd="curl"
+	fi
+
+	# Install Dropbox
+	$get_cmd $dropbox_url | tar xzf -
+fi
+
+# Run Dropbox to get the URL to link the account
+#
+# FIXME: Find a better way to link the Dropbox account
+#
+# Paste the link into a browser to link the account
+# Once the daemon reports it is successfully linke
+# Ctl+C the process so the systemd service can be
+# installed and started
+#
+# FIXME: Don't hardcode the Dropbox directory
+if [ ! -e $DESTDIR/Dropbox ]; then
+	#.dropbox-dist/dropboxd
+	echo "install dropbox"
+fi
+
+# Install dropbox service
+if [ ! -e /etc/systemd/system/dropbox@.service ]; then
+	cat <<SVC_END | sudo tee /etc/systemd/system/dropbox@.service
+# Copyright (c) 2015, Joe Roback
+# All rights reserved.
+# https://github.com/joeroback/dropbox
+# 
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+# 
+# * Redistributions of source code must retain the above copyright notice, this
+#   list of conditions and the following disclaimer.
+# 
+# * Redistributions in binary form must reproduce the above copyright notice,
+#   this list of conditions and the following disclaimer in the documentation
+#   and/or other materials provided with the distribution.
+# 
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+[Unit]
+Description=Dropbox as a system service
+After=local-fs.target network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/env "/home/%i/.dropbox-dist/dropboxd"
+Restart=on-failure
+RestartSec=1
+User=%i
+
+[Install]
+WantedBy=multi-user.target
+SVC_END
+
+    # Enable and start service
+    sudo systemctl enable dropbox@$(whoami)
+    sudo systemctl start dropbox@$(whoami)
+fi
+
+####
+# Setup links into Dropbox
+####
+
+##
+## inifile directive processors
+##
+
+dodir ()
+{
+    set $( eval "echo $line" | sed -e 's/dir\s*=\s*//' )
+
+    cmd="mkdir $1"
+    tgt="$1"
+}
+
+dofile ()
+{
+    set $( eval "echo $line" | sed -e 's/file\s*=\s*//' )
+
+    cmd="touch $1"
+    tgt="$1"
+}
+
+dolink ()
+{
+    set $( eval "echo $line" | sed -e 's/link\s*=\s*//' )
+
+    cmd="ln -s $FORCE $1 $2"
+    tgt="$2"
+}
+
+##
+## Process ini file
+##
+process=0 # = 1 once we find our host's section
+inconsts=0  # = 1 when we are in a [CONSTS] section
+while read line; do
+    test -z "$line" && continue # Skip blank lines
+
+    case "$line" in
+      \;* | \#*)                       continue ;; # Comment
+      \[CONSTS\])            inconsts=1; continue ;; # Constants
+      \[$HOST\])  process=1; inconsts=0; continue ;; # Our host
+      \[*\])      process=0; inconsts=0; continue ;; # Another host
+
+      dir*)
+            test $process -eq 0 && continue
+            dodir $line
+            ;;
+      link-dir*)
+            test $process -eq 0 && continue
+            dolinkdir $line
+            ;;
+      file*)
+            test $process -eq 0 && continue
+            dofile $line
+            ;;
+      link-file*)
+            test $process -eq 0 && continue
+            dolinkfile $line
+            ;;
+      link*)
+            test $process -eq 0 && continue
+            dolink $line
+            ;;
+      *=*)
+            if test $inconsts -eq 1
+            then
+                echo $( echo $line | sed -e 's/\s*=\s*/=/' )
+                eval $( echo $line | sed -e 's/\s*=\s*/=/' )
+            fi
+            continue
+            ;;
+      *)
+            echo "Unknown directive: <$line>" >&2
+            continue
+            ;;
+    esac
+
+    # link commands do nothing if the target doesn't exist
+    test -z "$cmd" && continue
+
+    # Action happens here, following these rules:
+    #
+    # - Always skip directories that exist
+    # - file commands just touch(1) the file if it exists
+    # - if -f was *not* specified
+    # -     Backup existing files
+    # -     Skip existing files if backup exists
+    # - else -f *was* specified
+    # -     Overwrite existing links
+
+    # automatically skip directories that exist
+    if test -d "$tgt"
+    then
+        echo "Directory $tgt already exists. Skipping" >&2
+        continue
+    fi
+        
+    # if file exists and -f not specified, make backups
+    if test -e "$tgt" || test -L "$tgt" && test -z $FORCE
+    then
+        # skip existing links
+        if test -L "$DESTDIR/$tgt"
+        then
+            test -n $VERBOSE &&
+                echo "Skipping existing link $tgt" >&2
+            continue
+        fi
+
+        # check for existing backups
+        # FIXME: This doesn't work if $tgt contains a path
+        if test -e "__$tgt"
+        then
+            echo "Backup __$tgt already exists. Skipping" >&2
+            continue
+        else
+            mv $VERBOSE "$tgt" "__$tgt"
+        fi
+    fi
+
+    # run the command
+    test -n $VERBOSE && echo "$cmd"
+    eval "$cmd"
+
+done < $INIFILE
+
+####
+# Clone dotfile and script repos
+####
+github_url="https://github.com/jbrubake"
+dotfile_repo="$github_url/dotfiles.git"
+script_repo="$github_url/scripts.git"
+local_src_dir="$DESTDIR/src"
+
+# Install git
+if ! type git > /dev/null 2>&1; then
+    sudo apt install git
+fi
+
+# Clone repos
+if [ -e "local_src_dir/dotfiles" ]; then
+    git clone "$dotfile_repo" "$local_src_dir/dotfiles"
+fi
+if [ -e "local_src_dir/scripts" ]; then
+    git clone "$script_repo" "$local_src_dir/scripts"
+fi
+
+# Install dotfiles
+cd $local_src_dir/dotfiles
+./install.sh $FORCE
+
+# Install scripts
+cd $local_src_dir/scripts
+./install.sh $FORCE
+
+cd $DESTDIR
+
+####
+# Install Dropbox CLI
+####
+bindir="$DESTDIR/bin"
+# Just in case
+mkdir -p $bindir
+# Check for wget or curl. Install curl if necessary
+# FIXME: Duplicated from Dropbox install because that might not execute
+if type wget > /dev/null 2>&1; then
+	get_cmd="wget -O -"
+elif type curl > /dev/null 2>&1; then
+	get_cmd="curl"
+else
+	sudo apt install curl
+	get_cmd="curl"
+fi
+if ! test -f $bindir/dropbox.py; then
+    $get_cmd $dropbox_cli_url > $bindir/dropbox.py
+    chmod u+x $bindir/dropbox.py
+fi
+
