@@ -50,7 +50,7 @@ while getopts "n:fd:vh" opt; do
         d) DESTDIR=$OPTARG ;;
         v) VERBOSE='-v' ;;
         h) show_help ;;
-        ?) exit $ERR_MINOR` ;;
+        ?) exit $ERR_MINOR ;;
     esac
 done
 
@@ -65,13 +65,12 @@ fi
 # - skip files in .ignore and .ignore.<host>
 # - if -f was *not* specified
 # -     Backup existing files
-# -     Skip existing files if backup exists
+# -     Skip if backup exists
 # - else -f *was* specified
 # -     Overwrite existing links and files
 #
 for f in *
 do
-
     # skip ignored files. Works with shell globs
     for p in $(cat $IGNOREFILE $HOSTIGNORE 2>/dev/null); do
         test $f = $p && continue 2 # continue OUTER loop
