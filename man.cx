@@ -1,4 +1,9 @@
 #!/bin/sh
+#
+# Copyright (c) 2010 by Ryan Tomayko <http://tomayko.com/about>
+#
+# This is Free Software distributed under the terms of the MIT license
+#
 #/ Usage: man.cx [<section>] <topic>...
 #/ Open manpage <topic> on http://man.cx. When <section> is given, it
 #/ must start with a numeric. Multiple <topic>s may be specified.
@@ -47,5 +52,3 @@ for page in "$@"
 do $BROWSER "${MANCX_URL}/${page}${section}"
 done
 
-# Copyright (c) 2010 by Ryan Tomayko <http://tomayko.com/about>
-# This is Free Software distributed under the terms of the MIT license

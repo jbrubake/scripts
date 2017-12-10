@@ -1,4 +1,5 @@
 #!/bin/sh
+
 # @(#) mutt_bgrun $Revision: 1.4 $
 
 #   mutt_bgrun - run an attachment viewer from mutt in the background

@@ -1,4 +1,5 @@
 #!/usr/bin/perl
+#
 # logcolorize.pl 1.0.8 - A PERL script to colorize log viewing
 #
 # Copyright: (C) 1999, Michael T. Babcock
@@ -24,7 +25,7 @@
 ######################################################################
 $black    = "\033[30m";
 $red      = "\033[31m";
-$green    = "\033[32m";
+$green    = "\033[m";
 $yellow   = "\033[33m";
 $blue     = "\033[34m";
 $magenta  = "\033[35m";
