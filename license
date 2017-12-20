@@ -22,6 +22,9 @@
 #
 # Original version by Chris Wanstrath:
 # http://gist.github.com/287717
+
+# TODO: Print various licenses and file headers
+
 exec sh -c "tail -n +$(($LINENO + 2)) < $0 | sed s/DATE/$(date +%Y)/"
 
 Copyright (c) DATE Ryan Tomayko <http://tomayko.com/about>
