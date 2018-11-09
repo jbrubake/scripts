@@ -1,7 +1,6 @@
 install.sh
 README.md
-*.c
+COPYING.md
 Makefile
-bootstrap
-COPYING
+*.c
 *.o
