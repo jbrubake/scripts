@@ -1,4 +1,5 @@
 #!/bin/sh
+# vim: foldmethod=marker foldmarker={,}
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -15,64 +16,73 @@
 #
 # Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
 #
-# Install all files to DESTDIR (default is $HOME/bin),
-# excluding any files in .ignore and .ignore.<hostname>.
-# The ignore files support shell globbing.
+# Documentation {
 #
+# Manpage {
+# NAME:
+#      install.sh
 #
-# TODO: Install only if dest is older
-show_help() {
+# SYNOPSIS:
+#     install.sh [OPTION] 
+#         (see print_help() below for more)
+#
+# DESCRIPTION:
+#     Install files in local directory
+#
+#     Install all files in local directory  to DESTDIR (default
+#     is $HOME/bin), excluding any files in .ignore and
+#     .ignore.<hostname>. The ignore files support shell globbing.
+#
+# BUGS:
+#     - None so far
+#
+# TODO:
+#     - Only install if dest is older
+#}
+print_help() {
     cat <<EOF
 Usage: install.sh [OPTION]
 Install scripts and binaries to DESTDIR (default is ~/bin).
 
-    -n, --hostname         Override hostname
-    -f, --force            Overwrite existing files and links
-    -d, --destination=dest Install to dest instead of ~/bin
-    -v, --verbose
-    -h, --help
-
-Exit status:
- 0  if OK,
- 1  if minor problems (e.g., invalid option).
- 2  if serious trouble (e.g., cannot create destination directory).
+ -n=HOST       use HOST as the hostname
+ -f            overwrite existing files and links
+ -d=DEST       install to DEST instead of ~/bin
+ -V            explain what is being done
+ -h            display this help and exit
 EOF
-    exit
 }
+#}
+logerror () {
+    # Output error messages
 
-## Reset just in case
-# No other security precautions. This is a trusting script
-IFS='
- 	'
-
-ERR_MINOR=1
-ERR_MAJOR=2
-
-##
-## Command line options
-##
-BACKUP=-b           # backup existing files
-VERBOSE=            # empty means be quiet
-DESTDIR="$HOME/bin" # where to install everything
-HOST=`hostname`
+    echo "$1" >&2
+}
+# Process options {
+#
+# Flag Variables
+#
+FORCE='no'
+VERBOSE=
+DESTDIR="$HOME/bin"
+HOST=$( hostname )
 IGNOREFILE=.ignore  # list of files that shouldn't be linked
-HOSTIGNORE="$IGNOREFILE.$HOST"    # host-specific ignore file
+HOSTIGNORE=$IGNOREFILE.$HOST    # host-specific ignore file
 
-while getopts "n:fd:vh" opt; do
+while getopts "n:fd:Vh" opt; do
     case $opt in
-        n) HOST=$OPTARG; HOSTIGNORE="$IGNOREFILE.$OPTARG" ;;
-        f) BACKUP= ;;
+        n) HOST=$OPTARG; HOSTIGNORE="$IGNOREFILE.$h" ;;
+        f) FORCE='yes' ;;
         d) DESTDIR=$OPTARG ;;
-        v) VERBOSE='-v' ;;
-        h) show_help ;;
-        ?) exit $ERR_MINOR ;;
+        V) VERBOSE='-v' ;;
+        h) print_help; exit ;;
+        *) print_help; exit ;;
     esac
 done
+# }
 
-if ! test -d "$DESTDIR" && ! mkdir -p "$DESTDIR"
-then
-    echo "Could not create $DESTDIR" >&2
-    exit $ERR_MAJOR
+if ! test -d "$DESTDIR" && ! mkdir -p "$DESTDIR"; then
+    logerror "FATAL: Could not create $DESTDIR. Exiting!"
+    exit
 fi
 
 # Action happens here, following these rules:
@@ -84,21 +94,24 @@ fi
 # - else -f *was* specified
 # -     Overwrite existing links and files
 #
-for f in *
-do
+for f in *; do
     # skip ignored files. Works with shell globs
     for p in $(cat $IGNOREFILE $HOSTIGNORE 2>/dev/null); do
         test $f = $p && continue 2 # continue OUTER loop
     done
 
-    # skip if -f not specified and backup exists
-    if test -e "$DESTDIR/$f~" && test $BACKUP = '-b'
-    then
-        echo "Backup $f~ already exists. Skipping" >&2
-        continue
+    if test $FORCE = 'yes'; then
+        force=
+    else
+        force='-b' # install(1) backup
+        if test -e "$DESTDIR/.$f~"; then
+            # skip if -f not specified and backup exists
+            logerror "Backup .$f~ already exists. Skipping"
+            continue
+        fi
     fi
 
     # install
-    install $VERBOSE $BACKUP -t "$DESTDIR" "$f"
+    echo install $VERBOSE $force -t "$DESTDIR" "$f"
 done
 
