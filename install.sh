@@ -35,9 +35,6 @@
 #
 # BUGS:
 #     - None so far
-#
-# TODO:
-#     - Only install if dest is older
 #}
 print_help() {
     cat <<EOF
@@ -52,6 +49,13 @@ Install scripts and binaries to DESTDIR (default is ~/bin).
 EOF
 }
 #}
+logmsg () {
+    # Output messages
+    #
+    # Depends on $VERBOSE
+
+    test $VERBOSE = 'yes' && echo "$1"
+}
 logerror () {
     # Output error messages
 
@@ -62,7 +66,7 @@ logerror () {
 # Flag Variables
 #
 FORCE='no'
-VERBOSE=
+VERBOSE='no'
 DESTDIR="$HOME/bin"
 HOST=$( hostname )
 IGNOREFILE=.ignore  # list of files that shouldn't be linked
@@ -73,21 +77,35 @@ while getopts "n:fd:Vh" opt; do
         n) HOST=$OPTARG; HOSTIGNORE="$IGNOREFILE.$h" ;;
         f) FORCE='yes' ;;
         d) DESTDIR=$OPTARG ;;
-        V) VERBOSE='-v' ;;
+        V) VERBOSE='yes' ;;
         h) print_help; exit ;;
         *) print_help; exit ;;
     esac
 done
-# }
+
+# Convert flag variables to install(1) options
+if test $VERBOSE = 'yes'; then
+    verbose='-v' # install(1) verbose flag
+else
+    verbose=
+fi
+
+if test $FORCE = 'yes'; then
+    force=
+else
+    force='-b' # install(1) backup
+fi
 
 if ! test -d "$DESTDIR" && ! mkdir -p "$DESTDIR"; then
     logerror "FATAL: Could not create $DESTDIR. Exiting!"
     exit
 fi
 
+# }
 # Action happens here, following these rules:
 #
 # - skip files in .ignore and .ignore.<host>
+# - skip files if copy in DESTDIR is newer
 # - if -f was *not* specified
 # -     Backup existing files
 # -     Skip if backup exists
@@ -100,18 +118,19 @@ for f in *; do
         test $f = $p && continue 2 # continue OUTER loop
     done
 
-    if test $FORCE = 'yes'; then
-        force=
-    else
-        force='-b' # install(1) backup
-        if test -e "$DESTDIR/.$f~"; then
-            # skip if -f not specified and backup exists
-            logerror "Backup .$f~ already exists. Skipping"
-            continue
-        fi
+    # skip if destination is newer
+    if test $DESTDIR/$f -nt $f; then
+        logmsg "$DESTDIR/$f is newer. Skipping"
+        continue
+    fi
+
+    if test $FORCE = 'no' && test -e "$DESTDIR/.$f~"; then
+        # skip if -f not specified and backup exists
+        logmsg "Backup .$f~ already exists. Skipping"
+        continue
     fi
 
     # install
-    echo install $VERBOSE $force -t "$DESTDIR" "$f"
+    echo install $verbose $force -t "$DESTDIR" "$f"
 done
 
