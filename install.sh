@@ -131,6 +131,6 @@ for f in *; do
     fi
 
     # install
-    echo install $verbose $force -t "$DESTDIR" "$f"
+    install $verbose $force -t "$DESTDIR" "$f"
 done
 
