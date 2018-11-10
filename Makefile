@@ -78,4 +78,4 @@ endif
 rebuild: clean all
 
 install: all
-	./install.sh -v
+	./install.sh -V
