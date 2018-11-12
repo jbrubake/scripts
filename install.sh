@@ -118,12 +118,6 @@ for f in *; do
         test $f = $p && continue 2 # continue OUTER loop
     done
 
-    # skip if destination is newer
-    if test $DESTDIR/$f -nt $f; then
-        logmsg "$DESTDIR/$f is newer. Skipping"
-        continue
-    fi
-
     if test $FORCE = 'no' && test -e "$DESTDIR/.$f~"; then
         # skip if -f not specified and backup exists
         logmsg "Backup .$f~ already exists. Skipping"
