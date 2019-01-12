@@ -20,15 +20,15 @@
 esc="\033["
 
 printf "                                     BG Codes\n"
-printf "  FG    ----------------------------------------------------------------------\n"
-printf " Codes   40m      41m      42m      43m      44m      45m      46m      47m\n"
-printf " -----------------------------------------------------------------------------\n"
+printf "  FG    -------------------------------------------------------------------------------\n"
+printf " Codes   49m      40m      41m      42m      43m      44m      45m      46m      47m\n"
+printf " --------------------------------------------------------------------------------------\n"
 
-for fore in $( seq 30 37 ); do
+for fore in 39 $( seq 30 37 ); do
     line1="   ${fore}m "
     line2=" 1;${fore}m "
 
-    for back in $( seq 40 47 ); do
+    for back in 49 $( seq 40 47 ); do
         line1="${line1}${esc}${back};${fore}m Normal ${esc}0m "
         line2="${line2}${esc}${back};${fore};1m Bold   ${esc}0m "
     done
@@ -38,15 +38,15 @@ done
 
 printf "\n"
 printf " Hi Intensity               High Intensity BG Codes\n"
-printf "  FG    ----------------------------------------------------------------------\n"
-printf " Codes   100m     101m     102m     103m     104m     105m     106m     107m\n"
-printf " -----------------------------------------------------------------------------\n"
+printf "  FG    -------------------------------------------------------------------------------\n"
+printf " Codes   49m      100m     101m     102m     103m     104m     105m     106m     107m\n"
+printf " --------------------------------------------------------------------------------------\n"
 
-for fore in $( seq 30 37 ); do
+for fore in 39 $( seq 30 37 ); do
     line1="   ${fore}m "
     line2=" 1;${fore}m "
 
-    for back in $( seq 100 107 ); do
+    for back in 49 $( seq 100 107 ); do
         line1="${line1}${esc}${back};${fore}m Normal ${esc}0m "
         line2="${line2}${esc}${back};${fore};1m Bold   ${esc}0m "
     done
@@ -57,8 +57,8 @@ done
 printf "\n"
 printf " Defaults\n"
 printf " -----------------\n"
-printf "   49;39m : ${esc}49;39mNormal${esc}0m\t\n"
-printf " 1;49;39m : ${esc}1;49;39mBold${esc}0m\n"
+printf "  m : ${esc}mNormal${esc}0m\t\n"
+printf " 1m : ${esc}1mBold${esc}0m\n"
 printf "\n"
 
 printf " Formatting Codes\t\tReset Codes\n"
