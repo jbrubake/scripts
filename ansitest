@@ -19,102 +19,166 @@
 #
 esc="\033["
 
-printf "                                     BG Codes\n"
-printf "  FG    -------------------------------------------------------------------------------\n"
-printf " Codes   49m      40m      41m      42m      43m      44m      45m      46m      47m\n"
-printf " --------------------------------------------------------------------------------------\n"
+show_normal () {
+    printf "                                     BG Codes\n"
+    printf "  FG    -------------------------------------------------------------------------------\n"
+    if test $f_terminfo = 1; then
+        printf " Codes   49m      40m      41m      42m      43m      44m      45m      46m      47m\n"
+    else
+        printf " Codes             0        1        2        3        4        5        6        7\n"
+    fi
+    printf " --------------------------------------------------------------------------------------\n"
 
-for fore in 39 $( seq 30 37 ); do
-    line1="   ${fore}m "
-    line2=" 1;${fore}m "
+    for fore in 39 $( seq 30 37 ); do
+        if test $f_terminfo = 1; then
+            line1="   ${fore}m "
+            line2=" 1;${fore}m "
+        else
+            line1="  $fore  "
+            line2=" $fore,b "
+        fi
 
-    for back in 49 $( seq 40 47 ); do
-        line1="${line1}${esc}${back};${fore}m Normal ${esc}0m "
-        line2="${line2}${esc}${back};${fore};1m Bold   ${esc}0m "
+        for back in 49 $( seq 40 47 ); do
+            line1="${line1}${esc}${back};${fore}m Normal ${esc}0m "
+            line2="${line2}${esc}${back};${fore};1m Bold   ${esc}0m "
+        done
+
+        printf "$line1\n$line2\n"
     done
 
-    printf "$line1\n$line2\n"
-done
+    printf " Defaults\n"
+    printf " -----------------\n"
+    printf "  m : ${esc}mNormal${esc}0m\t\n"
+    printf " 1m : ${esc}1mBold${esc}0m\n"
+}
 
-printf "\n"
-printf " Hi Intensity               High Intensity BG Codes\n"
-printf "  FG    -------------------------------------------------------------------------------\n"
-printf " Codes   49m      100m     101m     102m     103m     104m     105m     106m     107m\n"
-printf " --------------------------------------------------------------------------------------\n"
+show_bright () {
+    printf " Hi Intensity               High Intensity BG Codes\n"
+    printf "  FG    -------------------------------------------------------------------------------\n"
+    if test $f_terminfo = 1; then
+        printf " Codes   49m      100m     101m     102m     103m     104m     105m     106m     107m\n"
+    else
+        printf " Codes             8        9        10       11       12       13       14       15\n"
+    fi
+    printf " --------------------------------------------------------------------------------------\n"
 
-for fore in 39 $( seq 30 37 ); do
-    line1="   ${fore}m "
-    line2=" 1;${fore}m "
+    for fore in 39 $( seq 30 37 ); do
+        line1="   ${fore}m "
+        line2=" 1;${fore}m "
 
-    for back in 49 $( seq 100 107 ); do
-        line1="${line1}${esc}${back};${fore}m Normal ${esc}0m "
-        line2="${line2}${esc}${back};${fore};1m Bold   ${esc}0m "
+        for back in 49 $( seq 100 107 ); do
+            line1="${line1}${esc}${back};${fore}m Normal ${esc}0m "
+            line2="${line2}${esc}${back};${fore};1m Bold   ${esc}0m "
+        done
+
+        printf "$line1\n$line2\n"
     done
 
-    printf "$line1\n$line2\n"
+    printf "\n"
+
+    printf "%s" "Example: printf \"\033[31;44m"
+    printf "${esc}31;44mRed text on blue${esc}0m"
+    printf "%s\n" "\033[0m\""
+}
+
+show_formats () {
+    printf " Formatting Codes\t\tReset Codes\n"
+    printf " -----------------------------  -----------------------------------------\n"
+    printf " 1m : ${esc}1mBold${esc}0m\t2m : ${esc}2mDim${esc}0m"
+    printf "\t"
+    printf "21m : ${esc}1mBold ${esc}0moff\t\t22m : ${esc}2mDim${esc}22m off"
+    printf "\n"
+    printf " 3m : ${esc}3mItalic${esc}0m\t4m : ${esc}4mUnderline${esc}0m"
+    printf "\t"
+    printf "23m : ${esc}3mItalic${esc}23m off\t24m : ${esc}4mUnderline${esc}24m off"
+    printf "\n"
+    printf " 5m : ${esc}5mBlink${esc}0m\t6m : ${esc}6mBlink Fast${esc}0m"
+    printf "\t"
+    printf "25m : ${esc}5mBlink${esc}25m off"
+    printf "\n"
+    printf " 7m : ${esc}7mReverse${esc}0m\t8m : Hidden (${esc}8mx${esc}0m)"
+    printf "\t"
+    printf "27m : ${esc}7mReverse${esc}27m off\t28m : Hidden (${esc}28mx${esc}0m) off"
+    printf "\n"
+    printf " 9m : ${esc}9mStrikeout${esc}0m"
+    printf "\t\t\t"
+    printf "29m : ${esc}9mStrikeout${esc}29m off\t 0m : Reset all"
+    printf "${esc}0m\n"
+    printf "\n"
+    printf "%s" " Example: printf \"\033[1m"
+    printf "${esc}1mBold text${esc}0m"
+    printf "%s\n" "\033[0m\""
+}
+
+show_256 () {
+    printf " 256 Colors\n"
+    printf " ----------\n"
+    printf " 38;5;<n>m : Select foreground color\n"
+    printf " 48;5;<n>m : Select background color\n"
+    printf "   0-  7: Standard colors\n"
+    printf "   8- 15: High intensity colors\n"
+    printf "  16-231: 6x6x6 cube (216  colors)\n"
+    printf " 232-255: Grayscale (black to white)\n"
+    printf "\n"
+    printf "%s" " Example: printf \"\033[38;5;1;48;5;4m"
+    printf "${esc}38;5;1;48;5;4mRed text on blue${esc}0m"
+    printf "%s\n" "\033[0m\""
+}
+
+show_24bit () {
+    printf " 24-bit Color\n"
+    printf " ------------\n"
+    printf " 38;2;<r>;<g>;<b>m : Select RGB foreground color\n"
+    printf " 48;2;<r>;<g>;<b>m : Select RGB background color\n"
+    printf " 232-255: Grayscale (black to white)\n"
+    printf "\n"
+    printf "%s" " Example: printf \"\033[38;2;255;0;0m\033[48;2;0;255;0m"
+    printf "${esc}38;2;255;0;0m${esc}48;2;0;0;255mRed text on blue${esc}0m"
+    printf "%s\n" "\033[0m\""
+}
+
+# Process options {
+print_help() {
+    cat <<EOF
+Usage: ansitest [OPTION]
+Display ANSI escape code help
+
+ -n            display normal codes
+ -b            display high-intensity codes
+ -f            display formatting codes
+ -2            display 256 color codes
+ -t            display 24-bit color codes
+ -T            display terminfo(5) codes where available
+ -h            display this help
+EOF
+
+}
+f_default=1
+f_normal=0
+f_bright=0
+f_formats=0
+f_256=0
+f_24bit=0
+f_terminfo=0
+
+while getopts "nbf2th" opt; do
+    case $opt in
+        n) f_normal=1; f_default=0 ;;
+        b) f_bright=1; f_default=0 ;;
+        f) f_formats=1; f_default=0 ;;
+        2) f_256=1; f_default=0 ;;
+        t) f_24bit=1; f_default=0 ;;
+        T) f_terminfo=1 ;;
+        h) print_help; exit ;;
+        *) print_help; exit ;;
+    esac
 done
 
-printf "\n"
-printf "%s" "Example: printf \"\033[31;44m"
-printf "${esc}31;44mRed text on blue${esc}0m"
-printf "%s\n" "\033[0m\""
+# }
 
-printf "\n"
-printf " Defaults\n"
-printf " -----------------\n"
-printf "  m : ${esc}mNormal${esc}0m\t\n"
-printf " 1m : ${esc}1mBold${esc}0m\n"
-printf "\n"
-
-printf " Formatting Codes\t\tReset Codes\n"
-printf " -----------------------------  -----------------------------------------\n"
-printf " 1m : ${esc}1mBold${esc}0m\t2m : ${esc}2mDim${esc}0m"
-printf "\t"
-printf "21m : ${esc}1mBold ${esc}0moff\t\t22m : ${esc}2mDim${esc}22m off"
-printf "\n"
-printf " 3m : ${esc}3mItalic${esc}0m\t4m : ${esc}4mUnderline${esc}0m"
-printf "\t"
-printf "23m : ${esc}3mItalic${esc}23m off\t24m : ${esc}4mUnderline${esc}24m off"
-printf "\n"
-printf " 5m : ${esc}5mBlink${esc}0m\t6m : ${esc}6mBlink Fast${esc}0m"
-printf "\t"
-printf "25m : ${esc}5mBlink${esc}25m off"
-printf "\n"
-printf " 7m : ${esc}7mReverse${esc}0m\t8m : Hidden (${esc}8mx${esc}0m)"
-printf "\t"
-printf "27m : ${esc}7mReverse${esc}27m off\t28m : Hidden (${esc}28mx${esc}0m) off"
-printf "\n"
-printf " 9m : ${esc}9mStrikeout${esc}0m"
-printf "\t\t\t"
-printf "29m : ${esc}9mStrikeout${esc}29m off\t 0m : Reset all"
-printf "${esc}0m\n"
-printf "\n"
-printf "%s" " Example: printf \"\033[1m"
-printf "${esc}1mBold text${esc}0m"
-printf "%s\n" "\033[0m\""
-printf "\n"
-
-printf " 256 Colors\n"
-printf " ----------\n"
-printf " 38;5;<n>m : Select foreground color\n"
-printf " 48;5;<n>m : Select background color\n"
-printf "   0-  7: Standard colors\n"
-printf "   8- 15: High intensity colors\n"
-printf "  16-231: 6x6x6 cube (216  colors)\n"
-printf " 232-255: Grayscale (black to white)\n"
-printf "\n"
-printf "%s" " Example: printf \"\033[38;5;1;48;5;4m"
-printf "${esc}38;5;1;48;5;4mRed text on blue${esc}0m"
-printf "%s\n" "\033[0m\""
-printf "\n"
-
-printf " 24-bit Color\n"
-printf " ------------\n"
-printf " 38;2;<r>;<g>;<b>m : Select RGB foreground color\n"
-printf " 48;2;<r>;<g>;<b>m : Select RGB background color\n"
-printf " 232-255: Grayscale (black to white)\n"
-printf "\n"
-printf "%s" " Example: printf \"\033[38;2;255;0;0m\033[48;2;0;255;0m"
-printf "${esc}38;2;255;0;0m${esc}48;2;0;0;255mRed text on blue${esc}0m"
-printf "%s\n" "\033[0m\""
-
+test $f_normal = 1 ||
+    test $f_default = 1 && show_normal
+test $f_bright = 1  && show_bright
+test $f_formats = 1 && show_formats
+test $f_256 = 1     && show_256
+test $f_24bit = 1   && show_24bit
