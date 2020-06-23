@@ -43,7 +43,7 @@ Install scripts and binaries to DESTDIR (default is ~/bin).
 
  -n=HOST       use HOST as the hostname
  -f            overwrite existing files and links
- -d=DEST       install to DEST instead of ~/bin
+ -d=DEST       install to DEST instead of $HOME
  -V            explain what is being done
  -h            display this help and exit
 EOF
