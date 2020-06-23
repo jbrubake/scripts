@@ -39,11 +39,11 @@
 print_help() {
     cat <<EOF
 Usage: install.sh [OPTION]
-Install scripts and binaries to DESTDIR (default is ~/bin).
+Install scripts and binaries to DESTDIR (default is $HOME/bin).
 
  -n=HOST       use HOST as the hostname
  -f            overwrite existing files and links
- -d=DEST       install to DEST instead of $HOME
+ -d=DEST       install to DEST instead of $HOME/bin
  -V            explain what is being done
  -h            display this help and exit
 EOF
