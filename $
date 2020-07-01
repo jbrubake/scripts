@@ -1,0 +1,5 @@
+#!/usr/bin/bash
+#
+# Properly run copy-paste commands that accidentally start with '$'
+
+"$@"
