@@ -21,6 +21,6 @@
 #
 
 ls -lh $( echo $PATH | tr : ' ' ) \
-    | awk '{ print $5 "\t" $9 }'
-    | sort -n -k 1 -r
+    | awk '{ print $5 "\t" $9 }' \
+    | sort -n -k 1 -r \
     | head
