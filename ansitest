@@ -182,3 +182,5 @@ test $f_bright = 1  && show_bright
 test $f_formats = 1 && show_formats
 test $f_256 = 1     && show_256
 test $f_24bit = 1   && show_24bit
+
+exit 0
