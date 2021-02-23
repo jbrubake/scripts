@@ -1,0 +1,73 @@
+#!/bin/sh
+# vim: foldmethod=marker foldmarker={,}
+
+# Search the pass(1) database for a string and present a menu
+# of matching entries to display
+#
+# pf <tag>
+#
+
+print_help() {
+    cat <<EOF
+Usage: pf [OPTION] <tag>
+   Search the pass(1) database for <tag> and copy the password
+   to the clipboard or display the entry
+
+ -d            display selected entry and exit
+ -m            display selected entries until EOF given
+ -v            output version information and exit
+ -h            display this help and exit
+EOF
+}
+print_version() {
+    cat <<EOF
+pf 1.0
+Copyright (C) 2021 Orion Arts
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Jeremy Brubaker.
+EOF
+}
+# Process options {
+#
+REPEAT=0
+COPY='-c'
+while getopts "dmvh" opt; do
+    case $opt in
+        d) COPY= ;;
+        m) REPEAT=1 ; COPY= ;;
+        v) print_version; exit ;;
+        h) print_help; exit ;;
+        *) print_help; exit ;;
+    esac
+done
+shift "$(($OPTIND-1))"
+# }
+
+if test $# -eq 0; then
+    printf "%s\n" "No tag given"
+    exit
+fi
+
+list=$( pass grep $1 | \
+    sed 's/\x1b\[[0-9;]*[a-zA-Z]//g' | \
+    awk '/:/ { print substr ($1, 1, length ($1) - 1) }' \
+)
+
+if test -z "$list"; then
+    printf "%s\n" "No matching entries found."
+    exit
+fi
+
+printf "%s" "Select entry to display."
+if test $REPEAT -eq 1; then
+    printf "%s" " EOF to quit"
+fi
+echo
+
+select p in $list; do
+    pass $COPY $p
+    test $REPEAT -eq 0 && break
+done
