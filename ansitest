@@ -161,7 +161,7 @@ f_256=0
 f_24bit=0
 f_terminfo=0
 
-while getopts "nbf2th" opt; do
+while getopts "nbf2tTh" opt; do
     case $opt in
         n) f_normal=1; f_default=0 ;;
         b) f_bright=1; f_default=0 ;;
