@@ -6,6 +6,7 @@
 #
 # pf <tag>
 #
+# TODO: make this do 'pass find' and 'pass grep'
 
 print_help() {
     cat <<EOF
@@ -63,7 +64,7 @@ fi
 
 printf "%s" "Select entry to display."
 if test $REPEAT -eq 1; then
-    printf "%s" " EOF to quit"
+    printf "%s" " Ctrl+D to quit"
 fi
 echo
 
