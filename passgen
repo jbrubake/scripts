@@ -1,0 +1,45 @@
+#!/bin/sh
+
+# Process options {
+print_help() {
+    cat <<EOF
+Usage: $0 [OPTION]
+Generate an xkcd-936 inspired passphrase
+
+ -f            path to wordlist (default: \$HOME/share/dict/password_words)
+ -n            number of words to generate (default: 4)
+ -d            word separator (default: none)
+ -h            display this help
+ -v            display version
+EOF
+}
+
+print_version() {
+    cat <<EOF
+$0 1.0
+Copyright (C) 2021 Jeremy Brubaker
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Jeremy Brubaker
+EOF
+}
+
+wordlist="$HOME/share/dict/password_words"
+numwords=4
+separator=''
+
+while getopts "f:n:d:hv" opt; do
+    case $opt in
+        f) wordlist="$OPTARG" ;;
+        n) numwords="$OPTARG";;
+        d) separator="$OPTARG";;
+        h) print_help; exit ;;
+        v) print_version; exit ;;
+        *) print_help; exit ;;
+    esac
+done
+# }
+
+awk 'length <= 5 && length >=3' $wordlist| shuf -n$numwords | paste -sd "$separator"
