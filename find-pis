@@ -1,0 +1,19 @@
+#!/bin/sh
+#
+# Scan local network for Raspberry Pis
+#
+# Based on: https://gist.github.com/chr15m/8a79b891c680af3bff7704d3d3860fb4
+
+# get broadcast addresses for each network
+net=`ifconfig | grep -o -E "broadcast (.*?) " | cut -f2 -d" "`
+
+# loop over networks running the scan
+for n in $net;
+do
+  # first find SSH machines silently to prime the arp table
+  nmap -T4 -n -p 22 --open --min-parallelism 100 "$n/24" | grep -e "scan report for" -e "ssh" > /dev/null
+  # timeout 0.25 bash -c "</dev/tcp/$ip/22" > /dev/null
+done
+
+# then run arp to show machines pi MACs
+arp -na | grep b8:27:eb | grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}'
