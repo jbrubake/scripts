@@ -31,7 +31,7 @@ fi
 cmd=$(dmenu "$@" < "$cachefile")
 
 if test -n "$cmd" && grep ${cmd/;/} "$cachefile" 2>&1 >/dev/null; then
-    # Strip trialing ';' but run it in a terminal
+    # Strip trailing ';' but run it in a terminal
     case "$cmd" in
         *\;) interm='y'; cmd=${cmd/;/} ;;
         *)   interm='n' ;;
@@ -39,12 +39,14 @@ if test -n "$cmd" && grep ${cmd/;/} "$cachefile" 2>&1 >/dev/null; then
 
     # Add command to history and pop first item if too long
     echo $cmd >> "$historyfile"
+
     if test $(wc -l < "$historyfile") -gt "$max_history"; then
         sed -i "1d" "$historyfile"
     fi
 
     # Use alias if it exists
     cmdexec=$(alias | grep "$cmd=" | cut -f2 -d "'" | tr -d "'")
+
     # Otherwise it is a command or function
     if [ -z "$cmdexec" ]; then
         cmdexec="$cmd"
