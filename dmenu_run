@@ -1,0 +1,59 @@
+#!/bin/sh
+
+max_history=100
+aliasfile="$HOME/.alias"
+functionfile="$HOME/.functions"
+
+cachedir="${XDG_CACHE_HOME:-"$HOME/.cache"}/dmenu"
+if ! [ -d "$cachedir" ]; then
+    mkdir -p "$cachedir"
+fi
+cachefile="$cachedir/run"
+historyfile="$cachedir/history"
+
+test -e "$historyfile" || touch "$historyfile"
+
+# Instead of making this an interactive script, just
+# source the files we need
+test -r "$aliasfile"    && source $aliasfile
+test -r "$functionfile" && source $functionfile
+
+# To remove a file from history: 
+# $ dmenu_recent_aliases remove <name> 
+if test "$1" == "remove"; then
+    sed -ie "/$2/d" "$historyfile"
+    exit
+fi
+
+# tail -n +10 skips the 10 commands that aren't needed (!, ., :, etc)
+(cat "$historyfile"; compgen -a; compgen -c | grep -vxF "$(compgen -a)") \
+    | sort | tail -n +10 | uniq > "$cachefile"
+cmd=$(dmenu "$@" < "$cachefile")
+
+if test -n "$cmd" && grep ${cmd/;/} "$cachefile" 2>&1 >/dev/null; then
+    # Strip trialing ';' but run it in a terminal
+    case "$cmd" in
+        *\;) interm='y'; cmd=${cmd/;/} ;;
+        *)   interm='n' ;;
+    esac
+
+    # Add command to history and pop first item if too long
+    echo $cmd >> "$historyfile"
+    if test $(wc -l < "$historyfile") -gt "$max_history"; then
+        sed -i "1d" "$historyfile"
+    fi
+
+    # Use alias if it exists
+    cmdexec=$(alias | grep "$cmd=" | cut -f2 -d "'" | tr -d "'")
+    # Otherwise it is a command or function
+    if [ -z "$cmdexec" ]; then
+        cmdexec="$cmd"
+    fi
+
+    # TODO: Add support for more terminals
+    if test "$interm" == 'y'; then
+        sh -c "gnome-terminal -- sh -c '$cmdexec; exec bash -i'"
+    else
+        $cmd
+    fi
+fi
