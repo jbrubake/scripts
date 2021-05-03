@@ -2,6 +2,7 @@
 
 if type diff-so-fancy 2>&1 >/dev/null; then
     /usr/bin/diff -u "$@" | diff-so-fancy
+    (exit ${PIPESTATUS[0]}) # Exit with $? from diff
 else
     /usr/bin/diff "$@"
 fi
