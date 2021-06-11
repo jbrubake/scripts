@@ -1,4 +1,8 @@
 #!/bin/sh
+#
+# Depends on 'chooser terimnal' to print terminal command
+
+term_cmd=$(chooser terminal)
 
 max_history=100
 aliasfile="$HOME/.alias"
@@ -36,7 +40,7 @@ if test -n "$cmd" && grep ${cmd/;/} "$cachefile" 2>&1 >/dev/null; then
 
     # TODO: Add support for more terminals
     if test "$interm" == 'y'; then
-        sh -c "gnome-terminal -- sh -c '$cmdexec; exec bash -i'"
+        sh -c "$term_cmd -- bash -c '$cmdexec; exec bash -i'"
     else
         $cmd
     fi
