@@ -16,8 +16,8 @@ cachefile="$cachedir/run"
 
 # Instead of making this an interactive script, just
 # source the files we need
-test -r "$aliasfile"    && source $aliasfile
-test -r "$functionfile" && source $functionfile
+test -r "$aliasfile"    && source $aliasfile 2>/dev/null
+test -r "$functionfile" && source $functionfile 2>/dev/null
 
 (compgen -a; compgen -c | grep -vxF -- "$(compgen -a)") \
     | sort | grep -v "^[[:punct:]]" | uniq > "$cachefile"
