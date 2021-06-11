@@ -25,9 +25,8 @@ if test "$1" == "remove"; then
     exit
 fi
 
-# tail -n +10 skips the 10 commands that aren't needed (!, ., :, etc)
-(cat "$historyfile"; compgen -a; compgen -c | grep -vxF "$(compgen -a)") \
-    | sort | tail -n +10 | uniq > "$cachefile"
+(cat "$historyfile"; compgen -a; compgen -c | grep -vxF -- "$(compgen -a)") \
+    | sort | grep -v "^[[:punct:]]" | uniq > "$cachefile"
 cmd=$(dmenu "$@" < "$cachefile")
 
 if test -n "$cmd" && grep ${cmd/;/} "$cachefile" 2>&1 >/dev/null; then
