@@ -3,7 +3,6 @@
 max_history=100
 aliasfile="$HOME/.alias"
 functionfile="$HOME/.functions"
-dmenu_opts="-l 10 $DMENU_OPTS"
 
 cachedir="${XDG_CACHE_HOME:-"$HOME/.cache"}/dmenu"
 if ! [ -d "$cachedir" ]; then
@@ -29,7 +28,7 @@ fi
 # tail -n +10 skips the 10 commands that aren't needed (!, ., :, etc)
 (cat "$historyfile"; compgen -a; compgen -c | grep -vxF "$(compgen -a)") \
     | sort | tail -n +10 | uniq > "$cachefile"
-cmd=$(dmenu $dmenu_opts "$@" < "$cachefile")
+cmd=$(dmenu "$@" < "$cachefile")
 
 if test -n "$cmd" && grep ${cmd/;/} "$cachefile" 2>&1 >/dev/null; then
     # Strip trailing ';' but run it in a terminal
