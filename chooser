@@ -1,0 +1,16 @@
+#!/bin/sh
+
+CHOOSER_DIR=$HOME/etc/chooser
+
+f="$CHOOSER_DIR/$1.list"
+
+if test -r $f; then
+    while read c; do
+        if command -v &>/dev/null $c; then
+            break
+        fi
+    done < $f
+fi
+
+echo $c
+exit
