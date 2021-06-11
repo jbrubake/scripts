@@ -9,23 +9,13 @@ if ! [ -d "$cachedir" ]; then
     mkdir -p "$cachedir"
 fi
 cachefile="$cachedir/run"
-historyfile="$cachedir/history"
-
-test -e "$historyfile" || touch "$historyfile"
 
 # Instead of making this an interactive script, just
 # source the files we need
 test -r "$aliasfile"    && source $aliasfile
 test -r "$functionfile" && source $functionfile
 
-# To remove a file from history: 
-# $ dmenu_recent_aliases remove <name> 
-if test "$1" == "remove"; then
-    sed -ie "/$2/d" "$historyfile"
-    exit
-fi
-
-(cat "$historyfile"; compgen -a; compgen -c | grep -vxF -- "$(compgen -a)") \
+(compgen -a; compgen -c | grep -vxF -- "$(compgen -a)") \
     | sort | grep -v "^[[:punct:]]" | uniq > "$cachefile"
 cmd=$(dmenu "$@" < "$cachefile")
 
@@ -35,13 +25,6 @@ if test -n "$cmd" && grep ${cmd/;/} "$cachefile" 2>&1 >/dev/null; then
         *\;) interm='y'; cmd=${cmd/;/} ;;
         *)   interm='n' ;;
     esac
-
-    # Add command to history and pop first item if too long
-    echo $cmd >> "$historyfile"
-
-    if test $(wc -l < "$historyfile") -gt "$max_history"; then
-        sed -i "1d" "$historyfile"
-    fi
 
     # Use alias if it exists
     cmdexec=$(alias | grep "$cmd=" | cut -f2 -d "'" | tr -d "'")
