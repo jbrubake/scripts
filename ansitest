@@ -46,10 +46,16 @@ show_normal () {
         printf "$line1\n$line2\n"
     done
 
+    printf "\n"
     printf " Defaults\n"
     printf " -----------------\n"
     printf "  m : ${esc}mNormal${esc}0m\t\n"
     printf " 1m : ${esc}1mBold${esc}0m\n"
+
+    printf "\n"
+    printf "%s" "Example: printf \"\033[31;44m"
+    printf "${esc}31;44mRed text on blue${esc}0m"
+    printf "%s\n" "\033[0m\""
 }
 
 show_bright () {
@@ -75,9 +81,14 @@ show_bright () {
     done
 
     printf "\n"
+    printf " Defaults\n"
+    printf " -----------------\n"
+    printf "  m : ${esc}mNormal${esc}0m\t\n"
+    printf " 1m : ${esc}1mBold${esc}0m\n"
 
-    printf "%s" "Example: printf \"\033[31;44m"
-    printf "${esc}31;44mRed text on blue${esc}0m"
+    printf "\n"
+    printf "%s" "Example: printf \"\033[31;104m"
+    printf "${esc}31;104mRed text on bright blue${esc}0m"
     printf "%s\n" "\033[0m\""
 }
 
@@ -104,6 +115,19 @@ show_formats () {
     printf "\t\t\t"
     printf "29m : ${esc}9mStrikeout${esc}29m off\t 0m : Reset all"
     printf "${esc}0m\n"
+
+    printf "4:1m : ${esc}4:1mUnderline${esc}4:0m"
+    printf "\t"
+    printf "4:2m : ${esc}4:2mDouble Underline${esc}4:0m"
+    printf "\n"
+    printf "4:3m : ${esc}4:3mUndercurl${esc}4:0m"
+    printf "\t"
+    printf "4:4m : ${esc}4:4mDotted Undeline${esc}4:0m"
+    printf "\t"
+    printf "4:5m : ${esc}4:5mDashed Undeline${esc}4:0m"
+    printf "\n"
+    printf "4:0m : ${esc}4:0mNo underline${esc}4:0m\n"
+
     printf "\n"
     printf "%s" " Example: printf \"\033[1m"
     printf "${esc}1mBold text${esc}0m"
@@ -120,9 +144,20 @@ show_256 () {
     printf "  16-231: 6x6x6 cube (216  colors)\n"
     printf " 232-255: Grayscale (black to white)\n"
     printf "\n"
-    printf "%s" " Example: printf \"\033[38;5;1;48;5;4m"
+    printf " Example: printf \"\033[38;5;1;48;5;4m"
     printf "${esc}38;5;1;48;5;4mRed text on blue${esc}0m"
-    printf "%s\n" "\033[0m\""
+    printf "\033[0m\"\n"
+    printf "\n"
+
+    printf " Underline/Undercurl\n"
+    printf " -------------------\n"
+    printf " 58:5:<n>m : Select underline/undercurl color\n"
+    printf " 59m       : Reset color\n"
+    printf "\n"
+    printf " Examples:\n"
+    printf " 4:1;58:5:199m : ${esc}4:1;58:5:199mPink underline${esc}4:0m\n"
+    printf " 4:3;58:5:199m : ${esc}4:3;58:5:199mPink undercurl${esc}4:0m\n"
+    printf " 4:3;59:bm     : ${esc}4:3;59mReset colored${esc}4:0m\n"
 }
 
 show_24bit () {
@@ -132,9 +167,21 @@ show_24bit () {
     printf " 48;2;<r>;<g>;<b>m : Select RGB background color\n"
     printf " 232-255: Grayscale (black to white)\n"
     printf "\n"
-    printf "%s" " Example: printf \"\033[38;2;255;0;0m\033[48;2;0;255;0m"
+    printf " Example: printf \"\033[38;2;255;0;0m\033[48;2;0;255;0m"
     printf "${esc}38;2;255;0;0m${esc}48;2;0;0;255mRed text on blue${esc}0m"
-    printf "%s\n" "\033[0m\""
+    printf "\033[0m\"\n"
+
+    printf "\n"
+    printf " Underline/Undercurl\n"
+    printf " -------------------\n"
+    printf " 58:2;<r>;<g>;<b>m : Select RGB underline/undercurl color\n"
+    printf " 59m               : Reset color\n"
+    printf "\n"
+    printf " Examples:\n"
+    printf " 4:1;58:2:0:255:0m : ${esc}4:1;58:2:0:255:0mGreen underline${esc}4:0m\n"
+    printf " 4:3;58:2:255:0:0m : ${esc}4:3;58:2:255:0:0mRed undercurl${esc}4:0m"
+    printf "\n"
+    printf " 4:3;59m           : ${esc}4:3;59mReset color${esc}4:0m\n"
 }
 
 # Process options {
