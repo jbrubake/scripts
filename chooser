@@ -6,7 +6,7 @@ f="$CHOOSER_DIR/$1.list"
 
 if test -r $f; then
     while read c; do
-        if command -v &>/dev/null $c; then
+        if command -v 2>&1 >/dev/null $c; then
             break
         fi
     done < $f
