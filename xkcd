@@ -1,0 +1,140 @@
+#!/bin/dash
+#
+# Display the latest xkcd comic, including the alt text
+#
+# Require curl, GraphicsMagick and recode
+
+# Text settings {{{1
+#
+COLOR="#000000"
+OFFSET=5
+POINTSIZE=16
+FONT="$HOME/share/fonts/Droid Sans Mono Nerd Font Complete.otf"
+# Make sure the font exists
+test -r "$FONT" || FONT=
+
+# Documentation {{{1
+#
+VERSION='1.0'
+
+print_help() {
+    cat <<EOF
+Usage: xkcd [number|[option]]
+View current or [number] xkcd comic along with alt text
+ 
+ -r, --random       view a random comic
+ -v, --version      display version info and exit
+ -h, --help         display this help and exit
+EOF
+}
+
+print_version() {
+    cat <<EOF
+$0 $VERSION
+EOF
+}
+
+# Process options {{{1
+
+# Setup comic URL and latest comic number
+# Default to grabbing the latest comic
+url="https://xkcd.com"
+latest=$(curl -s "$url" | sed -n 's@Permanent link .*xkcd.com/\([[:digit:]]*\)/.*@\1@p')
+index=$latest
+
+case "$1" in
+    -h | --help)    print_help; exit ;;
+    -v | --version) print_version; exit ;;
+    -r | --random)
+        index=$(awk -v min="1" -v max="$latest" \
+            'BEGIN{srand(); print int(min+rand()*(max-min+1))}')
+        ;;
+    *) # Treat any other arg as a comic number
+        if test -z "$1"; then
+            : # nothing passed so grab the latest
+        elif printf "%d" "$1" >/dev/null 2>&1; then # check for valid number
+            index="$1"
+        else
+            printf "$0: $1 is not a number\n"
+            exit
+        fi
+        ;;
+esac
+
+# Create a temporary file descriptor {{{1
+#
+tmpfile=$(mktemp /tmp/xkcd.png.XXXXXX)
+exec 3<>"$tmpfile"
+rm "$tmpfile"
+
+# Get image {{{1
+#
+# Create URL (the trailing '/' is needed if $index is non-NULL)
+url="$url/$index/"
+# Get permalink to current comic and download image
+img=$( curl -s "$url" | 
+    sed -n 's/Image URL.*: \(.*\)/\1/p' )
+if test -z "$img"; then
+    printf "$0: comic number $index does not exist\n"
+    exit
+fi
+curl -s "$img" > /dev/fd/3
+# Prepare alt text {{{1
+
+# Extract alt text {{{2
+#
+# Strip https:// so we can find the <img> tag
+tag=${img#https://}
+# and then extract the alt text
+text=$(curl -s "$url" | \
+    grep "$tag" | \
+    grep 'img src' | \
+    sed -n 's/.*title="\(.*\)" alt=.*/\1/p')
+# Prepend the comic number
+text="(#$index) $text"
+
+# Properly format alt text string {{{2
+#
+# Determine how many characters can fit in each row
+# based on font, point size and image width
+#
+# Get image dimensions
+size=$(gm identify /dev/fd/3  | awk '{print $3}' | sed 's/+.*//')
+x=${size%x*}
+y=${size#*x}
+#
+# XXX: Given font and point size, each character is about 10 pixels wide
+nchars=$(( (x - OFFSET * 2) / 10 ))
+
+# Convert any HTML entities to text
+text=$(echo "$text" | recode html)
+# Escape single quotes because of double nesting below
+text=$( echo "$text" | sed -s "s/'/\\\\'/g"  )
+# Fold the text to the calculated width
+text=$(echo "$text" | fold -sw $nchars)
+# How many lines are there?
+nlines=$(echo "$text" | wc -l)
+
+# Resize image to fit alt test {{{2
+#
+# Determine how much to increase the image height based on the nubmer of lines
+# XXX: Given font, point size and offset I need 20 pixels per line
+newy=$(( y + nlines * 20 ))
+# Increase image height
+gm convert -extent "${x}x${newy}+0+0" /dev/fd/3 /dev/fd/3
+
+# Display image {{{1
+
+# Write the text in the bottom left corner. It wraps automatically
+#
+gm convert -pointsize $POINTSIZE \
+    -font "$FONT" \
+    -fill "$COLOR" \
+    -gravity SouthWest \
+    -draw "text $OFFSET,$OFFSET '$text'" \
+    /dev/fd/3 /dev/fd/3
+
+# Display image
+#
+gm display /dev/fd/3 >/dev/null 2>&1
+
