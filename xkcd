@@ -2,7 +2,7 @@
 #
 # Display the latest xkcd comic, including the alt text
 #
-# Require curl, GraphicsMagick and recode
+# Requires curl, GraphicsMagick and recode
 
 # Text settings {{{1
 #
