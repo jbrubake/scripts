@@ -1,0 +1,11 @@
+#!/bin/sh
+
+wmctrl -x -a $(
+    wmctrl -lx |
+    awk '{print $3}' |
+    cut -d'.' -f2 |
+    tr '[:upper:]' '[:lower:]' |
+    sort |
+    uniq |
+    dmenu "$@"
+)
