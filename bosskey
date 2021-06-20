@@ -7,6 +7,8 @@
 #
 # Also requires yum(1) to get a list of packages
 
+### Configurable settings
+#
 PERCENT_DELTA_START=10
 PERCENT_DELTA=5
 PERCENT_DELTA_MIN=1
@@ -14,6 +16,7 @@ TIME_MS_MIN=25
 TIME_MS_MAX=100
 BOX_LINES=6
 BOX_COLS=65 # This should be fairly large to keep package names visible
+### End configurable settings
 
 random()
 {
@@ -24,13 +27,13 @@ get_pkg_name()
 {
     # Get a random letter
     c=$(random 97 122) # 97-122: lowercase letter range
-    c=$(printf "\\$(printf '%03o' "$c")")
+    c=$(printf "%s" "$(printf '%03o' "$c")")
 
     # Get a random package name that starts with that letter
-    echo $(yum list | egrep "^$1" | awk '{print $1}' | shuf -n1)
+    echo "$(yum list | grep -E "^$c" | awk '{print $c}' | shuf -n1)"
 }
 
-part=0
+part=1
 pkg="Preparing..."
 while true; do
     # Get the next package name in the background
@@ -45,8 +48,8 @@ while true; do
 
         # Increase % by last change +/-5%
         delta=$(random $((delta-PERCENT_DELTA)) $((delta+PERCENT_DELTA)))
-        test $delta -lt $PERCENT_DELTA_MIN && delta=$PERCENT_DELTA_MIN
-        let i=$i+$delta
+        test "$delta" -lt "$PERCENT_DELTA_MIN" && delta="$PERCENT_DELTA_MIN"
+        i=$(( i+delta ))
 
         # Delay a random time
         time=$(random $TIME_MS_MIN $TIME_MS_MAX)
@@ -56,6 +59,6 @@ while true; do
     # Block for a new package name
     IFS= read -u3 pkg
     pkg="Install part $part : $pkg"
-    let part=$part+1
+    part=$(( part+1 ))
 done
 
