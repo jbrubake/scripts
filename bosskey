@@ -1,11 +1,9 @@
-#!/bin/bash
+#!/bin/sh
 #
 # Look busy while your system lets the boss know you are waiting
 # on package installs
 #
-# Requires bash for the coproc and dialog(1) for the output
-#
-# Also requires yum(1) to get a list of packages
+# Requires dialog(1) for the output and yum(1) to get a list of packages
 
 ### Configurable settings
 #
@@ -17,6 +15,13 @@ TIME_MS_MAX=100
 BOX_LINES=6
 BOX_COLS=65 # This should be fairly large to keep package names visible
 ### End configurable settings
+
+PROGNAME=$(basename "$0")
+TMPFILE=$(mktemp "$PROGNAME.XXXXXX")
+trap 'rm -f "$TMPFILE"' EXIT
+
+exec 3<>"$TMPFILE"
+rm "$TMPFILE"
 
 random()
 {
@@ -37,8 +42,7 @@ part=1
 pkg="Preparing..."
 while true; do
     # Get the next package name in the background
-    coproc gpnfd { get_pkg_name; }
-    exec 3>&${gpnfd[0]}
+    get_pkg_name >/dev/fd/3 &
 
     i=0
     delta=$PERCENT_DELTA_START
@@ -57,7 +61,7 @@ while true; do
     done | dialog --gauge "$pkg" $BOX_LINES $BOX_COLS;
 
     # Block for a new package name
-    IFS= read -u3 pkg
+    IFS= read -r pkg </dev/fd/3
     pkg="Install part $part : $pkg"
     part=$(( part+1 ))
 done
