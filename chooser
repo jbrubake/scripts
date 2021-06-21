@@ -2,15 +2,68 @@
 
 CHOOSER_DIR=$HOME/etc/chooser
 
-f="$CHOOSER_DIR/$1.list"
+PROGNAME=$(basename $0)
+case "$1" in
+    -V)
+        v='y'
+        shift
+        ;;
+    -h)
+        cat <<EOF
+$PROGNAME: $PROGNAME [-dV] category [arg ...]
+    Select and execute the correct command from a list of alternatives or
+    display information about commands.
 
-if test -r $f; then
-    while read c; do
-        if command -v 2>&1 >/dev/null $c; then
-            break
-        fi
-    done < $f
+    Options:
+      -d dir    look for alternatives lists in DIR (default: $CHOOSER_DIR)
+      -V        print the selected command
+   
+    Alternative list format:
+
+    Each file should be named <category>.list and contain one entry per line.
+    Each entry is the command to be executed. An optional tag 'X' may follow,
+    separated by a comma. Entries tagged thus, will be ignored if \$DISPLAY is
+    not defined.
+
+    Example:
+        # browser.list
+        firefox,X
+        chrome,X
+        links
+        lynx
+
+EOF
+        ;;
+esac
+
+f="$CHOOSER_DIR/$1.list"
+if ! test -r "$f"; then
+    printf "Category '%s' not found\n" "$1"
+    return 2>/dev/null || exit
+fi
+shift
+
+while IFS=',' read cmd tag; do
+    if test "$tag" == "X" && test -z "$DISPLAY"; then
+        continue
+    fi
+    if command -v 2>&1 >/dev/null $c; then
+        break
+    fi
+done < $f
+
+if test -z "$cmd"; then
+    printf "No alternative found for 'category' %s\n" $1
 fi
 
-echo $c
-exit
+if test "$v" == "y"; then
+    echo $cmd
+else
+    if test "$tag" == "X"; then
+        (exec $cmd "$@" &)
+    else
+        $cmd "$@"
+    fi
+fi
+
+return 2>/dev/null || exit
