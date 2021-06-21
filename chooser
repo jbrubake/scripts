@@ -8,6 +8,15 @@ case "$1" in
         v='y'
         shift
         ;;
+    -d)
+        shift
+        if ! test -d "$1"; then
+            printf "%s: not a directory\n", "$1"
+            return 2>/dev/null || exit
+        fi
+        CHOOSER_DIR="$1"
+        shift
+        ;;
     -h)
         cat <<EOF
 $PROGNAME: $PROGNAME [-dV] category [arg ...]
@@ -31,8 +40,8 @@ $PROGNAME: $PROGNAME [-dV] category [arg ...]
         chrome,X
         links
         lynx
-
 EOF
+        return 2>/dev/null || exit
         ;;
 esac
 
