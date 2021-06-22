@@ -4,7 +4,7 @@
 #
 # Read a mail message on stdin and display X-Face, if one exists.
 #
-# See http://www.spinnaker.de/mutt/view-x-face for new versions.
+# See https://www.spinnaker.de/mutt/view-x-face for new versions.
 #
 # This is not the optimal way to implement X-Face support into a mailreader,
 # but this works for me. I bound it to "ESC f" in my muttrc with the
@@ -19,7 +19,7 @@
 # A pbm viewer, e.g. xli, xv or if you don't have X11 running, you may want
 #            to try out image2ascii, a little Shell script, which uses 
 #            ImageMagick to convert nearly any graphics file to ASCII.
-#            have a look at http://www.spinnaker.de/mutt/image2ascii
+#            have a look at https://www.spinnaker.de/mutt/image2ascii
 #
 #########################################################################
 #
@@ -50,26 +50,16 @@ ICONTOPBM=icontopbm	# from pbmplus/netpbm package
 # Image viewer (should be able to read from stdin!): 
 if [ -n "$DISPLAY" ]
 then
-    # VIEWER="xli stdin"	# Use xli as X11 image viewer
+    VIEWER="xli stdin"		# Use xli as X11 image viewer
     # VIEWER="xv -quit -"	# Use xv as X11 image viewer
-    VIEWER="dv"
 else
     VIEWER=image2ascii		# Use image2ascii as ASCII image viewer
 fi
 
-#cat "$@" \
-#| sed -n -e '/^X-Face:/,/^[^ \t]/ p' \
-#| sed -n -e 's/^X-Face://' -e '/^[ \t]/ p' \
-#| sed -e 's/^[ \t]\+//' \
-#| { echo '/* Width=48, Height=48 */'; $UNCOMPFACE; } \
-#| $ICONTOPBM \
-#| $VIEWER
-
-XBM=`mktemp /tmp/x-face.XXXXX.xbm`
 cat "$@" \
 | sed -n -e '/^X-Face:/,/^[^ \t]/ p' \
 | sed -n -e 's/^X-Face://' -e '/^[ \t]/ p' \
 | sed -e 's/^[ \t]\+//' \
-| $UNCOMPFACE -X > $XBM;
-mutt_bgrun $VIEWER $XBM;
-rm $XBM
+| { echo '/* Width=48, Height=48 */'; $UNCOMPFACE; } \
+| $ICONTOPBM \
+| $VIEWER
