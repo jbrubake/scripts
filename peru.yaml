@@ -1,0 +1,16 @@
+imports:
+  view-x-face: ./
+  image-magick-type-gen: ./
+  mutt_bgrun: ./
+  mutt-trim: ./
+
+git module mutt_bgrun:
+  url: https://github.com/RichiH/mutt_bgrun
+  pick: mutt_bgrun
+  rev: c6bc073e50f521414566cec214a5a5ba854dd2c6
+
+git module mutt-trim:
+  url: https://github.com/Konfekt/mutt-trim
+  pick: mutt-trim
+  rev: 08ef5faf07b06b9abda7909f5b15cf84150f821a
+
