@@ -1,0 +1,3 @@
+#!/bin/sh
+
+xurls | dmenu -l -10 -bw 1 -c -p "URL:" -w $WINDOWID | xargs -r openurl
