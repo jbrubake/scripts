@@ -43,6 +43,10 @@ $PROGNAME: $PROGNAME [-dV] category [arg ...]
 EOF
         return 2>/dev/null || exit
         ;;
+    -*)
+        printf "%s: %s: invalid option\n" "$PROGNAME" "$1" >&2
+        return 2>/dev/null || exit
+        ;; 
 esac
 
 f="$CHOOSER_DIR/$1.list"
