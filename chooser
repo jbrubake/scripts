@@ -11,7 +11,7 @@ case "$1" in
     -d)
         shift
         if ! test -d "$1"; then
-            printf "%s: not a directory\n", "$1"
+            printf "%s: not a directory\n", "$1" >&2
             return 2>/dev/null || exit
         fi
         CHOOSER_DIR="$1"
@@ -47,7 +47,7 @@ esac
 
 f="$CHOOSER_DIR/$1.list"
 if ! test -r "$f"; then
-    printf "Category '%s' not found\n" "$1"
+    printf "Category '%s' not found\n" "$1" >&2
     return 2>/dev/null || exit
 fi
 shift
@@ -62,7 +62,7 @@ while IFS=',' read cmd tag; do
 done < $f
 
 if test -z "$cmd"; then
-    printf "No alternative found for 'category' %s\n" $1
+    printf "No alternative found for 'category' %s\n" $1 >&2
 fi
 
 if test "$v" == "y"; then
