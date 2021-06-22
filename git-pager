@@ -2,6 +2,8 @@
 
 if type diff-so-fancy 2>&1 >/dev/null; then
     diff-so-fancy | less --tabs=4 -RFX
+elif command -v >/dev/null "$PAGER"; then
+    $PAGER
 else
     less
 fi
