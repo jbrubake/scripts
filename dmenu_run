@@ -2,7 +2,7 @@
 #
 # Depends on 'chooser terimnal' to print terminal command
 
-term_cmd=$(chooser terminal)
+term_cmd=$(chooser -V terminal)
 
 max_history=100
 aliasfile="$HOME/.alias"
