@@ -1,8 +1,7 @@
 imports:
-  view-x-face: ./
-  image-magick-type-gen: ./
   mutt_bgrun: ./
   mutt-trim: ./
+  emojify: ./
 
 git module mutt_bgrun:
   url: https://github.com/RichiH/mutt_bgrun
@@ -13,4 +12,9 @@ git module mutt-trim:
   url: https://github.com/Konfekt/mutt-trim
   pick: mutt-trim
   rev: 08ef5faf07b06b9abda7909f5b15cf84150f821a
+
+git module emojify:
+  url: https://github.com/mrowa44/emojify
+  pick: emojify
+  rev: 6dc2c1df9a484cf01e7f48e25a1e36e328c32816
 
