@@ -21,27 +21,29 @@ test -r "$functionfile" && source $functionfile 2>/dev/null
 
 (compgen -a; compgen -c | grep -vxF -- "$(compgen -a)") \
     | sort | grep -v "^[[:punct:]]" | uniq > "$cachefile"
-cmd=$(dmenu "$@" < "$cachefile")
 
-if test -n "$cmd" && grep ${cmd/;/} "$cachefile" 2>&1 >/dev/null; then
-    # Strip trailing ';' but run it in a terminal
-    case "$cmd" in
-        *\;) interm='y'; cmd=${cmd/;/} ;;
+cmdline=$(dmenu "$@" < "$cachefile")
+test -z "$cmdline" && exit
+
+cmd=$(echo "$cmdline" | cut -d' ' -f1)
+if test -n "$cmd" && grep "${cmd/;/}" "$cachefile" 2>&1 >/dev/null; then
+    # Trailing ';' means run it in a terminal
+    case "$cmdline" in
+        *\;) interm='y' ;;
         *)   interm='n' ;;
     esac
 
-    # Use alias if it exists
-    cmdexec=$(alias | grep "$cmd=" | cut -f2 -d "'" | tr -d "'")
-
-    # Otherwise it is a command or function
-    if [ -z "$cmdexec" ]; then
-        cmdexec="$cmd"
-    fi
-
     # TODO: Add support for more terminals
     if test "$interm" == 'y'; then
-        sh -c "$term_cmd -- bash -c '$cmdexec; exec bash -i'"
+        $term_cmd -- bash -ic "
+        __t=\$(date +%s)
+        $cmdline
+        test \$((\$(date +%s) - __t)) -lt 1 &&
+            read -srn1 -p 'Press any key...'
+        "
     else
-        $cmd
+        eval $cmdline
     fi
+else
+    exec "$0" "$@" -p "${cmd/;/} not found:"  < "$cachefile"
 fi
