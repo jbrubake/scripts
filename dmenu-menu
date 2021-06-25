@@ -1,6 +1,6 @@
 #!/bin/bash
 # dmenu-menu: Present a menu based on commands in a config file
-# 
+#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
@@ -32,7 +32,8 @@ Menu file format:
     HIFG=<dmenu -nhf>
     HIBG=<dmenu -nhb>
     SELHIFG=<dmenu -shf>
-    SELHIBG<dmenu -shb>
+    SELHIBG=<dmenu -shb>
+    BORDER=<dmenu -bw>
     FONT=<dmenu -fn>
     PROMPT=<dmenu -p
     HEIGHT=<dmenu -h>
@@ -64,6 +65,7 @@ test -n "$HIFG" && HIFG="-nhf $HIFG"
 test -n "$HIBG" && HIBG="-nhb $HIBG"
 test -n "$SELHIFG" && SELHIFG="-shf $SELHIFG"
 test -n "$SELHIBG" && SELHIBG="-shb $SELHIBG"
+test -n "$BORDER" && BORDER="-bw $BORDER"
 test -n "$FONT" && FONT="-fn $FONT"
 test -n "$PROMPT" && PROMPT="-p $PROMPT"
 test -n "$HEIGHT" && HEIGHT="-h $HEIGHT"
@@ -76,7 +78,7 @@ esac
 
 INPUT=$(for key in "${!COMMANDS[@]}" ; do
   echo "$key"
-done | eval dmenu -S $FG $BG $SELFG $SELBG $HIFG $HIBG $SELHIFG $SELHIBG $PROMPT $FONT $HEIGHT $POSITION -l "${#COMMANDS[*]}" "$@" )
+done | dmenu -S $FG $BG $SELFG $SELBG $HIFG $HIBG $SELHIFG $SELHIBG $PROMPT $BORDER $FONT $HEIGHT $POSITION -l "${#COMMANDS[*]}" "$@" )
 
 if [[ -n "${COMMANDS[$INPUT]}" ]] ; then
   ${COMMANDS[$INPUT]}
