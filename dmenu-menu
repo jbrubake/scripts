@@ -78,7 +78,7 @@ esac
 
 INPUT=$(for key in "${!COMMANDS[@]}" ; do
   echo "$key"
-done | dmenu -S $FG $BG $SELFG $SELBG $HIFG $HIBG $SELHIFG $SELHIBG $PROMPT $BORDER $FONT $HEIGHT $POSITION -l "${#COMMANDS[*]}" "$@" )
+done | dmenu -i -S $FG $BG $SELFG $SELBG $HIFG $HIBG $SELHIFG $SELHIBG $PROMPT $BORDER $FONT $HEIGHT $POSITION -l "${#COMMANDS[*]}" "$@" )
 
 if [[ -n "${COMMANDS[$INPUT]}" ]] ; then
   ${COMMANDS[$INPUT]}
