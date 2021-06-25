@@ -1,0 +1,86 @@
+#!/bin/bash
+# dmenu-menu: Present a menu based on commands in a config file
+# 
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+# 
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+# 
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+PROGRAMNAME=${0##*/}
+MENUFILEDIR="${XDG_CONFIG_DIR:-$HOME/.config}/dmenu-menu"
+
+if test "$1" = "-h"; then
+    cat <<EOF
+Usage: ${0##*/} [-h] menu-file [DMENU OPTIONS]
+
+-h      Show this help
+
+Menu file format:
+    COMMANDS[<menu item>]="<cmd>"
+    FG=<dmenu -nf>
+    BG=<dmenu -nb>
+    SELFG=<dmenu -sf>
+    SELBG=<dmenu -sb>
+    HIFG=<dmenu -nhf>
+    HIBG=<dmenu -nhb>
+    SELHIFG=<dmenu -shf>
+    SELHIBG<dmenu -shb>
+    FONT=<dmenu -fn>
+    PROMPT=<dmenu -p
+    HEIGHT=<dmenu -h>
+    POSITION=<center | bottom>
+EOF
+    exit 0
+fi
+
+if test -z "$1"; then
+    printf "%s: No menu file given.\n" "$PROGRAMNAME"
+    exit 1
+fi
+MENUFILE="$MENUFILEDIR/$1"
+shift
+if ! test -r "$MENUFILE"; then
+    printf "%s: %s not found.\n" "$PROGRAMNAME" "$1"
+    exit 1
+fi
+
+declare -A COMMANDS
+
+. "$MENUFILE"
+
+test -n "$FG" && FG="-nf $FG"
+test -n "$BG" && BG="-nb $BG"
+test -n "$SELFG" && SELFG="-sf $SELFG"
+test -n "$SELBG" && SELBG="-sb $SELBG"
+test -n "$HIFG" && HIFG="-nhf $HIFG"
+test -n "$HIBG" && HIBG="-nhb $HIBG"
+test -n "$SELHIFG" && SELHIFG="-shf $SELHIFG"
+test -n "$SELHIBG" && SELHIBG="-shb $SELHIBG"
+test -n "$FONT" && FONT="-fn $FONT"
+test -n "$PROMPT" && PROMPT="-p $PROMPT"
+test -n "$HEIGHT" && HEIGHT="-h $HEIGHT"
+
+case "$POSITION" in
+    center) POSITION="-c" ;;
+    bottom) POSITION="-b" ;;
+    *) POSITION=
+esac
+
+INPUT=$(for key in "${!COMMANDS[@]}" ; do
+  echo "$key"
+done | eval dmenu -S $FG $BG $SELFG $SELBG $HIFG $HIBG $SELHIFG $SELHIBG $PROMPT $FONT $HEIGHT $POSITION -l "${#COMMANDS[*]}" "$@" )
+
+if [[ -n "${COMMANDS[$INPUT]}" ]] ; then
+  ${COMMANDS[$INPUT]}
+fi
+
+exit $?
+
