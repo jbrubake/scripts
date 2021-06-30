@@ -42,7 +42,7 @@ if test -n "$cmd" && grep "${cmd/;/}" "$cachefile" 2>&1 >/dev/null; then
             read -srn1 -p 'Press any key...'
         "
     else
-        eval $cmdline
+        (eval $cmdline &)
     fi
 else
     exec "$0" "$@" -p "${cmd/;/} not found:"  < "$cachefile"
