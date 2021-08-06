@@ -2,6 +2,14 @@ imports:
   mutt_bgrun: ./
   mutt-trim: ./
   emojify: ./
+  wttr: ./
+
+git module wttr:
+  url: https://github.com/chubin/wttr.in
+  move:
+    share/bash-function.txt:
+      - wttr
+  pick: wttr
 
 git module mutt_bgrun:
   url: https://github.com/RichiH/mutt_bgrun
