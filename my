@@ -32,13 +32,13 @@ $PROGNAME: $PROGNAME [-dv] category [arg ...]
 
     Alternative list format:
 
-    Each file should be named <category>.list and contain one entry per line.
-    Each entry is the command to be executed. An optional tag 'X' may follow,
+    Each file should be named <category> and contain one entry per line.  Each
+    entry is the command to be executed. An optional tag 'X' may follow,
     separated by a comma. Entries tagged thus, will be ignored if \$DISPLAY is
     not defined.
 
     Example:
-        # browser.list
+        # browser
         firefox,X
         chrome,X
         links
@@ -52,7 +52,7 @@ EOF
         ;; 
 esac
 
-f="$MY_DIR/$1.list"
+f="$MY_DIR/$1"
 if ! test -r "$f"; then
     printf "Category '%s' not found\n" "$1" >&2
     return 2>/dev/null || exit
