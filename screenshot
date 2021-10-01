@@ -21,17 +21,25 @@ DATE="$(date +%Y%m%d@%H%M%S)"
 NAME="${DIR}/screenshot-${DATE}.png"
 LOG="${DIR}/screenshot.log"
 
+# Check for GraphicsMagick
+if command -v gm; then
+    IMPORT="gm import"
+elif command -v import; then
+    IMPORT="import"
+else
+    printf "GraphicsMagic or ImageMagick required but not found.\n" >&2
+
 # Check if the dir to store screenshots exists
 if [ ! -d "$DIR" ]; then mkdir -p "$DIR"; fi
 
 # Screenshot a selected window
-if [ "$1" = "win" ]; then import "$NAME"; fi
+if [ "$1" = "win" ]; then $IMPORT "$NAME"; fi
 
 # Screenshot the entire screen
-if [ "$1" = "scr" ]; then import -window root "$NAME"; fi
+if [ "$1" = "scr" ]; then $IMPORT -window root "$NAME"; fi
 
 # Screenshot a selected area
-if [ "$1" = "area" ]; then import "$NAME"; fi
+if [ "$1" = "area" ]; then $IMPORT "$NAME"; fi
 
 if [[ $# = 0 ]]; then
     # Display a warning if no area defined
