@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Look busy while your system lets the boss know you are waiting
 # on package installs
@@ -32,10 +32,10 @@ get_pkg_name()
 {
     # Get a random letter
     c=$(random 97 122) # 97-122: lowercase letter range
-    c=$(printf "%s" "$(printf '%03o' "$c")")
+    c=$(printf \\$(printf '%03o' $c))
 
     # Get a random package name that starts with that letter
-    echo "$(yum list | grep -E "^$c" | awk '{print $c}' | shuf -n1)"
+    echo "$(yum list | grep -E "^$c" | awk '{print $1}' | shuf -n1)"
 }
 
 part=1
