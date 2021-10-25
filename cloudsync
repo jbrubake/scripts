@@ -1,0 +1,28 @@
+#!/bin/sh
+
+filter_dir="$HOME/.config/rclone/filters"
+sync_dir="$HOME/.sync"
+logfile="$HOME/var/log/rclonesync.log"
+
+while IFS= read line; do
+    [ -z "$line" ] && continue
+    [[ "$line" =~ ^# ]] && continue 
+
+    IFS=':'
+    fields=($line)
+    remote=${fields[0]}
+    directory=${fields[1]}
+    localdir="$sync_dir/$remote/$directory"
+
+    printf "%s\n" "Syncing $remote:$directory..."
+    rclonesync --verbose --filters-file="$filter_dir/$remote-$directory" "$remote:$directory" "$localdir" >> "$logfile" 2>&1
+
+done <<END
+# remote:directory
+dropbox:Documents
+dropbox:etc
+dropbox:share
+dropbox:src
+dropbox:todo
+END
+
