@@ -16,7 +16,7 @@ from email.mime.nonmultipart import MIMENonMultipart
 from os.path import basename, splitext, expanduser
 
 
-charset.add_charset('utf-8', charset.SHORTEST, '8bit')
+charset.add_charset('utf-8', charset.SHORTEST, None, 'utf-8')
 
 
 def pandoc(from_format, to_format='markdown', plain='markdown', title=None):
@@ -63,13 +63,7 @@ def make_replacement(message, part):
 
 
 def convert(part, to_subtype, command):
-    payload = part.get_payload()
-    if isinstance(payload, str):
-        payload = payload.encode('utf-8')
-    else:
-        payload = part.get_payload(None, True)
-        if not isinstance(payload, bytes):
-            payload = payload.encode('utf-8')
+    payload = part.get_payload().encode('utf-8')
     process = subprocess.run(
         shlex.split(command),
         input=payload, stdout=subprocess.PIPE, check=True)
@@ -79,13 +73,10 @@ def convert(part, to_subtype, command):
 def with_alternative(parent, part, from_signed,
                      make_alternative=make_alternative,
                      make_replacement=None):
-    try:
-        alternative = make_alternative(parent or part, from_signed or part)
-        replacement = (make_replacement(parent or part, part)
-                       if from_signed is None and make_replacement is not None
-                       else part)
-    except:
-        return parent or part
+    alternative = make_alternative(parent or part, from_signed or part)
+    replacement = (make_replacement(parent or part, part)
+                   if from_signed is None and make_replacement is not None
+                   else part)
     envelope = MIMEMultipart('alternative')
     if parent is None:
         for k, v in part.items():
@@ -121,6 +112,8 @@ def tag_attachments(message):
 def attachment_from_file_path(attachment_path):
     try:
         mime, encoding = mimetypes.guess_type(attachment_path, strict=False)
+        if mime is None:
+            return None
         maintype, subtype = mime.split('/')
         with open(attachment_path, 'rb') as payload:
             attachment = MIMENonMultipart(maintype, subtype)

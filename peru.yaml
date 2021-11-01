@@ -1,4 +1,5 @@
 imports:
+  MIMEmbellish: ./
   mutt_bgrun: ./
   mutt-trim: ./
   emojify: ./
@@ -25,4 +26,7 @@ git module emojify:
   url: https://github.com/mrowa44/emojify
   pick: emojify
   rev: 6dc2c1df9a484cf01e7f48e25a1e36e328c32816
+
+curl module MIMEmbellish:
+  url: https://gist.githubusercontent.com/oblitum/6eeffaebd9a4744e762e49e6eb19d189/raw/c39c19d7c505cacdcb798b5069d3dd2582b539aa/MIMEmbellish
 
