@@ -1,0 +1,36 @@
+#!/bin/sh
+# change_volume
+
+# Arbitrary but unique message id
+msgId=991049
+
+case "$@" in
+    mute)
+        pactl set-sink-mute @DEFAULT_SINK@ toggle
+        mute=$(LC_ALL=C pactl list sinks | \
+                        grep -A9 RUNNING | \
+                        grep Mute | \
+                        awk '{print $2}')
+        ;;
+
+    +*|-*)
+        pactl set-sink-volume @DEFAULT_SINK@ "$@"
+        ;;
+
+    *) exit 1 ;;
+esac
+
+volume=$(LC_ALL=C pactl list sinks | \
+                  grep -A9 RUNNING | 
+                  grep Volume | 
+                  awk '{print $5}' | 
+                  tr -dc '[^[:digit:]]')
+
+if [ "$volume" = "0" ] || [ "$mute" = "yes" ]; then
+    dunstify -a "changeVolume" -u low -i audio-volume-muted \
+             -r "$msgId" "Volume muted" 
+else
+    dunstify -a "changeVolume" -u low -i audio-volume-high \
+        -r "$msgId" -h int:value:"$volume" "Volume: ${volume}%"
+fi
+
