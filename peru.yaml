@@ -17,7 +17,7 @@ git module wttr:
     share/bash-function.txt:
       - wttr
   pick: wttr
-  rev: 073fb05da6eb92759652e385923186386fc2a7f2
+  rev: eb562660c996592e4a8f00dba3513abe30bf7186
 
 git module mutt_bgrun:
   url: https://github.com/RichiH/mutt_bgrun
