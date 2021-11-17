@@ -1,14 +1,21 @@
 #!/bin/sh
 # change_volume
 
-# Arbitrary but unique message id
-msgId=991049
+# Arbitrary but unique message id for dunst
+msg_id=991049
+
+default_sink=$(LC_ALL=C pactl list sinks short | \
+                        grep $(\
+                            pactl info | 
+                            grep "Default Sink" | 
+                            sed 's/[^:]*: //') | 
+                        cut -f1)
 
 case "$@" in
     mute)
         pactl set-sink-mute @DEFAULT_SINK@ toggle
-        mute=$(LC_ALL=C pactl list sinks | \
-                        grep -A9 RUNNING | \
+        is_muted=$(LC_ALL=C pactl list sinks | \
+                        grep -A9 "Sink #$default_sink" | \
                         grep Mute | \
                         awk '{print $2}')
         ;;
@@ -20,17 +27,17 @@ case "$@" in
     *) exit 1 ;;
 esac
 
-volume=$(LC_ALL=C pactl list sinks | \
-                  grep -A9 RUNNING | 
+current_volume=$(LC_ALL=C pactl list sinks | \
+                  grep -A9 "Sink #$default_sink" | 
                   grep Volume | 
                   awk '{print $5}' | 
                   tr -dc '[^[:digit:]]')
 
-if [ "$volume" = "0" ] || [ "$mute" = "yes" ]; then
+if [ "$current_volume" = "0" ] || [ "$is_muted" = "yes" ]; then
     dunstify -a "changeVolume" -u low -i audio-volume-muted \
-             -r "$msgId" "Volume muted" 
+             -r "$msg_id" "Volume muted" 
 else
     dunstify -a "changeVolume" -u low -i audio-volume-high \
-        -r "$msgId" -h int:value:"$volume" "Volume: ${volume}%"
+        -r "$msg_id" -h int:value:"$current_volume" "Volume: ${current_volume}%"
 fi
 
