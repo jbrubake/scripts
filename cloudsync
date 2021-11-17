@@ -11,18 +11,28 @@ while IFS= read line; do
     IFS=':'
     fields=($line)
     remote=${fields[0]}
-    directory=${fields[1]}
-    localdir="$sync_dir/$remote/$directory"
+    remote_dir=${fields[1]}
 
-    printf "%s\n" "Syncing $remote:$directory..."
-    rclonesync --verbose --filters-file="$filter_dir/$remote-$directory" "$remote:$directory" "$localdir" >> "$logfile" 2>&1
+    local_dir="$sync_dir/$remote/$remote_dir"
+    filter_file="$(echo "$remote_dir" | tr ' /' '_.')"
+    filter_file="$filter_dir/$remote/$filter_file"
+
+    printf "%s\n" "Syncing $remote:$remote_dir..."
+    # echo remote $remote
+    # echo remote_dir $remote_dir
+    # echo local_dir $local_dir
+    # echo filter_file $filter_file
+    # echo
+    rclonesync --verbose --filters-file="$filter_file" "$remote:$remote_dir" "$local_dir" #>> "$logfile" 2>&1
 
 done <<END
-# remote:directory
+# remote:remote_dir
 dropbox:Documents
 dropbox:etc
 dropbox:share
 dropbox:src
 dropbox:todo
+onedrive:Boardgames/PQ-17
+onedrive:Boardgames/Advanced Squad Leader
 END
 
