@@ -4,6 +4,12 @@ imports:
   mutt-trim: ./
   emojify: ./
   wttr: ./
+  anypinentry: ./
+
+git module anypinentry:
+  url: https://github.com/phenax/any-pinentry
+  pick: anypinentry
+  rev: 89b0adef42d95372c243cb8b86e1190172259fb7
 
 git module wttr:
   url: https://github.com/chubin/wttr.in
