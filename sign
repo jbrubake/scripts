@@ -1,0 +1,14 @@
+#!/bin/sh
+
+if [ -z "$1" ]; then
+    printf "No filename to sign provided. Exiting\n" >&2
+    exit 1
+fi
+
+if [ -z "$2" ]; then
+    key="$HOME/.ssh/id_rsa"
+else
+    key="$2"
+fi
+
+ssh-keygen -Y sign -f "$key" -n file "$1"

@@ -1,0 +1,17 @@
+#!/bin/sh
+
+allowed_signers="$HOME/.ssh/allowed_signers"
+
+if [ -z "$1" ]; then
+    printf "No filename to sign provided. Exiting\n" >&2
+    exit 1
+fi
+
+if [ -z "$2" ]; then
+    printf "No signer email provided. Exiting\n" >&2
+    exit 1
+fi
+
+sig="$1.sig"
+
+ssh-keygen -Y verify -f "$allowed_signers" -I "$2" -n file -s "$sig" < "$1"
