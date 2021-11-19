@@ -9,6 +9,10 @@ if ! getent ahosts www.google.com >/dev/null; then
     exit
 fi
 
+case "$1" in
+    --first-sync) opt="--first-sync" ;;
+esac
+
 while IFS= read line; do
     [ -z "$line" ] && continue
     [[ "$line" =~ ^# ]] && continue 
@@ -28,7 +32,7 @@ while IFS= read line; do
     # echo local_dir $local_dir
     # echo filter_file $filter_file
     # echo
-    rclonesync --verbose --filters-file="$filter_file" "$remote:$remote_dir" "$local_dir" #>> "$logfile" 2>&1
+    rclonesync $opt --verbose --filters-file="$filter_file" "$remote:$remote_dir" "$local_dir" #>> "$logfile" 2>&1
 
 done <<END
 # remote:remote_dir
