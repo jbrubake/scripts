@@ -4,6 +4,11 @@ filter_dir="$HOME/.config/rclone/filters"
 sync_dir="$HOME/.sync"
 logfile="$HOME/var/log/rclonesync.log"
 
+if ! getent ahosts www.google.com >/dev/null; then
+    printf "%s:      No internet connction. Aborting.\n" "$(date "+%Y-%m-%d %T")" >> "$logfile"
+    exit
+fi
+
 while IFS= read line; do
     [ -z "$line" ] && continue
     [[ "$line" =~ ^# ]] && continue 
