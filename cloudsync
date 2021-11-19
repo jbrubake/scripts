@@ -32,7 +32,7 @@ while IFS= read line; do
     # echo local_dir $local_dir
     # echo filter_file $filter_file
     # echo
-    rclonesync $opt --verbose --filters-file="$filter_file" "$remote:$remote_dir" "$local_dir" #>> "$logfile" 2>&1
+    rclonesync $opt --verbose --filters-file="$filter_file" "$remote:$remote_dir" "$local_dir" >> "$logfile" 2>&1
 
 done <<END
 # remote:remote_dir
