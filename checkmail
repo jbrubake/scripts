@@ -5,14 +5,16 @@
 #
 # Based on https://bostonenginerd.com/posts/notmuch-of-a-mail-setup-part-1-mbsync-msmtp-and-systemd/
 
+LOGDIR="$HOME/var/log"
+
 ping -c1 1.1.1.1 2>&1 >/dev/null
 if test $? != 0; then
     exit $?
 fi
 
 msmtp-queue -r
-date >> ~/var/log/mbsync.log
-mbsync -a -V >> ~/var/log/mbsync.log 2>&1
-date >> ~/var/log/notmuch.log
-notmuch new >> ~/var/log/notmuch.log 2>&1
+date >> $LOGDIR/mbsync.log
+mbsync -a -V >> $LOGDIR/mbsync.log 2>&1
+date >> $LOGDIR/notmuch.log
+notmuch new >> $LOGDIR/notmuch.log 2>&1
 
