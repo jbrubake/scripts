@@ -5,6 +5,7 @@ imports:
   emojify: ./
   wttr: ./
   anypinentry: ./
+  passmenu: ./
 
 git module anypinentry:
   url: https://github.com/phenax/any-pinentry
@@ -39,4 +40,13 @@ curl module MIMEmbellish:
   url: https://gist.githubusercontent.com/oblitum/6eeffaebd9a4744e762e49e6eb19d189/raw/c39c19d7c505cacdcb798b5069d3dd2582b539aa/MIMEmbellish
   executable: MIMEmbellish
   sha1: eef99a6157e42eeb8a4235fe31f9d0f22c26dd8f
+
+git module passmenu:
+  url: git://git.zx2c4.com/password-store
+  move:
+    contrib/dmenu/passmenu:
+      - passmenu
+  pick: passmenu
+  executable: passmenu
+  rev: 04cd3023f48cd203f6c0193e57a427226e8b431c
 
