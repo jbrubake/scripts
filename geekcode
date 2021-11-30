@@ -1,0 +1,89 @@
+#!/bin/sh
+
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Copyright 2021 Jeremy Brubaker <јЬruЬаkе@оrіоnаrtѕ.іо>
+#
+# geekcode - Convert a commented geekcode file into a proper geekcode
+#
+
+# Defaults {{{1
+#
+DEFAULT_WIDTH=72
+VERSION='1.0'
+GEEKCODE="$HOME/.geekcode"
+
+# Documentation {{{1
+#
+PROGNAME=$(basename $0)
+
+print_help() {
+    cat <<EOF
+Usage: $PROGNAME [option]
+Convert a commented geekcode file into a proper geekcode
+
+ -f FILE       get geekcode from FILE
+ -w WIDTH      use WIDTH as the maximum line width (Default: $DEFAULT_WIDTH)
+ -b            output Geek Code Block delimiters
+ -v            display version info and exit
+ -h            display this help and exit
+EOF
+}
+
+print_version() {
+    cat <<EOF
+$PROGNAME $VERSION
+Copyright (C) 2021 Orion Arts
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Jeremy Brubaker.
+EOF
+}
+
+# Process options {{{1
+#
+width=$DEFAULT_WIDTH
+block='n'
+
+while getopts 'f:w:bvh' opt; do
+    case $opt in
+        f) GEEKCODE=$OPTARG ;;
+        w) width=$OPTARG ;;
+        b) block='y' ;;
+        v) print_version; exit ;;
+        h|?) print_help; exit ;;
+    esac
+done
+
+# Generate geekcode {{{1
+#
+if [ ! -r "$GEEKCODE" ]; then
+    printf "%s not found. Exiting!\n" "$GEEKCODE" >&2
+    exit 1
+fi
+
+if [ "$block" == "y" ]; then
+    version=$(head -1 "$GEEKCODE" | sed -e 's/^# *//')
+    printf "%s\n" "-----BEGIN GEEK CODE BLOCK-----"
+    printf "%s\n" "$version"
+fi
+
+< $GEEKCODE sed -e '/^#/d' -e 's/ *#.*$//' | tr '\n' ' ' | sed -e 's/ *$//' | fold -w$width -s
+printf "%s\n" ""
+
+if [ "$block" == "y" ]; then
+    printf "%s\n" "------END GEEK CODE BLOCK------"
+fi
