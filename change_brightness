@@ -1,0 +1,23 @@
+#!/bin/sh
+# change_brightness
+
+# Arbitrary but unique message id for dunst
+msg_id=272472
+
+case "$1" in
+    +*) sign='+' ;;
+    -*) sign='-' ;;
+    *) exit 1 ;;
+esac
+amt=$(echo $1 | tr -d '%+-')
+
+for d in $(brightnessctl -l | grep backlight | cut -d' ' -f2 | tr -d "'"); do
+    brightnessctl -q -d $d set "$amt%$sign"
+    max=$(brightnessctl -d $d max)
+    cur=$(brightnessctl -d $d get)
+    current_percentage=$(echo "scale=2; $cur / $max" | bc -l | tr -d '.')
+done
+
+dunstify -a "changeBrightness" -u low \
+    -r "$msg_id" -h "int:value:$current_percentage" "Brightness: ${current_percentage}%"
+
