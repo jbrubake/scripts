@@ -10,7 +10,7 @@ imports:
 git module anypinentry:
   url: https://github.com/phenax/any-pinentry
   pick: anypinentry
-  rev: 89b0adef42d95372c243cb8b86e1190172259fb7
+  rev: 6d5aa310072b48cd5dc696946426d1d431258411
 
 git module wttr:
   url: https://github.com/chubin/wttr.in
@@ -19,7 +19,7 @@ git module wttr:
       - wttr
   pick: wttr
   executable: wttr
-  rev: eb562660c996592e4a8f00dba3513abe30bf7186
+  rev: c40859505ad819ef66dafed1534c30fc50b9421c
 
 git module mutt_bgrun:
   url: https://github.com/RichiH/mutt_bgrun
@@ -48,5 +48,5 @@ git module passmenu:
       - passmenu
   pick: passmenu
   executable: passmenu
-  rev: 04cd3023f48cd203f6c0193e57a427226e8b431c
+  rev: c4d8a1d815e79ddd89a85d3e36a41d29f0475771
 
