@@ -42,7 +42,7 @@ curl module MIMEmbellish:
   sha1: eef99a6157e42eeb8a4235fe31f9d0f22c26dd8f
 
 git module passmenu:
-  url: git://git.zx2c4.com/password-store
+  url: https://git.zx2c4.com/password-store
   move:
     contrib/dmenu/passmenu:
       - passmenu
