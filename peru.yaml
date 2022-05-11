@@ -6,6 +6,7 @@ imports:
   wttr: ./
   anypinentry: ./
   passmenu: ./
+  ix: ./
 
 git module anypinentry:
   url: https://github.com/phenax/any-pinentry
@@ -49,4 +50,13 @@ git module passmenu:
   pick: passmenu
   executable: passmenu
   rev: c4d8a1d815e79ddd89a85d3e36a41d29f0475771
+
+curl module ix:
+  url: http://ix.io/client
+  move:
+    client:
+      - ix
+  pick: ix
+  executable: ix
+  sha1: cbbad364df3a53c95e678e3273f8cc0424937248
 
