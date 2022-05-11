@@ -9,12 +9,12 @@ imports:
   ix: ./
   cheat_dot_sh: ./
 
-git module anypinentry:
+git module anypinentry: # A flexible pinentry script for GNUpg. Uses dmenu by default
   url: https://github.com/phenax/any-pinentry
   pick: anypinentry
   rev: 6d5aa310072b48cd5dc696946426d1d431258411
 
-git module wttr:
+git module wttr: # The right way to check the weather 
   url: https://github.com/chubin/wttr.in
   move:
     share/bash-function.txt:
@@ -23,17 +23,17 @@ git module wttr:
   executable: wttr
   rev: e5a932be23b1bd6104fb45a833b3a3fa11b7edb5
 
-git module mutt_bgrun:
+git module mutt_bgrun: # View attachments in mutt in the background
   url: https://github.com/RichiH/mutt_bgrun
   pick: mutt_bgrun
   rev: c6bc073e50f521414566cec214a5a5ba854dd2c6
 
-git module mutt-trim:
+git module mutt-trim: # unclutter and normalize quoted text in an e-mail 
   url: https://github.com/Konfekt/mutt-trim
   pick: mutt-trim
   rev: 08ef5faf07b06b9abda7909f5b15cf84150f821a
 
-git module emojify:
+git module emojify: # Emoji on the command linescream 
   url: https://github.com/mrowa44/emojify
   pick: emojify
   rev: 6dc2c1df9a484cf01e7f48e25a1e36e328c32816
@@ -43,7 +43,7 @@ curl module MIMEmbellish:
   executable: MIMEmbellish
   sha1: eef99a6157e42eeb8a4235fe31f9d0f22c26dd8f
 
-git module passmenu:
+git module passmenu: # A dmenu-based interface to pass(1)
   url: https://git.zx2c4.com/password-store
   move:
     contrib/dmenu/passmenu:
@@ -52,7 +52,7 @@ git module passmenu:
   executable: passmenu
   rev: c4d8a1d815e79ddd89a85d3e36a41d29f0475771
 
-curl module ix:
+curl module ix: # Command line pastebin
   url: http://ix.io/client
   move:
     client:
@@ -61,7 +61,7 @@ curl module ix:
   executable: ix
   sha1: cbbad364df3a53c95e678e3273f8cc0424937248
 
-curl module cheat_dot_sh:
+curl module cheat_dot_sh: # The only cheat sheet you need
   url: https://cht.sh/:cht.sh
   move:
     :cht.sh:
