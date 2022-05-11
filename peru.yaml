@@ -21,7 +21,7 @@ git module wttr:
       - wttr
   pick: wttr
   executable: wttr
-  rev: c40859505ad819ef66dafed1534c30fc50b9421c
+  rev: e5a932be23b1bd6104fb45a833b3a3fa11b7edb5
 
 git module mutt_bgrun:
   url: https://github.com/RichiH/mutt_bgrun
