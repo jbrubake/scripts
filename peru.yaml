@@ -7,6 +7,7 @@ imports:
   anypinentry: ./
   passmenu: ./
   ix: ./
+  cheat_dot_sh: ./
 
 git module anypinentry:
   url: https://github.com/phenax/any-pinentry
@@ -60,3 +61,10 @@ curl module ix:
   executable: ix
   sha1: cbbad364df3a53c95e678e3273f8cc0424937248
 
+curl module cheat_dot_sh:
+  url: https://cht.sh/:cht.sh
+  move:
+    :cht.sh:
+      - cht.sh
+  executable: cht.sh
+  sha1: e1b9f68dde6b029134995729e4cd9180872f6c43
