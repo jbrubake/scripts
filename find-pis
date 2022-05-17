@@ -21,7 +21,7 @@
 #
 
 # get broadcast addresses for each network
-net=`ifconfig | grep -o -E "broadcast (.*?) " | cut -f2 -d" "`
+nets=$(ip address show | awk '/inet / {printf "%s/%s", $4, gensub(".*/", "", 1, $2)}')
 
 # loop over networks running the scan
 for n in $net;
