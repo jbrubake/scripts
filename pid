@@ -19,5 +19,5 @@ if [ ! "$1" ]; then
   ps axo pid,tty,user,command
 else
   args="$1"; shift; for arg in "$@"; do args="${args}|${arg}"; done
-  echo $(ps axo pid,tty,user,command | perl -nle"m#^\s*(\d+).*(?:$args)# && !m#$0# && print \$1")
+  echo $(ps axo pid,tty,user,command | perl -nle"m#^\s*(\d+).*(?:$args)# && !m#.dotfiles/bin/pid# && print \$1")
 fi

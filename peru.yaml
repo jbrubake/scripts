@@ -11,6 +11,7 @@ imports:
   image2ascii: ./
   imagick_type_gen: ./
   rename: ./
+  ben_alman: ./
   view-x-face: ./
 
 git module anypinentry: # A flexible pinentry script for GNUpg. Uses dmenu by default
@@ -84,6 +85,32 @@ curl module imagick_type_gen: # Generate an ImageMagick font list
 git module rename: # Rename multiple files
   url: https://github.com/ap/rename
   executable: rename
+
+git module ben_alman:
+  url: https://github.com/cowboy/dotfiles
+  move:
+    bin/curlsubl:
+      - curlvim
+    bin/git-jump:
+      - git-jump
+    bin/serve:
+      - serve
+    bin/isip:
+      - isip
+    bin/pid:
+      - pid
+  pick:
+    - curlvim
+    - git-jump
+    - serve
+    - isip
+    - pid
+  executable:
+    - curlvim
+    - git-jump
+    - serve
+    - isip
+    - pid
 
 curl module view-x-face: # View X-Face images embedded in email
   url: https://www.spinnaker.de/mutt/view-x-face
