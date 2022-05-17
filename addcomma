@@ -25,11 +25,15 @@ function addcomma(x,    sum) {
     if (x < 0)
         return "-" addcomma(-x)
 
-    num = sprintf("%.2f", x)
+    # Split into integer and fractional parts
+    ipart = int(x)
+    fpart = sprintf("%f", x) - ipart
+    # Remove leading 0 (or delete it if fpart == 0)
+    sub(/^0/, "", fpart)
 
-    while (num ~ /[0-9][0-9][0-9][0-9]/)
-        sub(/[0-9][0-9][0-9][,.]/, ",&", num)
+    while (ipart ~ /[0-9]{4}/)
+        sub(/[0-9]{3}(,|$)/, ",&", ipart)
 
-    return num
+    return ipart fpart
 }
 
