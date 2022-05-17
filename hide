@@ -20,9 +20,7 @@
 # Usage: hide FILE [FILE]...
 #
 
-set -e
-for f in "$@"
-do
+for f in "$@"; do
   mv -v "$f" $(dirname "$f")/.$(basename "$f")
 done
 
