@@ -20,9 +20,18 @@
 # Requires: curl or wget
 #
 
-# TODO: Use wget if available
-curl -sv "$@" 2>&1 >/dev/null |
+if command -v curl >/dev/null; then
+    cmd="curl -sv"
+elif command -v wget >/dev/null; then
+    cmd="wget -qSO-"
+else
+    printf "Cannot find curl or wget. Exiting\n" >&2
+fi
+
+# Send stderr to stdout because that's what we're interested in
+$cmd "$@" 2>&1 >/dev/null | 
 	grep -v "^\*" |
-	grep -v "^}" |
+	grep -v "^>" |
+	grep -v "^{" |
 	cut -c3-
 
