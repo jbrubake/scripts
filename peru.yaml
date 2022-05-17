@@ -8,6 +8,7 @@ imports:
   passmenu: ./
   ix: ./
   cheat_dot_sh: ./
+  image2ascii: ./
 
 git module anypinentry: # A flexible pinentry script for GNUpg. Uses dmenu by default
   url: https://github.com/phenax/any-pinentry
@@ -68,3 +69,8 @@ curl module cheat_dot_sh: # The only cheat sheet you need
       - cht.sh
   executable: cht.sh
   sha1: e1b9f68dde6b029134995729e4cd9180872f6c43
+
+curl module image2ascii: # Convert iamges to ASCII (useful for Mutt .mailcap)
+  url: https://www.spinnaker.de/mutt/image2ascii
+  executable: image2ascii
+
