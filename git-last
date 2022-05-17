@@ -18,8 +18,6 @@
 # abstract: print out last commit message for each file in tree
 #
 
-# TODO: merge into gitconfig
-# TODO: add a 'format=' directive to set custom colors
 if test $( tput colors ) -ge 0; then
     FG() {
         tput setaf $1

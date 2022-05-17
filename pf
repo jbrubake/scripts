@@ -18,7 +18,6 @@
 #
 # abstract: present a menu of pass(1) entries that match <tag>
 #
-# TODO: make this do 'pass find' and 'pass grep'
 
 print_help() {
     cat <<EOF

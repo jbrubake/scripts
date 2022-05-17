@@ -19,8 +19,6 @@
 #
 # Based on https://stackoverflow.com/a/36345272/3224379
 #
-# TODO: Add ability to print fortunes of n lines or less
-# TODO: Make this a wrapper around fortune
 
 # Defaults {{{1
 #

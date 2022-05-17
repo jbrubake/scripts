@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# TODO: Add rc file so I can center dmenu
-
 VERSION="0.0";
 
 if [[ -z "$DISPLAY" ]]; then

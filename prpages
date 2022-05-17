@@ -19,7 +19,6 @@
 #     -n <n> to set number of lines per page
 #     Assume 55 line pages by default
 #
-# TODO: better command line processing
 
 case $1 in
     -n) lines=$2; shift; shift;;

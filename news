@@ -18,6 +18,7 @@
 # abstract: print the latest news
 #
 # -l list news items only
+#
 
 #cd /usr/etc/news # Find news
 

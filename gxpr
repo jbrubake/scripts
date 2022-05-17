@@ -15,8 +15,9 @@
 #
 # Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
 #
+# abstract: like expr(1), but uses Google's calculator to evaluate <expression>
+#
 # Usage: gxpr <expression>
-# Like expr(1), but uses Google's calculator to evaluate <expression>.
 #
 # Math examples:
 #   $ gxpr '1 + 1'

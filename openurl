@@ -20,7 +20,6 @@
 # Expects: URL to open. You can open local files simply
 #          by passing the filename as the arguemt to openurl
 #
-# TODO: See about making this a function
 
 # See if args are a local file first
 if [ -f "$1" ]; then

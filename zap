@@ -30,7 +30,6 @@ fi
 
 # Get our name so we can ignore
 # our process and child processes
-# TODO: Can I filter based on parent and child PIDs?
 prog=`basename $0`
 
 pids=`ps u -U $USER |
