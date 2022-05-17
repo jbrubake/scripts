@@ -40,72 +40,67 @@
 # relpath will print the relative path to TGT from SRC
 #
 
-    if test -e $1; then
-        local insource=$( cd $1; echo `pwd` )
+if test -e $1; then
+    insource=$( cd $1; echo `pwd` )
+else
+    insource=$1
+fi
+
+if test -e $2; then
+    intarget=$( cd $2; echo `pwd` )
+else
+    intarget=$2
+fi
+
+# Ensure both source and target end with /
+# This simplifies the inner loop.
+case "$insource" in
+    */) ;;
+    *) source="$insource"/ ;;
+esac
+
+case "$intarget" in
+    */) ;;
+    *) target="$intarget"/ ;;
+esac
+
+common_part=$source # for now
+
+result=""
+
+while [ "${target#$common_part}" = "${target}" -a "${common_part}" != "//" ]; do
+    # no match, means that candidate common part is not correct
+    # go up one level (reduce common part)
+    common_part=$(dirname "$common_part")/
+    # and record that we went back
+    if [ -z "${result}" ]; then
+        result="../"
     else
-        local insource=$1
+        result="../$result"
     fi
+done
 
-    if test -e $2; then
-        local intarget=$( cd $2; echo `pwd` )
-    else
-        local intarget=$2
-    fi
+if [ "${common_part}" = "//" ]; then
+    # special case for root (no common path)
+    common_part="/"
+fi
 
-    # Ensure both source and target end with /
-    # This simplifies the inner loop.
-    case "$insource" in
-        */) ;;
-        *) source="$insource"/ ;;
+# since we now have identified the common part,
+# compute the non-common part
+forward_part="${target#$common_part}"
+
+if [ -n "${result}" -a -n "${forward_part}" ]; then
+    result="$result$forward_part"
+elif [ -n "${forward_part}" ]; then
+    result="$forward_part"
+fi
+
+# if a / was added to target and result ends in / then remove it now.
+if [ "$intarget" != "$target" ]; then
+    case "$result" in
+        */) result=$(echo "$result" | awk '{ string=substr($0, 1, length($0)-1); print string; }' ) ;;
     esac
+fi
 
-    case "$intarget" in
-        */) ;;
-        *) target="$intarget"/ ;;
-    esac
-
-    local common_part=$source # for now
-
-    local result=""
-
-    while [ "${target#$common_part}" = "${target}" -a "${common_part}" != "//" ]; do
-        # no match, means that candidate common part is not correct
-        # go up one level (reduce common part)
-        common_part=$(dirname "$common_part")/
-        # and record that we went back
-        if [ -z "${result}" ]; then
-            result="../"
-        else
-            result="../$result"
-        fi
-    done
-
-    if [ "${common_part}" = "//" ]; then
-        # special case for root (no common path)
-        common_part="/"
-    fi
-
-    # since we now have identified the common part,
-    # compute the non-common part
-    forward_part="${target#$common_part}"
-
-    if [ -n "${result}" -a -n "${forward_part}" ]; then
-        result="$result$forward_part"
-    elif [ -n "${forward_part}" ]; then
-        result="$forward_part"
-    fi
-
-    # if a / was added to target and result ends in / then remove it now.
-    if [ "$intarget" != "$target" ]; then
-        case "$result" in
-            */) result=$(echo "$result" | awk '{ string=substr($0, 1, length($0)-1); print string; }' ) ;;
-        esac
-    fi
-
-    echo $result
-
-    return 0
-}
-
-echo $(CT_FindRelativePath $1 $2)
+echo $result
 
