@@ -30,7 +30,7 @@ NF > 0 {
         printf "%s:%d: %s\n", FILENAME, NR, $1
     for (i = 2; i <= NF; i++) # Check each word with the previous word
         if ($i == $(i-1))
-            printf "%s:%d: %s\n", FILENAME, NR, $1
+            printf "%s:%d: %s\n", FILENAME, NR, $i
     if (NF > 0) # Set lastword to last word on line
         lastword = $NF
  }
