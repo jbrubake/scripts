@@ -24,25 +24,21 @@
 
 NETWORK=$1
 
-printf "\033[1;32mBeginning pingsweep of $NETWORK.0 ...\033[0m"
-echo "#pingsweep of $NETWORK.0 ... "		> $NETWORK.0.sweep
-echo "#start: `date`"				>> $NETWORK.0.sweep
+printf "\033[1;32mBeginning pingsweep of $NETWORK.0 ...\033[0m\n\n"
+printf "# pingsweep of $NETWORK.0 ... "  > $NETWORK.0.sweep
+printf "# start: $(date)"               >> $NETWORK.0.sweep
 
-for HOST in `seq 1 254` ; do 
+for HOST in $(seq 1 254) ; do 
+    printf "trying $NETWORK.$HOST..."
 
-	echo "trying $NETWORK.$HOST ... "
-
-	ISALIVE=`ping -c 1 $NETWORK.$HOST | grep received | cut -d " " -f 4` ; 
+	ISALIVE=$(ping -c 1 $NETWORK.$HOST | grep received | cut -d " " -f 4) 
 
 	if [ $ISALIVE = "1" ] ; then
-
-		printf "\033[1;32m$NETWORK.$HOST is alive.\033[0m"
-		echo "$NETWORK.$HOST" 		>> $NETWORK.0.sweep ;
-		
+		printf "\033[1;32malive\033[0m"
+		printf "$NETWORK.$HOST" >> $NETWORK.0.sweep ;
 	fi ;
-
+    echo
 done
 
-echo "#end: `date`" >> $NETWORK.0.sweep
-printf "\033[1;32mDone.\033[0m"
+echo "# end: $(date)" >> $NETWORK.0.sweep
 
