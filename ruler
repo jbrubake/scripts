@@ -25,7 +25,7 @@ BEGIN {
     "tput cols" | getline col
 
     for ( i = 1;  i <= col / 10;  ++i )
-        printf "        " (i<10? " " : "") i   #  eight spaces + 1 possible
+        printf "        " (i<10? " " : "") i   # eight spaces + 1 possible
     printf "\n"
 
     for ( i = 1;  i <= col;  ++i )
