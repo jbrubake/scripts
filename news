@@ -20,7 +20,7 @@
 # -l list news items only
 #
 
-#cd /usr/etc/news # Find news
+cd /var/lib/news # Find news
 
 case $1 in
     -l) list=1 ;; # list only
