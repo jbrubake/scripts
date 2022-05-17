@@ -23,7 +23,7 @@
 allowed_signers="$HOME/.ssh/allowed_signers"
 
 if [ -z "$1" ]; then
-    printf "No filename to sign provided. Exiting\n" >&2
+    printf "No filename to check provided. Exiting\n" >&2
     exit 1
 fi
 
