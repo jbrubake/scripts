@@ -20,19 +20,32 @@
 # Usage: addr [<if>]
 #
 
-if type ifconfig >/dev/null; then
-    ifconfig -a $1     |
-    grep 'inet '       |
-    grep Bcast         |
-    sed 's/addr://'    |
-    awk '{ print $2 }'
-elif type ip >/dev/null; then
-    ip address show $1 |
-    grep 'inet '       |
-    sed -e 's/inet //' |
-    sed -e 's@/.*@@'   |
-    sed -e 's/[ ]*//'
+ip_cmd='ip address show'
+ifconfig_cmd='ifconfig'
+
+if command -v iip >/dev/null; then
+    cmd="$ip_cmd"
+elif command -v ifconfig >/dev/null; then
+    cmd="$ifconfig_cmd"
 else
-    echo "I don't know how to list your IP addresses." >&2
+    printf "I don't know how to list your IP addresses.\n" >&2
+    exit 1
+fi
+
+if [ -n "$1" ]; then
+    $cmd $1 |
+        awk '/inet / {print gensub("/.*$", "", 1, $2)}'
+else
+    if [ "$cmd" = "$ip_cmd" ]; then
+        $cmd | awk '
+        /^[[:digit:]]+:/ {iface = $2}
+        /inet / {printf("%s %s\n", iface, gensub("/.*$", "", 1, $2))}
+        ' | grep -v 'lo:' | sort
+    elif [ "$cmd" = "$ifconfig_cmd" ]; then
+        $cmd | awk '
+        /^[[:alpha:]]/ {iface = $1}
+        /inet / {printf("%s %s\n", iface, $2)}
+        ' | grep -v 'lo:' | sort
+    fi
 fi
 
