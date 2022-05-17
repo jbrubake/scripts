@@ -15,7 +15,7 @@
 #
 # Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
 #
-# field: print nth field from each input line
+# abstract: print nth field from each input line
 #
 # Usage: field [n] to print nth whitespace delimited
 #     field (n defaults to 1)
@@ -26,3 +26,4 @@ case $1 in
 esac
 
 exec awk '{ print $'$field' }'
+

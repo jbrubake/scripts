@@ -15,9 +15,9 @@
 #
 # Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
 #
+# abstract: show IPv4 address for interface <if> or all interfaces
+#
 # Usage: addr [<if>]
-# Show IPv4 address for interface <if> or all interfaces with
-# no <if> given.
 #
 
 if type ifconfig >/dev/null; then
@@ -35,3 +35,4 @@ elif type ip >/dev/null; then
 else
     echo "I don't know how to list your IP addresses." >&2
 fi
+

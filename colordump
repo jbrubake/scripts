@@ -15,8 +15,7 @@
 #
 # (C) 2009 Ryan Tomayko <tomayko.com>
 #
-# Usage: colordump
-# Dump 256 ansi colors to the terminal.
+# abstract: dump 256 ansi colors to the terminal.
 #
 
 printf "How each ANSI color is displayed on your terminal:\n\n"
@@ -34,3 +33,4 @@ done
 
 printf '\n\n     e.g., "\\e[38;5;136mTEXT\\e[0m" '
 printf "\e[38;5;136m(for TEXT like this)\e[0m\n"
+

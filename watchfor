@@ -15,7 +15,8 @@
 #
 # Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
 #
-# watchfor: report when someone logs on
+# abstract: report when someone logs on
+#
 
 case $# in
     0) echo 'Usage: watchfor pattern' 1>&2; exit 1
@@ -25,3 +26,4 @@ until who | egrep $*
 do
     sleep 60
 done
+

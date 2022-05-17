@@ -13,10 +13,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
-# Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
+# Copyright 2020 Jeremy Brubaker <jbru362@gmail.com>
 #
-# Print out last commit message from current branch for each
-# file/directory in pwd
+# abstract: print out last commit message for each file in tree
+#
 
 # TODO: merge into gitconfig
 # TODO: add a 'format=' directive to set custom colors

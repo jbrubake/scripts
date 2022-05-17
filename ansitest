@@ -15,8 +15,9 @@
 #
 # Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
 #
-# Test terminal ANSI escape capabilities
+# abstract: Test terminal ANSI escape capabilities
 #
+
 esc="\033["
 
 show_normal () {
@@ -231,3 +232,4 @@ test $f_256 = 1     && show_256
 test $f_24bit = 1   && show_24bit
 
 exit 0
+

@@ -15,7 +15,8 @@
 #
 # Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
 #
-# watchwho: periodically report who has logged on and logged out
+# abstract: periodically report who has logged on and logged out
+#
 
 new=/tmp/wwho1.$$
 old=/tmp/wwho2.$$

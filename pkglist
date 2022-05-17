@@ -15,9 +15,11 @@
 #
 # Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
 #
-# Print a listing of manually installed packages
+# abstract: print a listing of manually installed packages
+#
 
 ( \
 zcat /var/log/apt/history.log.*.gz 2>/dev/null ;
 grep 'apt install' /var/log/apt/history.log 2>/dev/null \
 ) | sort | cut -d' ' -f4- | tr ' ' '\n' 
+

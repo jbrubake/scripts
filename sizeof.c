@@ -13,6 +13,9 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
+ *
+ * abstract: print sizes of C data types
+ *
  */
 
 #include <stdio.h>
@@ -31,3 +34,4 @@ main ()
 
     return 0;
 }
+

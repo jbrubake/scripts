@@ -24,3 +24,4 @@ fi
 ns=`host -t ns $1 | cut -d' ' -f4`
 arpaaddr=`rlook $ns | cut -d' ' -f1 | cut -d. -f2-`
 host -la $arpaaddr
+

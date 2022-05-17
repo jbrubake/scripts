@@ -15,8 +15,7 @@
 #
 # Copyright 2021 Jeremy Brubaker <јЬruЬаkе@оrіоnаrtѕ.іо>
 #
-# oneline - Print a one-line fortune. Tries to convert two-line
-#     fortunes to one-liners if possible.
+# abstract: print a one-line fortune. Convert two-line fortunes to one-liners if possible
 #
 # Based on https://stackoverflow.com/a/36345272/3224379
 #

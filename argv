@@ -15,7 +15,10 @@
 #
 # Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
 #
+# abstract: dump arguments
+#
 # Usage: argv <args>
+#
 
 # Dump arguments
 set -e
@@ -25,3 +28,4 @@ do
   count=$(( count + 1 ))
   echo "$count: $a"
 done
+

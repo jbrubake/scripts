@@ -15,7 +15,21 @@
 #
 # Copyright 2015 Ray Donnelly <https://stackoverflow.com/users/3257826/ray-donnelly>
 #
-# relpath: Print the relative path between two paths
+# This script was taken from a Stack Overflow answer:
+#
+# Question: https://stackoverflow.com/q/2564634
+# Answer: https://stackoverflow.com/a/30778999
+# Answer by: Ray Donnelly (https://stackoverflow.com/users/3257826/ray-donnelly)
+#
+# CHANGE:
+# If $1 or $2 exist they can be specified as relative
+# paths which will be converted to absolute paths
+# If $1 or $2 do not exist they must be specified
+# as absolute paths
+#
+# Jeremy Brubaker, November 2018
+#
+# abstract: print the relative path from <src> to <tgt>
 #
 # Usage: relpath SRC TGT
 #
@@ -24,24 +38,7 @@
 # specified as a relative path.
 #
 # relpath will print the relative path to TGT from SRC
-
-CT_FindRelativePath()
-{
-# Returns relative path to $2 from $1
 #
-# This function was taken from a Stack Overflow answer
-#
-# Question: https://stackoverflow.com/q/2564634
-# Answer: https://stackoverflow.com/a/30778999
-# Answer by: Ray Donnelly (https://stackoverflow.com/users/3257826/ray-donnelly)
-
-# CHANGE:
-# If $1 or $2 exist they can be specified as relative
-# paths which will be converted to absolute paths
-# If $1 or $2 do not exist they must be specified
-# as absolute paths
-#
-# Jeremy Brubaker, November 2018
 
     if test -e $1; then
         local insource=$( cd $1; echo `pwd` )
@@ -111,3 +108,4 @@ CT_FindRelativePath()
 }
 
 echo $(CT_FindRelativePath $1 $2)
+

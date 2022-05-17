@@ -40,6 +40,7 @@
 #
 #   $ gxpr 2 miles in inches
 #   126720 inches
+#
 
 CURL='curl -s --header User-Agent:gxpr/1.0'
 SEARCH="http://www.google.com/search"
@@ -59,3 +60,4 @@ test -z "$res" && {
 }
 
 echo "$res"
+

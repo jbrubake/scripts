@@ -5,6 +5,9 @@
 # You obviously need a font that supports those.
 #
 # Created by Patrice Levesque in 2008, donated to the public domain.
+#
+# abstract: view X-Face images in Unicode
+#
 
 # Set this to 0 or 1 depending on your preference
 INVERSE=1
@@ -53,5 +56,4 @@ for line in `${SEQ} 0 23`; do
 	done;
 	echo
 done
-
 

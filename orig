@@ -14,6 +14,9 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
 # Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
+#
+# abstract: rename <file(s)> to <file(s)>.orig
+#
 
 if [ $# = 0 ] ; then
   echo "usage: orig FILE ..."
@@ -23,3 +26,4 @@ else
     cp -p "$f" "$f.orig"
   done
 fi
+

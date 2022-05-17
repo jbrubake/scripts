@@ -15,6 +15,8 @@
 #
 # Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
 #
+# abstract: take a screenshot
+#
 
 DIR="${HOME}/screenshots"
 DATE="$(date +%Y%m%d@%H%M%S)"

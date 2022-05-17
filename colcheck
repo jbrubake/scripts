@@ -15,9 +15,11 @@
 #
 # Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
 #
-# check consistency of columns
+# abstract: check consistency of columns
+#
 # input: rows of numbers and strings
 # output: lines with format different than first line
+#
 
 NR == 1 {
     nfld = NF

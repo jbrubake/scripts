@@ -15,10 +15,13 @@
 #
 # Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
 #
-# generate data validation programs
+# abstract: generate data validation programs
+#
 # input: expressions of the form: pattern tab message
 # output: program to print messages when pattern matches
+#
 
 BEGIN { FS = "\t+" }
 
 { printf("%s {\n\tprintf(\"line %%d, %s: %%s\\n\", NR, $0) }\n", $1, $2) }
+

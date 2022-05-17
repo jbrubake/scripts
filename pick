@@ -15,10 +15,11 @@
 #
 # Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
 #
-# pick: interactively select arguments and print them to stdout
+# abstract: interactively select arguments and print them to stdout
 #
 # Select words from command line arguments or
 # from stdin if no command line args or first arg is -
+#
 
 fd=0 # read interactive input from stdin by default
 

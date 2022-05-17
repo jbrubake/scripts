@@ -15,12 +15,11 @@
 #
 # Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
 #
-
-#
-# Prints names of ten largest executables in $PATH
+# abstract: print the <n> largest executables in $PATH
 #
 
 ls -lh $( echo $PATH | tr : ' ' ) \
     | awk '{ print $5 "\t" $9 }' \
     | sort -h -k 1 -r \
-    | head
+    | head -${1:-10}
+

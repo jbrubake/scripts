@@ -19,7 +19,7 @@
 # file:		pingsweep
 # usage:	pingsweep first.three.octets
 #		ex. # pingsweep 192.168.1
-# abstract:	Hasty pingsweep script when nmap is not available.
+# abstract:	hasty pingsweep script when nmap is not available
 ################################################################################
 
 NETWORK=$1

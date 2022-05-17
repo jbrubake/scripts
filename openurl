@@ -15,14 +15,11 @@
 #
 # Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
 #
-
-# openurl
-#
-# Open an URL in $BROWSER
+# abstract: open a URL in $BROWSER
 #
 # Expects: URL to open. You can open local files simply
 #          by passing the filename as the arguemt to openurl
-
+#
 # TODO: See about making this a function
 
 # See if args are a local file first
@@ -56,3 +53,4 @@ case "$BROWSER" in
         $BROWSER $url
         ;;
 esac
+

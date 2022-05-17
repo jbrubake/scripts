@@ -15,7 +15,10 @@
 #
 # Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
 #
+# abstract: search all package databased for what provides a file
+#
 
 for file in `grep -l "/$1|" /var/log/paco/*`; do
     basename $file
 done
+

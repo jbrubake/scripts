@@ -15,8 +15,7 @@
 #
 # Copyright 2021 Jeremy Brubaker <јЬruЬаkе@оrіоnаrtѕ.іо>
 #
-# siggen - Generate an email/Usenet signature from a template file.
-#     Optionally add a fortune cookie at the end
+# abstract: generate an email/Usenet signature with an optional fortune cookie
 #
 # Documentation {{{1
 #

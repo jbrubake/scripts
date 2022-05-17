@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 # https://gist.githubusercontent.com/MicahElliott/719710/raw/73d047f0a3ffc35f0655488547e7f24fa3f04ea6/colortrans.py
-""" Convert values between RGB hex codes and xterm-256 color codes.
+""" abstract: convert values between RGB hex codes and xterm-256 color codes.
 
 Nice long listing of all 256 colors and their codes. Useful for
 developing console color themes, or even script output schemes.
@@ -374,3 +374,4 @@ if __name__ == '__main__':
         short, rgb = rgb2short(arg)
         sys.stdout.write('RGB %s -> xterm color approx \033[38;5;%sm%s (%s)' % (arg, short, short, rgb))
         sys.stdout.write("\033[0m\n")
+

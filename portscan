@@ -19,7 +19,7 @@
 # file:		portscan
 # usage:	portscan host portsfile
 #		ex. # portscan.sh 192.168.1.1 commonports
-# abstract:	Hasty portscan script when nmap is not available.
+# abstract:	hasty portscan script when nmap is not available
 ################################################################################
 
 HOST=$1

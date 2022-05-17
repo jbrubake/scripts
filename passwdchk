@@ -15,7 +15,8 @@
 #
 # Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
 #
-# check /etc/passwd for errors
+# abstract: check a file in /etc/passwd format for errors
+#
 
 BEGIN { FS = ":" }
 
@@ -37,5 +38,4 @@ $4 ~ /[^0-9]/ {
 
 $6 !~ /^\// {
     printf("%d: user %s has invalid login directory: %s\n", NR, $1, $6) }
-
 

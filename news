@@ -15,7 +15,7 @@
 #
 # Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
 #
-# news: print the latest news
+# abstract: print the latest news
 #
 # -l list news items only
 

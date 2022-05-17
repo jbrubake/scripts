@@ -15,7 +15,8 @@
 #
 # Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
 #
-# zap: kill processes by name
+# abstract: kill processes by name
+#
 
 case $1 in
     -*) SIG=$1; shift ;;

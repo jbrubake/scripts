@@ -9,3 +9,4 @@ if test $? != 0; then
 fi
 
 vdirsyncer sync
+

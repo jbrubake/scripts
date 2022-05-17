@@ -15,6 +15,7 @@
 #
 # Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
 #
-# 411: search personal phonebook for a pattern
+# abstract: search personal phonebook for a pattern
+#
 
 grep -i "$*" $HOME/lib/phonebook

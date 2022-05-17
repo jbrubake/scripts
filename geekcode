@@ -15,7 +15,7 @@
 #
 # Copyright 2021 Jeremy Brubaker <јЬruЬаkе@оrіоnаrtѕ.іо>
 #
-# geekcode - Convert a commented geekcode file into a proper geekcode
+# abstract: convert a commented geekcode file into a proper geekcode
 #
 
 # Defaults {{{1
@@ -87,3 +87,4 @@ printf "%s\n" ""
 if [ "$block" == "y" ]; then
     printf "%s\n" "------END GEEK CODE BLOCK------"
 fi
+

@@ -15,7 +15,7 @@
 #
 # Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
 #
-# Print a ruler across the screen
+# abstract: print a ruler across the screen
 #
 # Based on a script posted by Jesse654 on
 #   https://forums.linuxmint.com/viewtopic.php?t=91908
@@ -32,3 +32,4 @@ BEGIN {
         printf i % 10
     printf "\n"
 }
+

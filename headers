@@ -15,8 +15,9 @@
 #
 # Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
 #
-# Usage: headers url
-# Show HTTP headers for <url>
+# abstract: show HTTP headers for <url>
+#
+# Requires: curl or wget
 #
 
 # TODO: Use wget if available
@@ -24,3 +25,4 @@ curl -sv "$@" 2>&1 >/dev/null |
 	grep -v "^\*" |
 	grep -v "^}" |
 	cut -c3-
+

@@ -15,10 +15,10 @@
 #
 # Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
 #
-# prpages: compute number of pages that pr will print
+# abstract: compute number of pages that pr will print
 #     -n <n> to set number of lines per page
 #     Assume 55 line pages by default
-
+#
 # TODO: better command line processing
 
 case $1 in
@@ -27,3 +27,4 @@ case $1 in
 esac
 
 exec wc $* | awk '$0 !~ /total/ { n += int (($1+'$lines') / ('$lines'+1)) } END {print n}'
+

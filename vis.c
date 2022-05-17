@@ -13,9 +13,10 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  *
  * Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
+ *
+ * abstract: show non-printing characters as hexadecimal escapes/
+ *
  */
-
-/* vis: show non-printing characters as hexadecimal escapes */
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -92,3 +93,4 @@ main (int argc, char **argv)
 
     exit (0);
 }
+

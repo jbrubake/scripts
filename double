@@ -15,7 +15,7 @@
 #
 # Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
 #
-# double: report double words
+# abstract: report double words
 #
 # Output: filename:lineno: word
 #  (filename is - if reading stdin)
