@@ -26,7 +26,7 @@
 
 exec sh -c "tail -n +$(($LINENO + 2)) < $0 | sed s/DATE/$(date +%Y)/"
 
-Copyright (c) DATE Ryan Tomayko <http://tomayko.com/about>
+Copyright (c) DATE Jeremy Brubaker <jbrubake@orionarts.io>
 
 Permission  is  hereby granted, free of charge, to any person ob-
 taining a copy of  this  software  and  associated  documentation
