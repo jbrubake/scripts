@@ -50,7 +50,7 @@ get_pkg_name()
     c=$(printf \\$(printf '%03o' $c))
 
     # Get a random package name that starts with that letter
-    echo "$(yum list | grep -E "^$c" | awk '{print $1}' | shuf -n1)"
+    echo "$(dnf list | grep -E "^$c" | awk '{print $1}' | shuf -n1)"
 }
 
 part=1
