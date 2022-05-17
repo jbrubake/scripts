@@ -1,0 +1,19 @@
+#!/bin/sh
+#
+# Based on https://gist.githubusercontent.com/smashwilson/4420b235922581ea3d7b26769ee8ec9e/raw/fbbc55e6ef2ac363d9fd4452cf1eb078ebd1b3ca/ssh-pinentry.sh
+#
+# abstract: anypinentry wrapper for SSH_ASKPASS
+#
+# chmod +x this script and set it as SSH_ASKPASS
+
+set -euo pipefail
+
+urldecode() {
+    python -c 'import sys, urllib.parse; sys.stdout.write(urllib.parse.unquote(sys.stdin.read()))'
+}
+
+anypinentry <<EOM | grep '^D ' | sed -e 's/^D //g' | tr -d '\n' | urldecode
+SETDESC ${1:-Please enter the passphrase for your SSH key}
+GETPIN
+EOM
+
