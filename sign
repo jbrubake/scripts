@@ -27,7 +27,11 @@ if [ -z "$1" ]; then
 fi
 
 if [ -z "$2" ]; then
-    key="$HOME/.ssh/id_rsa"
+    if [ -r "$HOME/.ssh/id_ed25519" ]; then
+        key="$HOME/.ssh/id_ed25519"
+    elif [ -r "$HOME/.ssh/id_rsa" ]; then
+        key="$HOME/.ssh/id_rsa"
+    fi
 else
     key="$2"
 fi
