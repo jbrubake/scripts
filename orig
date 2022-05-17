@@ -19,8 +19,8 @@
 #
 
 if [ $# = 0 ] ; then
-  echo "usage: orig FILE ..."
-  echo "copy FILE(s) to FILE.orig"
+  printf "usage: orig FILE ..." >&2
+  printf "copy FILE(s) to FILE.orig" >&2
 else
   for f in "$@" ; do
     cp -p "$f" "$f.orig"
