@@ -53,6 +53,23 @@ get_pkg_name()
     echo "$(dnf list | grep -E "^$c" | awk '{print $1}' | shuf -n1)"
 }
 
+check_command()
+{
+    if ! command -v $1 >/dev/null; then
+        return 1
+    fi
+}
+
+if !  check_command dialog; then
+    printf "Missing dialog(1). Exiting\n" >&2
+    exit 1
+fi
+
+if !  check_command dnf; then
+    printf "Missing dnf(1). Exiting\n" >&2
+    exit 1
+fi
+
 part=1
 pkg="Preparing..."
 while true; do
