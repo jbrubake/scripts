@@ -9,6 +9,7 @@ imports:
   ix: ./
   cheat_dot_sh: ./
   image2ascii: ./
+  imagick_type_gen: ./
 
 git module anypinentry: # A flexible pinentry script for GNUpg. Uses dmenu by default
   url: https://github.com/phenax/any-pinentry
@@ -73,4 +74,8 @@ curl module cheat_dot_sh: # The only cheat sheet you need
 curl module image2ascii: # Convert iamges to ASCII (useful for Mutt .mailcap)
   url: https://www.spinnaker.de/mutt/image2ascii
   executable: image2ascii
+
+curl module imagick_type_gen: # Generate an ImageMagick font list
+  url: https://legacy.imagemagick.org/Usage/scripts/imagick_type_gen
+  executable: imagick_type_gen
 
