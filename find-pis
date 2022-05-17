@@ -28,8 +28,7 @@ nets=$(ip address show | awk '/inet / {printf "%s/%s", $4, gensub(".*/", "", 1, 
 # loop over networks running the scan
 for n in $nets; do
   # first find SSH machines silently to prime the arp table
-  nmap -T4 -n -p 22 --open --min-parallelism 100 "$n/24" | grep -e "scan report for" -e "ssh" > /dev/null
-  # timeout 0.25 bash -c "</dev/tcp/$ip/22" > /dev/null
+  nmap -T5 -n -p 22 --min-parallelism 100 "$n" > /dev/null
 done
 
 # then run arp to show machines pi MACs
