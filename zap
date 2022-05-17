@@ -30,13 +30,13 @@ fi
 
 # Get our name so we can ignore
 # our process and child processes
-prog=`basename $0`
+prog=$(basename $0)
 
-pids=`ps u -U $USER |
+pids=$(ps u -U $USER |
     awk '
         NR == 1 { print >"/dev/tty" } # Print ps header
         NR > 1 && /'$*'/ && $0 !~ /'$prog'/ { print | "pick -" }' |
-            awk '{ print $2 }'` # Pull out the PID
+            awk '{ print $2 }') # Pull out the PID
 
 if test -z $pids
 then
