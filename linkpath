@@ -19,14 +19,8 @@
 #
 # Usage: linkpath LINK
 
-get_link_path () {
-    # Return the absolute path of the target of a symbolic link
+realfile=$( ls -l $1 | awk '{print $11}' )
+startdir=$( dirname $1 )
 
-    local realfile=$( ls -l $1 | awk '{print $11}' )
-    local startdir=$( dirname $1 )
-
-    echo $( cd $startdir/$( dirname $realfile); pwd )/$( basename $realfile )
-}
-
-get_link_path $1
+printf "%s\n" $( cd $startdir/$( dirname $realfile); pwd )/$( basename $realfile )
 
