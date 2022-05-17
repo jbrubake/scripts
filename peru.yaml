@@ -10,6 +10,8 @@ imports:
   cheat_dot_sh: ./
   image2ascii: ./
   imagick_type_gen: ./
+  rename: ./
+  view-x-face: ./
 
 git module anypinentry: # A flexible pinentry script for GNUpg. Uses dmenu by default
   url: https://github.com/phenax/any-pinentry
@@ -79,3 +81,10 @@ curl module imagick_type_gen: # Generate an ImageMagick font list
   url: https://legacy.imagemagick.org/Usage/scripts/imagick_type_gen
   executable: imagick_type_gen
 
+git module rename: # Rename multiple files
+  url: https://github.com/ap/rename
+  executable: rename
+
+curl module view-x-face: # View X-Face images embedded in email
+  url: https://www.spinnaker.de/mutt/view-x-face
+  executable: view-x-face
