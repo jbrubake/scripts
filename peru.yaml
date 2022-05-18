@@ -17,13 +17,13 @@ imports:
 git module anypinentry: # A flexible pinentry script for GNUpg. Uses dmenu by default
   url: https://github.com/phenax/any-pinentry
   pick: anypinentry
+  executable: anypinentry
   rev: 6d5aa310072b48cd5dc696946426d1d431258411
 
 git module wttr: # The right way to check the weather 
   url: https://github.com/chubin/wttr.in
   move:
-    share/bash-function.txt:
-      - wttr
+    share/bash-function.txt: wttr
   pick: wttr
   executable: wttr
   rev: e5a932be23b1bd6104fb45a833b3a3fa11b7edb5
@@ -31,16 +31,19 @@ git module wttr: # The right way to check the weather
 git module mutt_bgrun: # View attachments in mutt in the background
   url: https://github.com/RichiH/mutt_bgrun
   pick: mutt_bgrun
+  executable: mutt_bgrun
   rev: c6bc073e50f521414566cec214a5a5ba854dd2c6
 
 git module mutt-trim: # unclutter and normalize quoted text in an e-mail 
   url: https://github.com/Konfekt/mutt-trim
   pick: mutt-trim
+  executable: mutt-trim
   rev: 08ef5faf07b06b9abda7909f5b15cf84150f821a
 
 git module emojify: # Emoji on the command linescream 
   url: https://github.com/mrowa44/emojify
   pick: emojify
+  executable: emojify
   rev: 6dc2c1df9a484cf01e7f48e25a1e36e328c32816
 
 curl module MIMEmbellish: # Transform text-only email to multipart text+HTML
@@ -51,8 +54,7 @@ curl module MIMEmbellish: # Transform text-only email to multipart text+HTML
 git module passmenu: # A dmenu-based interface to pass(1)
   url: https://git.zx2c4.com/password-store
   move:
-    contrib/dmenu/passmenu:
-      - passmenu
+    contrib/dmenu/passmenu: passmenu
   pick: passmenu
   executable: passmenu
   rev: c4d8a1d815e79ddd89a85d3e36a41d29f0475771
@@ -60,8 +62,7 @@ git module passmenu: # A dmenu-based interface to pass(1)
 curl module ix: # Command line pastebin
   url: http://ix.io/client
   move:
-    client:
-      - ix
+    client: ix
   pick: ix
   executable: ix
   sha1: cbbad364df3a53c95e678e3273f8cc0424937248
@@ -69,8 +70,7 @@ curl module ix: # Command line pastebin
 curl module cheat_dot_sh: # The only cheat sheet you need
   url: https://cht.sh/:cht.sh
   move:
-    :cht.sh:
-      - cht.sh
+    :cht.sh: cht.sh
   executable: cht.sh
   sha1: e1b9f68dde6b029134995729e4cd9180872f6c43
 
@@ -84,21 +84,17 @@ curl module imagick_type_gen: # Generate an ImageMagick font list
 
 git module rename: # Rename multiple files
   url: https://github.com/ap/rename
+  pick: rename
   executable: rename
 
 git module ben_alman:
   url: https://github.com/cowboy/dotfiles
   move:
-    bin/curlsubl:
-      - curlvim
-    bin/git-jump:
-      - git-jump
-    bin/serve:
-      - serve
-    bin/isip:
-      - isip
-    bin/pid:
-      - pid
+    bin/curlsubl: curlvim
+    bin/git-jump: git-jump
+    bin/serve: serve
+    bin/isip: isip
+    bin/pid: pid
   pick:
     - curlvim
     - git-jump
@@ -115,3 +111,4 @@ git module ben_alman:
 curl module view-x-face: # View X-Face images embedded in email
   url: https://www.spinnaker.de/mutt/view-x-face
   executable: view-x-face
+
