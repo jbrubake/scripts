@@ -14,78 +14,78 @@ imports:
   ben_alman: ./
   view-x-face: ./
 
-git module anypinentry: # A flexible pinentry script for GNUpg. Uses dmenu by default
+git module anypinentry:
   url: https://github.com/phenax/any-pinentry
   pick: anypinentry
-  executable: anypinentry
+  executable: anypinentry # abstract: A flexible pinentry script for gpg. Uses dmenu by default
   rev: 6d5aa310072b48cd5dc696946426d1d431258411
 
-git module wttr: # The right way to check the weather 
+git module wttr:
   url: https://github.com/chubin/wttr.in
   move:
     share/bash-function.txt: wttr
   pick: wttr
-  executable: wttr
+  executable: wttr # abstract: The right way to check the weather 
   rev: e5a932be23b1bd6104fb45a833b3a3fa11b7edb5
 
-git module mutt_bgrun: # View attachments in mutt in the background
+git module mutt_bgrun:
   url: https://github.com/RichiH/mutt_bgrun
   pick: mutt_bgrun
-  executable: mutt_bgrun
+  executable: mutt_bgrun # abstract: View attachments in mutt in the background
   rev: c6bc073e50f521414566cec214a5a5ba854dd2c6
 
-git module mutt-trim: # unclutter and normalize quoted text in an e-mail 
+git module mutt-trim:
   url: https://github.com/Konfekt/mutt-trim
   pick: mutt-trim
-  executable: mutt-trim
+  executable: mutt-trim # abstract: unclutter and normalize quoted text in an e-mail 
   rev: 08ef5faf07b06b9abda7909f5b15cf84150f821a
 
-git module emojify: # Emoji on the command linescream 
+git module emojify:
   url: https://github.com/mrowa44/emojify
   pick: emojify
-  executable: emojify
+  executable: emojify # abstract: Emoji on the command linescream 
   rev: 6dc2c1df9a484cf01e7f48e25a1e36e328c32816
 
-curl module MIMEmbellish: # Transform text-only email to multipart text+HTML
+curl module MIMEmbellish:
   url: https://gist.githubusercontent.com/oblitum/6eeffaebd9a4744e762e49e6eb19d189/raw/c39c19d7c505cacdcb798b5069d3dd2582b539aa/MIMEmbellish
-  executable: MIMEmbellish
+  executable: MIMEmbellish # abstract: Transform text-only email to multipart text+HTML
   sha1: eef99a6157e42eeb8a4235fe31f9d0f22c26dd8f
 
-git module passmenu: # A dmenu-based interface to pass(1)
+git module passmenu:
   url: https://git.zx2c4.com/password-store
   move:
     contrib/dmenu/passmenu: passmenu
   pick: passmenu
-  executable: passmenu
+  executable: passmenu # abstract: A dmenu-based interface to pass(1)
   rev: c4d8a1d815e79ddd89a85d3e36a41d29f0475771
 
-curl module ix: # Command line pastebin
+curl module ix:
   url: http://ix.io/client
   move:
     client: ix
   pick: ix
-  executable: ix
+  executable: ix # abstract: Command line pastebinx
   sha1: cbbad364df3a53c95e678e3273f8cc0424937248
 
-curl module cheat_dot_sh: # The only cheat sheet you need
+curl module cheat_dot_sh:
   url: https://cht.sh/:cht.sh
   move:
     :cht.sh: cht.sh
-  executable: cht.sh
+  executable: cht.sh # abstract: The only cheat sheet you need
   sha1: e1b9f68dde6b029134995729e4cd9180872f6c43
 
-curl module image2ascii: # Convert iamges to ASCII (useful for Mutt .mailcap)
+curl module image2ascii:
   url: https://www.spinnaker.de/mutt/image2ascii
-  executable: image2ascii
+  executable: image2ascii # abstract: Convert iamges to ASCII (useful for Mutt .mailcap)i
 
-curl module imagick_type_gen: # Generate an ImageMagick font list
+curl module imagick_type_gen:
   url: https://legacy.imagemagick.org/Usage/scripts/imagick_type_gen
-  executable: imagick_type_gen
+  executable: imagick_type_gen # abstract: Generate an ImageMagick font listn
 
-git module rename: # Rename multiple files
+git module rename:
   url: https://github.com/ap/rename
   pick: rename
-  executable: rename
+  executable: rename # abstract: Rename multiple filesme
 
 git module ben_alman:
   url: https://github.com/cowboy/dotfiles
@@ -102,13 +102,13 @@ git module ben_alman:
     - isip
     - pid
   executable:
-    - curlvim
-    - git-jump
-    - serve
-    - isip
-    - pid
+    - curlvim  # abstract: download and edit a remote file with Vim
+    - git-jump # abstract: replay git commits safely
+    - serve    # abstract: serve a directory over HTTP
+    - isip     # abstract: very that an IP is bound
+    - pid      # abstract: get PIDs of processes matching pattern
 
-curl module view-x-face: # View X-Face images embedded in email
+curl module view-x-face:
   url: https://www.spinnaker.de/mutt/view-x-face
-  executable: view-x-face
+  executable: view-x-face # abstract: View X-Face images embedded in emails
 
