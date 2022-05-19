@@ -80,8 +80,9 @@ esac
 
 # Create a temporary file descriptor {{{1
 #
+tmpfile=$(mktemp "$PROGNAME.XXXXXX")
 trap 'rm -f "$tmpfile"' EXIT
-tmpfile=$(mktemp /tmp/xkcd.png.XXXXXX)
+
 exec 3<>"$tmpfile"
 rm "$tmpfile"
 
