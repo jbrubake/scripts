@@ -77,15 +77,18 @@ curl module cheat_dot_sh:
 curl module image2ascii:
   url: https://www.spinnaker.de/mutt/image2ascii
   executable: image2ascii # abstract: Convert iamges to ASCII (useful for Mutt .mailcap)i
+  sha1: 9792627c83f08fcf3e6e0892bdabfac4656e116e
 
 curl module imagick_type_gen:
   url: https://legacy.imagemagick.org/Usage/scripts/imagick_type_gen
   executable: imagick_type_gen # abstract: Generate an ImageMagick font listn
+  sha1: 932f84de0e471b7457054a86d305eee20b4b5e67
 
 git module rename:
   url: https://github.com/ap/rename
   pick: rename
   executable: rename # abstract: Rename multiple filesme
+  rev: 0da9faa241093c90a40b15a9ff4b36e9858d4516
 
 git module ben_alman:
   url: https://github.com/cowboy/dotfiles
@@ -107,8 +110,10 @@ git module ben_alman:
     - serve    # abstract: serve a directory over HTTP
     - isip     # abstract: very that an IP is bound
     - pid      # abstract: get PIDs of processes matching pattern
+  rev: 09aa03cab27cdd2496df4a550b32a33af0f9f832
 
 curl module view-x-face:
   url: https://www.spinnaker.de/mutt/view-x-face
   executable: view-x-face # abstract: View X-Face images embedded in emails
+  sha1: ded5bb2d7b1b17c9aaa49e667d8d644e9918101b
 
