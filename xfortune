@@ -18,6 +18,8 @@
 # abstract: display a fortune cookie in an X dialog
 #
 
+args="-buttons OK -default OK -center -file -"
+
 type 2>&1 >/dev/null xmessage  && xmessage=xmessage
 type 2>&1 >/dev/null gxmessage && xmessage=gxmessage
 
@@ -25,13 +27,13 @@ if test -n "$xmessage"; then
     case $xmessage in
         gxmessage)
             font="20"
-            args="-borderless -ontop"
+            args="$args -borderless -ontop"
             ;;
         xmessage)
             font="-*-*-*-*-*-*-20-0-0-0-p-*-*-*"
-            args=
+            args="$args"
             ;;
     esac
-    fortune "$@" | $xmessage ${font:+-fn "$font"} $args -center -file -
+    fortune "$@" | $xmessage ${font:+-fn "$font"} $args
 fi
 
