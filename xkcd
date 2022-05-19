@@ -92,7 +92,7 @@ rm "$tmpfile"
 url="$url/$index/"
 # Get permalink to current comic and download image
 img=$( curl -s "$url" | 
-    sed -n 's/Image URL.*: \(.*\)/\1/p' )
+    sed -n 's@Image URL.*<a href.*>.*http\(.*\)</a>@http\1@p' )
 if test -z "$img"; then
     printf "$PROGNAME: comic number $index does not exist\n"
     exit
