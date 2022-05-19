@@ -18,6 +18,9 @@
 # abstract: display a fortune cookie in an X dialog
 #
 
+bg=$(xrdb -query | awk '/xfortune\.fg/ {print $2}')
+fg=$(xrdb -query | awk '/xfortune\.bg/ {print $2}')
+
 args="-buttons OK -default OK -center -file -"
 
 type 2>&1 >/dev/null xmessage  && xmessage=xmessage
@@ -26,14 +29,16 @@ type 2>&1 >/dev/null gxmessage && xmessage=gxmessage
 if test -n "$xmessage"; then
     case $xmessage in
         gxmessage)
-            font="20"
+            font=$(xrdb -query | awk '/xfortune\.gfont/ {print $2}')
+            font=${font:-20}
             args="$args -borderless -ontop"
             ;;
         xmessage)
-            font="-*-*-*-*-*-*-20-0-0-0-p-*-*-*"
+            font=$(xrdb -query | awk '/xfortune\.xfont/ {print $2}')
+            font=${font:-"-*-*-*-*-*-*-20-0-0-0-p-*-*-*"}
             args="$args"
             ;;
     esac
-    fortune "$@" | $xmessage ${font:+-fn "$font"} $args
+    fortune "$@" | $xmessage ${font:+-fn "$font"} ${fg:+-fg "$fg"} ${bg:+-bg "$bg"} $args
 fi
 
