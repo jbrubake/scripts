@@ -96,19 +96,16 @@ git module ben_alman:
     bin/curlsubl: curlvim
     bin/git-jump: git-jump
     bin/serve: serve
-    bin/isip: isip
     bin/pid: pid
   pick:
     - curlvim
     - git-jump
     - serve
-    - isip
     - pid
   executable:
     - curlvim  # abstract: download and edit a remote file with Vim
     - git-jump # abstract: replay git commits safely
     - serve    # abstract: serve a directory over HTTP
-    - isip     # abstract: very that an IP is bound
     - pid      # abstract: get PIDs of processes matching pattern
   rev: 09aa03cab27cdd2496df4a550b32a33af0f9f832
 
