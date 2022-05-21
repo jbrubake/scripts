@@ -95,5 +95,5 @@ addrs=$(ip address show $1 | awk ' \
 echo "$addrs" |
 if [ "$sort" = 'y' ]; then sort
 else tee
-fi | column --table --separator "	"
+fi | column --table
 
