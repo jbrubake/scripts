@@ -81,7 +81,7 @@ while IFS=',' read cmd tag; do
     if test "$tag" == "X" && test -z "$DISPLAY"; then
         continue
     fi
-    if command -v 2>&1 >/dev/null $c; then
+    if command -v "$cmd" >/dev/null 2>&1; then
         break
     fi
 done < $f
