@@ -17,9 +17,104 @@
 #
 # abstract: print a listing of manually installed packages
 #
+# Documentation {{{1
+#
+VERSION='1.0'
 
-( \
-zcat /var/log/apt/history.log.*.gz 2>/dev/null ;
-grep 'apt install' /var/log/apt/history.log 2>/dev/null \
-) | sort | cut -d' ' -f4- | tr ' ' '\n' 
+print_help() {
+    cat <<END >&2
+Usage: $0 [OPTION]
+
+Print a listing of manually installed packages. Supports multiple package
+managers
+
+  -d=DBS    list packages only from package managers listed in DBS
+  -h   	    display this help and exit
+  -v        output version information and exit
+
+Package managers supported:
+
+apt
+dnf
+cargo
+porg
+pip-safe
+flatpak
+END
+}
+
+print_version() {
+    cat <<END >&2
+$0 $VERSION
+Copyright (C) 2014 Orion Arts
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Jeremy Brubaker.
+END
+}
+
+# Process options {{{1
+#
+dbs="apt,dnf,cargo,pip-safe,porg,flatpak"
+while getopts ':d:hv' c; do
+    case $c in
+        d) dbs="$OPTARG" ;;
+        h) print_help; exit 0 ;;
+        v) print_version; exit 0 ;;
+        :) printf -- "-%s requires an argument\n" "$OPTARG" >&2; print_help; exit 1 ;;
+        ?) printf "Invalid option: -%s\n" "$OPTARG" >&2; print_help; exit 1 ;;
+    esac
+done
+shift $((OPTIND-1))
+
+# Search functions {{{1
+list_apt() {
+    command -v apt >/dev/null || return
+    ( \
+    zcat /var/log/apt/history.log.*.gz 2>/dev/null ;
+    grep 'apt install' /var/log/apt/history.log 2>/dev/null \
+    ) | sort | cut -d' ' -f4- | tr ' ' '\n' 
+}
+
+list_dnf() {
+    command -v dnf >/dev/null || return
+    dnf repoquery --userinstalled | sed 's/^/dnf: /'
+}
+
+list_cargo() {
+    command -v cargo >/dev/null || return
+    cargo install --list | grep '^[[:alpha:]]' | sed 's/:$//; s/(.*)//; s/ v/-/; s/^/cargo: /'
+}
+
+list_pipsafe() {
+    command -v pip-safe >/dev/null || return
+    pip-safe list | grep '^*' | sed 's/\s\s*/-/; s/^*/pip-safe: /'
+}
+
+list_porg() {
+    command -v porg >/dev/null || return
+    for f in /var/log/porg/*; do
+        basename "$f"
+    done | sed 's/^/porg: /'
+}
+
+list_flatpak() {
+    command -v flatpak >/dev/null || return
+    flatpak list --app --columns=name,version | grep -v Name | sed 's/^/flatpak: /; s/\s\s*\([[:digit:]]\)/-\1/'
+}
+
+# Main {{{1
+echo "$dbs" |
+while read -rd, p || [ -n "$p" ]; do
+    case "$p" in
+        apt) list_apt ;;
+        dnf) list_dnf ;;
+        cargo) list_cargo ;;
+        porg) list_porg ;;
+        pipsafe|pip-safe) list_pipsafe ;;
+        flatpak) list_flatpak ;;
+    esac
+done
 
