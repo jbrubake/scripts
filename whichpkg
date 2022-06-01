@@ -15,10 +15,154 @@
 #
 # Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
 #
-# abstract: search all package databased for what provides a file
+# abstract: determine the package and package manager that provides a file
 #
 
-for file in `grep -l "/$1|" /var/log/paco/*`; do
-    basename $file
+# Documentation {{{1
+#
+VERSION='1.0'
+
+print_help() {
+    cat <<END >&2
+Usage: $0 [OPTION] <filename>
+
+Determine the package and package manager that provides a file
+
+If <filename> is not an absolute path, it is searched for in $PATH and lastly in
+the current directory
+
+  -h   	    display this help and exit
+  -v        output version information and exit
+END
+}
+
+print_version() {
+    cat <<END >&2
+$0 $VERSION
+Copyright (C) 2014 Orion Arts
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Jeremy Brubaker.
+END
+}
+
+# Process options {{{1
+#
+while getopts ':hv' c; do
+    case $c in
+        h) print_help; exit 0 ;;
+        v) print_version; exit 0 ;;
+        ?) printf "Invalid option: -%s\n" "$OPTARG" >&2; print_help; exit 1 ;;
+    esac
 done
+shift $((OPTIND-1))
+
+if ! command -v realpath >/dev/null; then
+    printf "realpath(1) required\n" >&2
+    exit 1
+fi
+
+# Get full path to file
+if [ -e "$1" ]; then
+    file="$(realpath $1)"
+# If that didn't work, search for it in $PATH
+elif [ -z "$file" ]; then
+    file=$(command -v "$1")
+fi
+
+if [ -z "$file" ]; then
+    echo "\"$1\" does not exist"
+    exit
+fi
+
+# Search functions {{{1
+chk_dpkg() {
+    command -v dpkg >/dev/null || return
+
+    pkg=$(dpkg -S "$@" 2>/dev/null | cut -d: -f1)
+    test -z "$pkg" && return
+
+    ver=$(dpkg -s "$pkg" | grep Version | cut -d: -f2)
+
+    printf "%s %s" "$pkg" "$ver"
+}
+
+chk_dnf() {
+    command -v dnf >/dev/null || return
+
+    dnf -q provides "$@" 2>/dev/null | head -1 | cut -d: -f1
+}
+
+chk_cargo() {
+    command -v cargo >/dev/null || return
+
+    cargo install --list | grep -EB1 "^\s+$@" | head -1 | cut -d' ' -f1,2
+}
+
+chk_pipsafe() {
+    command -v pip-safe >/dev/null || return
+
+    pipsafe_dir="/opt/pip-safe"
+    pipsafe_bindir="$(dirname $(command -v pip-safe))"
+
+    if [ $(dirname "$@") != "$pipsafe_bindir" ]; then
+        return
+    fi
+
+    pkg=$(find "$pipsafe_dir" -name "$(basename "$@")" -type f | cut -d'/' -f4)
+
+    if [ -n "$pkg" ]; then
+        ver=$(pip-safe list | grep "$pkg" | awk '{print $2}')
+        printf "%s %s" "$pkg" "$ver"
+    fi
+}
+
+chk_porg() {
+    command -v porg >/dev/null || return
+
+    # Determine porg log location
+    for f in /etc/porgrc /usr/local/etc/porgrc; do
+        test -f "$f" && porg_logdir=$(grep -E '^[^#].*LOGDIR' "$f" | cut -d= -f2)
+    done
+    test -z "$porg_logdir" && porg_logdir=/var/log/porg
+
+    f=$(grep -l "$1|" "$porg_logdir"/* 2>/dev/null)
+    test -n "$f" && basename "$f"
+}
+
+# Main {{{1
+pkg=$(chk_dpkg "$file")
+if [ -n "$pkg" ]; then
+    printf "apt: %s\n" "$pkg"
+    exit 0
+fi
+
+pkg=$(chk_dnf "$file")
+if [ -n "$pkg" ]; then
+    printf "dnf: %s\n" "$pkg"
+    exit 0
+fi
+
+pkg=$(chk_cargo "$file")
+if [ -n "$pkg" ]; then
+    printf "cargo: %s\n" "$pkg"
+    exit 0
+fi
+
+pkg=$(chk_pipsafe "$file")
+if [ -n "$pkg" ]; then
+    printf "pip-safe: %s\n" "$pkg"
+    exit 0
+fi
+
+pkg=$(chk_porg "$file")
+if [ -n "$pkg" ]; then
+    printf "porg: %s\n" "$pkg"
+    exit 0
+fi
+
+printf "%s not found\n" "$file"
+exit 1
 
