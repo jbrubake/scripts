@@ -18,7 +18,12 @@
 # abstract: take a screenshot
 #
 
-DIR="${HOME}/screenshots"
+DIR="$HOME/var/lib/screenshot"
+LOGDIR="$HOME/var/log"
+
+mkdir -p "$DIR"
+mkdir -p "$LOGDIR"
+
 DATE="$(date +%Y%m%d@%H%M%S)"
 NAME="${DIR}/screenshot-${DATE}.png"
 LOG="${DIR}/screenshot.log"
