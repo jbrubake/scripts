@@ -1,0 +1,212 @@
+#!/bin/sh
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Copyright 2022 Jeremy Brubaker <jbru362@gmail.com>
+#
+# abstract: search multiple documentation databases and show the first one found
+#
+# Documentation {{{1
+#
+VERSION='1.0'
+default_src="man,info,readme,dashhelp"
+
+print_help() {
+    cat <<END >&2
+Usage: $0 [OPTION] [INTERFACE]
+
+Search multiple sources of documentation and show the first result found
+
+  -s SRCS   search only the listed SRCS in the order given
+  -h   	    display this help and exit
+  -v        output version information and exit
+
+Supported sources of documentation are:
+
+man         Manpages
+info        GNU Info
+dashhelp    Try --help, -h, etc
+readme      Look for README* in /usr/{,local/}share/{,doc/,games/}
+webman      Web manpages
+search      Search DuckDuckGo
+
+The default search order is "$default_src". The value of the
+environment variable DOCS_SRCS will be used instead if it is defined. A value
+passed via the -s switch has the highest priority.
+END
+}
+
+print_version() {
+    cat <<END >&2
+$0 $VERSION
+Copyright (C) 2014 Orion Arts
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Jeremy Brubaker.
+END
+}
+
+# Search functions {{{1
+#
+try_man() { # {{{2
+    # Allow 'docs git push' to find the manpage for 'git-push'
+    arg=$(echo "$@" | tr ' ' '-')
+    # How many manpages did we find?
+    n=$(man -f "$arg" 2>/dev/null | wc -l)
+
+    case "$n" in
+        # None found
+        0) return 1 ;;
+        # Only one found, so just display it
+        1) man "$@" ;;
+        # Multiple found so prompt the user
+        *) 
+            printf "Multiple manpages found:\n"
+            man -f "$arg" | nl
+            while true; do
+                read -p "View which one? [1] " c
+                if [ -z "$c" ]; then
+                    c=1
+                    break
+                elif [ "$c" -gt 0 ] && [ "$c" -le "$n" ]; then
+                    break
+                fi
+            done
+            # Convert the output of 'man -f' to a proper manpage request
+            man $(man -f "$arg" | sed -n "${c}p" | cut -d' ' -f1,2 | tr -d '()' | awk '{printf("%s %s", $2, $1)}')
+            ;;
+    esac
+}
+
+try_info() { # {{{2
+    # Prefer pinfo(1) if installed
+    command -v info >/dev/null && infov=info
+    command -v pinfo >/dev/null && infov=pinfo
+    test -z "$infov" && return 1
+
+    # Look for info page that matches
+    test -z $(info -w "$@") && return 1
+
+    $infov "$@"
+}
+
+try_readme() { # {{{2
+    docdirs="/usr/share/doc:/usr/share:/usr/share/games:/usr/local/share/doc:/usr/local/share:/usr/local/share/games"
+
+    echo "$docdirs" |
+    while read -rd: d || [ -n "$d" ]; do
+        if [ -f "$d/$@/README"* ]; then
+            # Use an interactive shell to take advantage of user-defined aliases
+            # and functions that may improve upon less(1)
+            sh -ic "less $d/$@/README*"
+            return 0
+        fi
+    done
+
+    return 1
+}
+
+try_webman() { # {{{2
+    url="http://man.he.net/?topic=$@&section=all"
+
+    if curl "$url" 2>/dev/null | grep -q 'No matches for'; then
+        return 1
+    fi
+    xdg-open "$url"
+}
+
+try_dashhelp() { # {{{2
+# NOTE: This is a hack that often fails (e.g. printf(1))
+    for f in '-h' '--help' 'help' '-?' '/?' '?'; do
+        if "$@" "$f" >/dev/null 2>&1; then
+            flag="$f"
+            break
+        fi
+    done
+    if [ -n "$flag" ]; then
+        "$@" "$flag"
+        return 0
+    else
+        return 1
+    fi
+}
+
+try_search() { # {{{2
+    ddgr "$@"
+}
+
+# Process options {{{1
+#
+srcs="${DOCS_SRCS:-$default_src}"
+while getopts ':s:hv' c; do
+    case $c in
+        s) srcs="$OPTARG" ;;
+        h) print_help; exit 0 ;;
+        v) print_version; exit 0 ;;
+        ?) printf "Invalid option: -%s\n" "$OPTARG" >&2; print_help; exit 1 ;;
+    esac
+done
+shift $((OPTIND-1))
+
+if [ $# -eq 0 ]; then
+    printf "No help topic requested\n" >&2
+    exit 1
+fi
+
+# Exit if web searches are allowed but 'ddgr' not found
+if ! command -v ddgr >/dev/null; then
+    case "$srcs" in
+        *search*) printf "'ddgr' required for web searches\n" >&2; exit 1;;
+        *) ;;
+    esac
+fi
+# Main {{{1
+#
+# Ignore info and readme for requests that include multiple words
+space=' ' # coudn't figure out how to match a space without using this variable
+case "$@" in
+    *$space*)
+        srcs=$(echo "$srcs" | sed 's/info//')
+        srcs=$(echo "$srcs" | sed 's/readme//')
+        ;;
+esac
+
+while [ -n "$srcs" ]; do
+    # Get next database to check
+    s=$(echo "$srcs" | cut -d, -f1)
+    # and remove it from the list
+    srcs=$(echo "$srcs" | cut -d, -f2-)
+    # Ignore empty entries
+    test -z "$s" && continue
+    # cut(1) doesn't delete the final entry
+    test "$srcs" = "$s" && srcs=
+
+    case "$s" in
+        man)      try_man "$@" ;;
+        info)     try_info "$@" ;;
+        dashhelp) try_dashhelp "$@" ;;
+        readme)   try_readme "$@" ;;
+        webman)   try_webman "$@" ;;
+        search)   try_search "$@" ;;
+        *) printf "Unknown database: %s\n" "$s" >&2 ;;
+    esac
+    # Exit if we showed documentation
+    test $? -eq 0 && exit 0
+done
+
+printf "No documentation for \"%s\" found\n" "$@" >&2
+exit 1
+
