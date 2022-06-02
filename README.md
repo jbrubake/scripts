@@ -9,7 +9,7 @@ A collection of scripts that I wrote or modified from someone else
 - [4](https://github.com/jbrubake/scripts/blob/master/4) - print input in n columns based on command name (default = 2)
 - [5](https://github.com/jbrubake/scripts/blob/master/5) - print input in n columns based on command name (default = 2)
 - [addcomma](https://github.com/jbrubake/scripts/blob/master/addcomma) - put commas in numbers
-- [addr](https://github.com/jbrubake/scripts/blob/master/addr) - show IPv4 address for interface <if> or all interfaces
+- [addr](https://github.com/jbrubake/scripts/blob/master/addr) - list bound IP addresses
 - [addsigner](https://github.com/jbrubake/scripts/blob/master/addsigner) - add an SSH public key to an "allowed signers" file
 - [adjustcolor](https://github.com/jbrubake/scripts/blob/master/adjustcolor) - Darken or lighten a color by a percentage
 - [anagram](https://github.com/jbrubake/scripts/blob/master/anagram) - print list of words that contain only a given set of characters
@@ -30,6 +30,7 @@ A collection of scripts that I wrote or modified from someone else
 - [diff](https://github.com/jbrubake/scripts/blob/master/diff) - pipe diff(1) to diff-so-fancy if it exists
 - [dmenu-menu](https://github.com/jbrubake/scripts/blob/master/dmenu-menu) - present a menu based on commands in a config file
 - [dmenu_run](https://github.com/jbrubake/scripts/blob/master/dmenu_run) - use dmenu as a run dialog
+- [docs](https://github.com/jbrubake/scripts/blob/master/docs) - search multiple documentation databases and show the first one found
 - [double](https://github.com/jbrubake/scripts/blob/master/double) - report double words
 - [field](https://github.com/jbrubake/scripts/blob/master/field) - print nth field from each input line
 - [find-pis](https://github.com/jbrubake/scripts/blob/master/find-pis) - scan local network for Raspberry Pis
@@ -55,7 +56,6 @@ A collection of scripts that I wrote or modified from someone else
 - [portscan](https://github.com/jbrubake/scripts/blob/master/portscan) - hasty portscan script when nmap is not available
 - [ports](https://github.com/jbrubake/scripts/blob/master/ports) - show processes listening on TCP ports
 - [ppeek](https://github.com/jbrubake/scripts/blob/master/ppeek) - send stdin to stdout and stderr
-- [ppingsweep](https://github.com/jbrubake/scripts/blob/master/ppingsweep) - Hasty parrallel pingsweep script when nmap is not available.
 - [prpages](https://github.com/jbrubake/scripts/blob/master/prpages) - compute number of pages that pr will print
 - [relpath](https://github.com/jbrubake/scripts/blob/master/relpath) - print the relative path from <src> to <tgt>
 - [ruler](https://github.com/jbrubake/scripts/blob/master/ruler) - print a ruler across the screen
@@ -67,12 +67,10 @@ A collection of scripts that I wrote or modified from someone else
 - [ssh-pinentry](https://github.com/jbrubake/scripts/blob/master/ssh-pinentry) - anypinentry wrapper for SSH_ASKPASS
 - [truecolor](https://github.com/jbrubake/scripts/blob/master/truecolor) - test terminal true color capability
 - [trunc](https://github.com/jbrubake/scripts/blob/master/trunc) - truncate files
-- [utils_readme](https://github.com/jbrubake/scripts/blob/master/utils_readme) - (.+)/) {
-- [utils_readme](https://github.com/jbrubake/scripts/blob/master/utils_readme) - generate README.md from utils/*
 - [vis](https://github.com/jbrubake/scripts/blob/master/vis.c) - show non-printing characters as hexadecimal escapes/
 - [watchfor](https://github.com/jbrubake/scripts/blob/master/watchfor) - report when someone logs on
 - [watchwho](https://github.com/jbrubake/scripts/blob/master/watchwho) - periodically report who has logged on and logged out
-- [whichpkg](https://github.com/jbrubake/scripts/blob/master/whichpkg) - search all package databased for what provides a file
+- [whichpkg](https://github.com/jbrubake/scripts/blob/master/whichpkg) - determine the package and package manager that provides a file
 - [winsearch](https://github.com/jbrubake/scripts/blob/master/winsearch) - use dmenu to select from open windows
 - [x-face-unicode](https://github.com/jbrubake/scripts/blob/master/x-face-unicode) - view X-Face images in Unicode
 - [xfortune](https://github.com/jbrubake/scripts/blob/master/xfortune) - display a fortune cookie in an X dialog
@@ -89,7 +87,6 @@ These files come from external repositories, but are synced here using [peru](ht
 - [git-jump](https://github.com/cowboy/dotfiles) - replay git commits safely
 - [image2ascii](https://www.spinnaker.de/mutt/image2ascii) - Convert iamges to ASCII (useful for Mutt .mailcap)i
 - [imagick_type_gen](https://legacy.imagemagick.org/Usage/scripts/imagick_type_gen) - Generate an ImageMagick font listn
-- [isip](https://github.com/cowboy/dotfiles) - very that an IP is bound
 - [ix](http://ix.io/client) - Command line pastebinx
 - [MIMEmbellish](https://gist.githubusercontent.com/oblitum/6eeffaebd9a4744e762e49e6eb19d189/raw/c39c19d7c505cacdcb798b5069d3dd2582b539aa/MIMEmbellish) - Transform text-only email to multipart text+HTML
 - [mutt_bgrun](https://github.com/RichiH/mutt_bgrun) - View attachments in mutt in the background
