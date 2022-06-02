@@ -13,38 +13,167 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
-# Copyright 2010 Ryan Tomayko <tomayko.com>
+# Copyright 2022 Jeremy Brubaker <jbru362@gmail.com>
 #
-# abstrac: prints an MIT license appropriate for totin' around.
+# abstrac: print various open source licenses
 #
-# Usage: license
+
+# Documentation {{{1
 #
-#   $ license > COPYING
+VERSION='1.0'
+
+print_help() {
+    cat <<END >&2
+Usage: $0 [OPTION] <license>
+
+Print various open source licenses
+
+  -n NAME   name to use in the MIT license
+  -e EMAIL  email address to use in the MIT license
+  -h   	    display this help and exit
+  -v        output version information and exit
+
+The license will be downloaded from the internet. Supported values for <license>
+are:
+
+gpl|gpl3           GNU General Public License Version 3
+gpl2               GNU General Public License Version 2
+lgpl               Lesser GNU Public License Version 2.1
+fdl                Free Documentation License Version 1.2
+mit                MIT License
+mitna              MIT No Attribution License
+moz|mozill         Mozilla License Version 2.0
+apache             Apache License Version 2.0
+bsd|bsd2|3bsd      3-clause BSD License
+freebsd|2bsd       Free BSD License (2-clause BSD license)
+0bsd               BSD Zero Clause License
+END
+}
+
+print_version() {
+    cat <<END >&2
+$0 $VERSION
+Copyright (C) 2022 Orion Arts
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Jeremy Brubaker.
+END
+}
+
+# Process options {{{1
 #
-# Original version by Chris Wanstrath:
-# http://gist.github.com/287717
+while getopts ':n:e:hv' c; do
+    case $c in
+        n) name="$OPTARG" ;;
+        e) email="$OPTARG" ;;
+        h) print_help; exit 0 ;;
+        v) print_version; exit 0 ;;
+        ?) printf "Invalid option: -%s\n" "$OPTARG" >&2; print_help; exit 1 ;;
+    esac
+done
+shift $((OPTIND-1))
 
-exec sh -c "tail -n +$(($LINENO + 2)) < $0 | sed s/DATE/$(date +%Y)/"
+license=${1:-gpl}
 
-Copyright (c) DATE Jeremy Brubaker <jbrubake@orionarts.io>
+# name = passed in, /etc/passwd comment field, username
+name="${name:-$(getent passwd "$USER" | cut -d: -f5)}"
+name="${name:-"$USER"}"
+# email = passwed in, username@hostname
+email="${email:-$USER@$(hostname)}"
 
-Permission  is  hereby granted, free of charge, to any person ob-
-taining a copy of  this  software  and  associated  documentation
-files  (the "Software"), to deal in the Software without restric-
-tion, including without limitation the rights to use, copy, modi-
-fy, merge, publish, distribute, sublicense, and/or sell copies of
-the Software, and to permit persons to whom the Software is  fur-
-nished to do so, subject to the following conditions:
+# Main {{{1
+#
+unknown_license() {
+    printf "Unknown license\n" >&2
+    exit 1
+}
 
-The  above  copyright  notice and this permission notice shall be
-included in all copies or substantial portions of the Software.
+case "$license" in
+    gpl2)        curl -q "https://www.gnu.org/licenses/old-licenses/gpl-2.0.txt" 2>/dev/null ;;
+    gpl3|gpl)    curl -q "https://www.gnu.org/licenses/gpl-3.0.txt" 2>/dev/null ;;
+    lgpl*)       curl -q "https://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt" 2>/dev/null ;;
+    fdl*)        curl -q "https://www.gnu.org/licenses/old-licenses/fdl-1.2.txt" 2>/dev/null ;;
+    moz|mozilla) curl -q "https://www.mozilla.org/media/MPL/2.0/index.48a3fe23ed13.txt" 2>/dev/null ;;
+    apache)      curl -q "https://www.apache.org/licenses/LICENSE-2.0.txt" 2>/dev/null ;;
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF  ANY  KIND,
-EXPRESS  OR  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE  AND  NONIN-
-FRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER  IN  AN
-ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
-CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN  THE
-SOFTWARE.
+    mit)
+        curl -q https://mit-license.org/license.txt 2>/dev/null | 
+            sed "1,2d
+                 s/^Copyright.*/Copyright (c) $(date +%Y) $name <$email> /
+                 \$s/\(.*\)/\1\n/"
+        ;;
+
+    mitna)
+        curl -q https://raw.githubusercontent.com/aws/mit-0/master/MIT-0 2>/dev/null |
+            sed "1,2d
+                 s/<year>/$(date +%Y)/
+                 s/<copyright holders>/$name <$email>/"
+        ;;
+
+    bsd|bsd2|3bsd)
+		cat <<EOF
+Copyright (c) $(date +%Y) $name <$mail>
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the name of the <organization> nor the
+      names of its contributors may be used to endorse or promote products
+      derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+EOF
+        ;;
+
+    freebsd|2bsd)
+		cat <<EOF
+Copyright (c) $(date +%Y) $name <$mail>
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+1. Redistributions of source code must retain the above copyright notice, this
+   list of conditions and the following disclaimer.
+2. Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+EOF
+        ;;
+
+    0bsd)
+		cat <<EOF
+Copyright (C) $(date +%Y) by $name <$email>
+
+Permission to use, copy, modify, and/or distribute this software for any purpose
+with or without fee is hereby granted.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH
+REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND
+FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT,
+INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS
+OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER
+TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF
+THIS SOFTWARE.
+EOF
+
+        ;;
+
+    *) unknown_license ;;
+esac
 
