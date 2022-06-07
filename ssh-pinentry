@@ -2,9 +2,8 @@
 #
 # Based on https://gist.githubusercontent.com/smashwilson/4420b235922581ea3d7b26769ee8ec9e/raw/fbbc55e6ef2ac363d9fd4452cf1eb078ebd1b3ca/ssh-pinentry.sh
 #
-# abstract: anypinentry wrapper for SSH_ASKPASS
+# abstract: pinentry wrapper to allow it to be used for SSH_ASKPASS and SUDO_ASKPASS
 #
-# chmod +x this script and set it as SSH_ASKPASS
 
 set -euo pipefail
 
