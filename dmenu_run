@@ -17,10 +17,10 @@
 #
 # abstract: use dmenu as a run dialog
 #
-# Requires 'chooser terimnal' to print terminal command
+# Requires 'my terimnal' to print terminal command
 #
 
-term_cmd=$(chooser -V terminal)
+term_cmd=$(my -v terminal)
 
 max_history=100
 aliasfile="$HOME/.alias"
