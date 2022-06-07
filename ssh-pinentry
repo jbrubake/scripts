@@ -12,7 +12,8 @@ urldecode() {
 }
 
 anypinentry <<EOM | grep '^D ' | sed -e 's/^D //g' | tr -d '\n' | urldecode
-SETDESC ${1:-Please enter the passphrase for your SSH key}
+$(test -n "${1-}" &&  echo "SETPROMPT $1")
+$(test -n "${2-}" &&  echo "SETDESC $2")
 GETPIN
 EOM
 
