@@ -26,7 +26,7 @@ git module wttr:
     share/bash-function.txt: wttr
   pick: wttr
   executable: wttr # abstract: The right way to check the weather 
-  rev: e5a932be23b1bd6104fb45a833b3a3fa11b7edb5
+  rev: ad7492ed963c046c0e9f797c58e5cc28df410e51
 
 git module mutt_bgrun:
   url: https://github.com/RichiH/mutt_bgrun
