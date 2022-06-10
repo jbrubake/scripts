@@ -20,29 +20,24 @@
 # Requires 'my terimnal' to print terminal command
 #
 set -u
-
-LIBPATH="$(dirname $0):/usr/lib:/usr/local/lib:$HOME/lib"
+LIBPATH="/usr/lib/dmenu:/usr/local/lib/dmenu:$HOME/lib/dmenu:$(dirname $0)"
 
 oldifs="$IFS"
 IFS=:
 for d in $LIBPATH; do
-    if [ -r "$d/dmenu/routines.sh" ]; then
-        source "$d/dmenu/routines.sh"
+    if [ -r "$d/routines.sh" ]; then
+        dmenulib="$d/routines.sh"
         break
     fi
 done
 IFS="$oldifs"
 
-oldifs="$IFS"
-IFS=:
-for d in $LIBPATH; do
-    if [ -r "$d/dmenu/routines.sh" ]; then
-        source "$d/dmenu/routines.sh"
-        break
-    fi
-done
-IFS="$oldifs"
-
+if [ -n "${dmenulib-}" ]; then
+    source "$dmenulib"
+else
+    printf "dmenu shell library not found\n" >&2
+    exit 1
+fi
 
 term_cmd=$(my -v terminal)
 
