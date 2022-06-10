@@ -19,6 +19,7 @@
 #
 # Requires 'my terimnal' to print terminal command
 #
+set -u
 
 LIBPATH="$(dirname $0):/usr/lib:/usr/local/lib:$HOME/lib"
 
