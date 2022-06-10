@@ -18,31 +18,24 @@
 # abstract: custom dmenu wrapper for anypinentry
 #
 
-PROGRAM=$(basename $0)
-XRDB="$(xrdb -query | grep "$PROGRAM")"
+LIBPATH="/usr/lib/dmenu:/usr/local/lib/dmenu:$HOME/lib/dmenu:$(dirname $0)"
 
-getxres() {
-    echo "$XRDB" | awk "/$PROGRAM.*$1/ {print \$2}"
-}
+oldifs="$IFS"
+IFS=:
+for d in $LIBPATH; do
+    if [ -r "$d/routines.sh" ]; then
+        dmenulib="$d/routines.sh"
+        break
+    fi
+done
+IFS="$oldifs"
 
-make_dmenu_args() {
-    font=$(getxres font)
-    test -n "$font" && args="-fn $font $args"
-
-    bg=$(getxres background)
-    test -n "$bg" && args="-nb $bg $args"
-
-    fg=$(getxres foreground)
-    test -n "$fg" && args="-nf $fg $args"
-
-    selbg=$(getxres selbackground)
-    test -n "$selbg" && args="-sb $selbg $args"
-
-    selfg=$(getxres selforeground)
-    test -n "$selfg" && args="-sf $selfg $args"
-
-    echo "$args"
-}
+if [ -n "${dmenulib-}" ]; then
+    source "$dmenulib"
+else
+    printf "dmenu shell library not found\n" >&2
+    exit 1
+fi
 
 if ! command -v anypinentry >/dev/null; then
     printf "anypinentry not found\n" >&2
