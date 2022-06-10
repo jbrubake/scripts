@@ -20,49 +20,28 @@
 # Requires 'my terimnal' to print terminal command
 #
 
-PROGRAM=$(basename $0)
-XRDB="$(xrdb -query | grep "$PROGRAM")"
+LIBPATH="$(dirname $0):/usr/lib:/usr/local/lib:$HOME/lib"
 
-getxres() {
-    echo "$XRDB" | awk "/$PROGRAM.*$1/ {print \$2}"
-}
+oldifs="$IFS"
+IFS=:
+for d in $LIBPATH; do
+    if [ -r "$d/dmenu/routines.sh" ]; then
+        source "$d/dmenu/routines.sh"
+        break
+    fi
+done
+IFS="$oldifs"
 
-make_dmenu_args() {
-    font=$(getxres font)
-    test -n "$font" && args="-fn $font $args"
+oldifs="$IFS"
+IFS=:
+for d in $LIBPATH; do
+    if [ -r "$d/dmenu/routines.sh" ]; then
+        source "$d/dmenu/routines.sh"
+        break
+    fi
+done
+IFS="$oldifs"
 
-    bg=$(getxres background)
-    test -n "$bg" && args="-nb $bg $args"
-
-    fg=$(getxres foreground)
-    test -n "$fg" && args="-nf $fg $args"
-
-    selbg=$(getxres selbackground)
-    test -n "$selbg" && args="-sb $selbg $args"
-
-    selfg=$(getxres selforeground)
-    test -n "$selfg" && args="-sf $selfg $args"
-
-    hibg=$(getxres hibackground)  
-    test -n "$selfg" && args="-sf $hifg $args"
-
-    hifg=$(getxres hiforeground)  
-    test -n "$selfg" && args="-sf $hifg $args"
-
-    hiselbg=$(getxres hiselbackground)
-    test -n "$selfg" && args="-sf $hiselfg $args"
-
-    hiselbfg=$(getxres hiselforeground)
-    test -n "$selfg" && args="-sf $hiselfg $args"
-
-    outfg=$(getxres outforeground) 
-    test -n "$selfg" && args="-sf $outfg $args"
-
-    outbg=$(getxres outbackground)
-    test -n "$selfg" && args="-sf $outfg $args"
-
-    echo "$args"
-}
 
 term_cmd=$(my -v terminal)
 
