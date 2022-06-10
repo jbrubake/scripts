@@ -70,20 +70,18 @@ cmd=$(echo "$cmdline" | cut -d' ' -f1)
 if test -n "$cmd" && grep "${cmd/;/}" "$cachefile" 2>&1 >/dev/null; then
     # Trailing ';' means run it in a terminal
     case "$cmdline" in
-        *\;) interm='y' ;;
-        *)   interm='n' ;;
+        *\;)
+            $term_cmd -- bash -ic "
+            __t=\$(date +%s)
+            $cmdline
+            test \$((\$(date +%s) - __t)) -lt 1 &&
+                read -srn1 -p 'Press any key...'
+                            "
+            ;;
+        *)
+            (eval $cmdline &)
+            ;;
     esac
-
-    if test "$interm" == 'y'; then
-        $term_cmd -- bash -ic "
-        __t=\$(date +%s)
-        $cmdline
-        test \$((\$(date +%s) - __t)) -lt 1 &&
-            read -srn1 -p 'Press any key...'
-        "
-    else
-        (eval $cmdline &)
-    fi
 else
     exec "$0" "$@" -p "${cmd/;/} not found:"  < "$cachefile"
 fi
