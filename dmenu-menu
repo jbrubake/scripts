@@ -17,76 +17,126 @@
 #
 # abstract: present a menu based on commands in a config file
 #
+set -u
+LIBPATH="$(dirname $0):/usr/lib:/usr/local/lib:$HOME/lib"
 
-PROGRAMNAME=${0##*/}
-MENUFILEDIR="${XDG_CONFIG_DIR:-$HOME/.config}/dmenu-menu"
+oldifs="$IFS"
+IFS=:
+for d in $LIBPATH; do
+    if [ -r "$d/dmenu/routines.sh" ]; then
+        source "$d/dmenu/routines.sh"
+        break
+    fi
+done
+IFS="$oldifs"
 
-if test "$1" = "-h"; then
-    cat <<EOF
-Usage: ${0##*/} [-h] menu-file [DMENU OPTIONS]
+# Documentation {{{1
+#
+VERSION='1.0'
 
--h      Show this help
+print_help() {
+    cat <<END >&2
+Usage: $0 [OPTION] [INTERFACE]
+
+Present a menu based on commands in a config file
+
+  -h   	    display this help and exit
+  -v        output version information and exit
 
 Menu file format:
-    COMMANDS[<menu item>]="<cmd>"
-    FG=<dmenu -nf>
-    BG=<dmenu -nb>
-    SELFG=<dmenu -sf>
-    SELBG=<dmenu -sb>
-    HIFG=<dmenu -nhf>
-    HIBG=<dmenu -nhb>
-    SELHIFG=<dmenu -shf>
-    SELHIBG=<dmenu -shb>
-    BORDER=<dmenu -bw>
-    FONT=<dmenu -fn>
-    PROMPT=<dmenu -p
-    HEIGHT=<dmenu -h>
-    POSITION=<center | bottom>
-EOF
-    exit 0
-fi
 
-if test -z "$1"; then
-    printf "%s: No menu file given.\n" "$PROGRAMNAME"
-    exit 1
-fi
-MENUFILE="$MENUFILEDIR/$1"
-shift
-if ! test -r "$MENUFILE"; then
-    printf "%s: %s not found.\n" "$PROGRAMNAME" "$1"
-    exit 1
-fi
+[Commands]
+cmd1 = <commands>
+cmd2 = <commands>
 
-declare -A COMMANDS
+[Config]
+prompt = "prompt string"
+END
+}
 
-. "$MENUFILE"
+print_version() {
+    cat <<END >&2
+$0 $VERSION
+Copyright (C) 2021 Orion Arts
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
 
-test -n "$FG" && FG="-nf $FG"
-test -n "$BG" && BG="-nb $BG"
-test -n "$SELFG" && SELFG="-sf $SELFG"
-test -n "$SELBG" && SELBG="-sb $SELBG"
-test -n "$HIFG" && HIFG="-nhf $HIFG"
-test -n "$HIBG" && HIBG="-nhb $HIBG"
-test -n "$SELHIFG" && SELHIFG="-shf $SELHIFG"
-test -n "$SELHIBG" && SELHIBG="-shb $SELHIBG"
-test -n "$BORDER" && BORDER="-bw $BORDER"
-test -n "$FONT" && FONT="-fn $FONT"
-test -n "$PROMPT" && PROMPT="-p $PROMPT"
-test -n "$HEIGHT" && HEIGHT="-h $HEIGHT"
+Written by Jeremy Brubaker.
+END
+}
 
-case "$POSITION" in
-    center) POSITION="-c" ;;
-    bottom) POSITION="-b" ;;
-    *) POSITION=
+# Process options {{{1
+#
+MENUDIR="${XDG_CONFIG_DIR:-$HOME/.config}/dmenu-menu"
+
+case "${1-}" in
+    -h | --help) print_help; exit 0 ;;
+         --version) print_version; exit 0 ;;
+    -*) printf "Invalid option: %s\n" "$1" >&2; print_help >&2; exit 1 ;;
+    '') printf "%s: No menu file given.\n" "$0"; exit 1 ;;
 esac
 
-INPUT=$(for key in "${!COMMANDS[@]}" ; do
-  echo "$key"
-done | dmenu -i -S $FG $BG $SELFG $SELBG $HIFG $HIBG $SELHIFG $SELHIBG $PROMPT $BORDER $FONT $HEIGHT $POSITION -l "${#COMMANDS[*]}" "$@" )
-
-if [[ -n "${COMMANDS[$INPUT]}" ]] ; then
-  ${COMMANDS[$INPUT]}
+if [ -r "$1" ]; then
+    MENUFILE="$1"
+elif [ -r "$MENUDIR/$1" ]; then
+    MENUFILE="$MENUDIR/$1"
+elif [ -r "$MENUDIR/$1.ini" ]; then
+    MENUFILE="$MENUDIR/$1.ini"
+else
+    printf "%s: %s not found.\n" "$0" "$1"
+    exit 1
 fi
+shift
 
-exit $?
+# Get menu list and configure options {{{1
+#
+section=
+choices=
+lineno=0
+declare -A COMMANDS
+while read -r line; do
+    lineno=$((lineno + 1))
+
+    # Which section are we in?
+    case "${line^^}" in
+        \#* | '')                    continue ;;
+        \[CONFIG\])   section='cfg'; continue ;;
+        \[COMMANDS\]) section='cmd'; continue ;;
+    esac
+
+    # Split fields and strip leading/trailing whitespace
+    key=$(echo "$line" | cut -d= -f1  | sed 's/^\s*\(.*\)\s*$/\1/')
+    val=$(echo "$line" | cut -d= -f2- | sed 's/^\s*\(.*\)\s*$/\1/')
+
+    # Strip surrounding quotes
+    # BUG: Does not handle having words at start and end separately quoted
+    # BUG: such as 'foo' blah "bar" or "foo" blah "bar"
+    case "$val" in
+        \'*\' | \"*\")
+            val=$(echo "$val" | sed -e 's/^"\(.*\)"$/\1/' -e "s/^'\(.*\)'$/\1/")
+            ;;
+        \'*\" | \"*\')
+            printf "Ignoring quoting error on line %d (%s)\n" "$lineno" "$line" >&2
+            continue
+            ;;
+    esac
+
+    if [ "$section" = "cmd" ]; then
+        choices="$choices$key\n"
+        COMMANDS[$key]="$val"
+    elif [ "$section" = "cfg" ]; then
+        case "${key^^}" in
+            PROMPT) prompt=$val ;;
+        esac
+    fi
+done < "$MENUFILE"
+
+# Main {{{1
+#
+choice=$(echo -e "$choices" | dmenu $(make_dmenu_args) -i -p "${prompt-}" -l "${#COMMANDS[*]}" "$@")
+
+if [ -n "$choice" ]; then
+    ${COMMANDS[$choice]}
+fi
 
