@@ -64,10 +64,10 @@ then
 elif [ -n "$gnome_running" ] && [ -x /usr/bin/pinentry-gnome3 ]
 then
 	export PINENTRY_BINARY="/usr/bin/pinentry-gnome3"
-# otherwise test if dmenu-pinentry is installed
-elif [ -n "$DISPLAY" ] && command -v dmenu-pinentry >/dev/null;
+# otherwise test if pinentry-dmenu is installed
+elif [ -n "$DISPLAY" ] && command -v pinentry-dmenu >/dev/null;
 then
-	export PINENTRY_BINARY="dmenu-pinentry"
+	export PINENTRY_BINARY="pinentry-dmenu"
 # otherwise test if pinentry-gtk-2 is installed
 elif [ -n "$DISPLAY" ] && [ -x /usr/bin/pinentry-gtk-2 ]
 then
