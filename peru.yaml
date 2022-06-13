@@ -16,9 +16,11 @@ imports:
 
 git module anypinentry:
   url: https://github.com/phenax/any-pinentry
-  pick: anypinentry
-  executable: anypinentry # abstract: A flexible pinentry script for gpg. Uses dmenu by default
-  rev: c56ca54c5c8606b88cafe72d941cfcddfddaffc3
+  move:
+    anypinentry: pinentry-any
+  pick: pinentry-any
+  executable: pinentry-any # abstract: A flexible pinentry script for gpg. Uses dmenu by default
+  rev: 1b958661c9081ac92f417ce44da7a55a76360db6
 
 git module wttr:
   url: https://github.com/chubin/wttr.in
