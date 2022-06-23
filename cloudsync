@@ -2,7 +2,6 @@
 
 filter_dir="$HOME/.config/rclone/filters"
 sync_dir="$HOME/.sync"
-logfile="$HOME/var/log/rclonesync.log"
 
 if ! getent ahosts www.google.com >/dev/null; then
     printf "%s:      No internet connction. Aborting.\n" "$(date "+%Y-%m-%d %T")" >> "$logfile"
@@ -32,7 +31,7 @@ while IFS= read line; do
     # echo local_dir $local_dir
     # echo filter_file $filter_file
     # echo
-    rclonesync $opt --verbose --filters-file="$filter_file" "$remote:$remote_dir" "$local_dir" >> "$logfile" 2>&1
+    rclonesync $opt --verbose --filters-file="$filter_file" "$remote:$remote_dir" "$local_dir"
 
 done <<END
 # remote:remote_dir
