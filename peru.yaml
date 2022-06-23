@@ -9,6 +9,7 @@ imports:
   ix: ./
   cheat_dot_sh: ./
   image2ascii: ./
+  octet-filter: ./
   imagick_type_gen: ./
   rename: ./
   ben_alman: ./
@@ -80,6 +81,11 @@ curl module image2ascii:
   url: https://www.spinnaker.de/mutt/image2ascii
   executable: image2ascii # abstract: Convert iamges to ASCII (useful for Mutt .mailcap)i
   sha1: 9792627c83f08fcf3e6e0892bdabfac4656e116e
+
+curl module octet-filter:
+  url: https://www.spinnaker.de/mutt/octet-filter
+  executable: octet-filter # abstract: Last-resort filter to convert any octet-stream data to ASCII (useful for Mutt .mailcap)
+  sha1: e97f99166470b085ff5960cad1573085759f4c01
 
 curl module imagick_type_gen:
   url: https://legacy.imagemagick.org/Usage/scripts/imagick_type_gen
