@@ -18,13 +18,33 @@
 # abstract: use dmenu to select from open windows
 #
 
-wmctrl -x -a $(
-    wmctrl -lx |
+LIBPATH="/usr/lib/dmenu:/usr/local/lib/dmenu:$HOME/lib/dmenu:$(dirname $0)"
+
+oldifs="$IFS"
+IFS=:
+for d in $LIBPATH; do
+    if [ -r "$d/routines.sh" ]; then
+        dmenulib="$d/routines.sh"
+        break
+    fi
+done
+IFS="$oldifs"
+
+if [ -n "${dmenulib-}" ]; then
+    source "$dmenulib"
+else
+    printf "dmenu shell library not found\n" >&2
+    exit 1
+fi
+
+list=$(wmctrl -lx |
     awk '{print $3}' |
     cut -d'.' -f2 |
     tr '[:upper:]' '[:lower:]' |
     sort |
-    uniq |
-    dmenu "$@"
-)
+    uniq)
+
+num=$(($(printf "$list" | tr -dc '\n' | wc -m)+1))
+
+wmctrl -x -a $(printf "$list" | dmenu $(make_dmenu_args) -l "$num" "$@")
 
