@@ -24,14 +24,14 @@ while IFS= read line; do
     local_dir="$sync_dir/$remote/$remote_dir"
     filter_file="$(echo "$remote_dir" | tr ' /' '_.')"
     filter_file="$filter_dir/$remote/$filter_file"
+    if [ -r "$filter_file" ]; then
+        filter="--filters-file=$filter_file"
+    else
+        filter=
+    fi
 
     printf "%s\n" "Syncing $remote:$remote_dir..."
-    # echo remote $remote
-    # echo remote_dir $remote_dir
-    # echo local_dir $local_dir
-    # echo filter_file $filter_file
-    # echo
-    rclonesync $opt --verbose --filters-file="$filter_file" "$remote:$remote_dir" "$local_dir"
+    rclonesync $opt --verbose $filter "$remote:$remote_dir" "$local_dir"
 
 done <<END
 # remote:remote_dir
