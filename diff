@@ -18,7 +18,7 @@
 # abstract: pipe diff(1) to diff-so-fancy if it exists
 #
 
-if type diff-so-fancy 2>&1 >/dev/null; then
+if command -v diff-so-fancy >/dev/null; then
     /usr/bin/diff -u "$@" | diff-so-fancy
     (exit ${PIPESTATUS[0]}) # Exit with $? from diff
 else
