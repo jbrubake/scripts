@@ -94,7 +94,7 @@ for host in $(seq 1 254); do
             fi
         } &
     else
-       printf "trying $net.$HOST..."
+       printf "trying $net.$host..."
        if ping -c1 "$net.$host" >/dev/null 2>&1; then
            printf "\033[1;32malive\033[0m"
        fi
