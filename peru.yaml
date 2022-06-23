@@ -81,7 +81,7 @@ curl module cheat_dot_sh:
 
 curl module image2ascii:
   url: https://www.spinnaker.de/mutt/image2ascii
-  executable: image2ascii # abstract: Convert iamges to ASCII (useful for Mutt .mailcap)i
+  executable: image2ascii # abstract: Convert images to ASCII (useful for Mutt .mailcap)
   sha1: 9792627c83f08fcf3e6e0892bdabfac4656e116e
 
 curl module octet-filter:
