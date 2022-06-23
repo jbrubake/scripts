@@ -10,6 +10,7 @@ imports:
   cheat_dot_sh: ./
   image2ascii: ./
   octet-filter: ./
+  vcard-filter: ./
   imagick_type_gen: ./
   rename: ./
   ben_alman: ./
@@ -86,6 +87,11 @@ curl module octet-filter:
   url: https://www.spinnaker.de/mutt/octet-filter
   executable: octet-filter # abstract: Last-resort filter to convert any octet-stream data to ASCII (useful for Mutt .mailcap)
   sha1: e97f99166470b085ff5960cad1573085759f4c01
+
+curl module vcard-filter:
+  url: https://www.spinnaker.de/mutt/vcard-filter
+  executable: vcard-filter # abstract: Convert VCards to ASCII (useful for Mutt .mailcap)
+  sha1: 686be013d2aad0e66ac7a32722d68d656fef3fdc
 
 curl module imagick_type_gen:
   url: https://legacy.imagemagick.org/Usage/scripts/imagick_type_gen
