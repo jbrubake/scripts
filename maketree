@@ -1,0 +1,9 @@
+#!/bin/sh
+
+IMAGEVIEWER=feh
+
+make -Bnd "$1" | \
+    make2graph --format d | \
+    dot -Tpng | \
+    $IMAGEVIEWER -
+
