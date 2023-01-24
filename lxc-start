@@ -1,0 +1,4 @@
+#!/bin/sh
+
+systemd-run --user --scope -p "Delegate=yes" -- /usr/bin/lxc-start "$@"
+
