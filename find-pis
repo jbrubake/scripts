@@ -23,10 +23,12 @@
 pi_mac="b8:27:eb"
 
 # get broadcast addresses for each network
-nets=$(ip address show | awk '/inet / {printf "%s/%s", $4, gensub(".*/", "", 1, $2)}')
+nets=$(ip address show | awk '/inet 127/ {next} \
+                              /inet / {printf "%s/%s\n", $4, gensub(".*/", "", 1, $2)}')
 
 # loop over networks running the scan
 for n in $nets; do
+  printf "Scanning %s...\n" $n >&2
   # first find SSH machines silently to prime the arp table
   nmap -T5 -n -p 22 --min-parallelism 100 "$n" > /dev/null
 done
