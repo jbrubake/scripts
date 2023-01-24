@@ -35,6 +35,7 @@ elif command -v import; then
     IMPORT="import"
 else
     printf "GraphicsMagic or ImageMagick required but not found.\n" >&2
+fi
 
 # Check if the dir to store screenshots exists
 if [ ! -d "$DIR" ]; then mkdir -p "$DIR"; fi
