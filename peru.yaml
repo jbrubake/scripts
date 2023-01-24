@@ -31,7 +31,7 @@ git module wttr:
     share/bash-function.txt: wttr
   pick: wttr
   executable: wttr # abstract: The right way to check the weather 
-  rev: 0097d022e8d36dd819ad2986bede818a7963ee1d
+  rev: 60e1a3bf68180fa7e50f0434b50bda5d7fd51844
 
 git module mutt_bgrun:
   url: https://github.com/RichiH/mutt_bgrun
@@ -62,7 +62,7 @@ git module passmenu:
     contrib/dmenu/passmenu: passmenu
   pick: passmenu
   executable: passmenu # abstract: A dmenu-based interface to pass(1)
-  rev: c4d8a1d815e79ddd89a85d3e36a41d29f0475771
+  rev: dddca73694d1ecc2381cde6c02a9d1466cf0ab41
 
 curl module ix:
   url: http://ix.io/client
@@ -97,6 +97,7 @@ curl module vcard-filter:
 curl module zxdvi:
   url: https://www.spinnaker.de/mutt/zxdvi
   executable: zxdvi # abstract: View gzipped DVI, PS and PDF files (useful for Mutt .mailcap)
+  sha1: a2b3306f834621995f22af9a8bccdd0bf5dc56c1
 
 curl module imagick_type_gen:
   url: https://legacy.imagemagick.org/Usage/scripts/imagick_type_gen
