@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Hack around packer-plugin-lxc Issue #5
+#     (https://github.com/hashicorp/packer-plugin-lxc/issues/5)
+# Source: https://github.com/hashicorp/packer-plugin-lxc/issues/5#issuecomment-927375007
+
+if [[ "${@: -1}" == "./rootfs" ]]; then
+    # Override params to drop rootfs
+	set -- "${@:1:1}" "${2}/rootfs" "${@:3:2}" "--exclude=./dev/log" "${@:6:$(($# - 5 - 1 ))}" "." 
+
+	echo "Running tar in lxc namespace: '${@}'"
+
+    # Run the original command in uid/gid mapped enviroment - root mapped uid
+    # must have write permission in output director
+	lxc-usernsexec -m b:0:1000:1 -m b:1:100001:65535 -- /usr/bin/tar ${@}
+else
+    # Handles non-export commands 
+	/usr/bin/tar ${@}
+fi
+
