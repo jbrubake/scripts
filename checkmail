@@ -20,12 +20,14 @@
 # Based on https://bostonenginerd.com/posts/notmuch-of-a-mail-setup-part-1-mbsync-msmtp-and-systemd/
 #
 
+# shellcheck disable=SC1090
+. "$LIBSH"
+
+@import net
+
 LOGDIR="$HOME/var/log"
 
-ping -c1 1.1.1.1 2>&1 >/dev/null
-if test $? != 0; then
-    exit $?
-fi
+net::has_internet || stdio::die 1 "Cannot sync email: no internet connection"
 
 msmtp-queue -r
 date         >> "$LOGDIR/mbsync.log"

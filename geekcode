@@ -17,6 +17,10 @@
 #
 # abstract: convert a commented geekcode file into a proper geekcode
 #
+# shellcheck disable=SC1090
+. "$LIBSH"
+
+@import stdio
 
 # Defaults {{{1
 #
@@ -70,10 +74,8 @@ done
 
 # Generate geekcode {{{1
 #
-if [ ! -r "$GEEKCODE" ]; then
-    printf "%s not found. Exiting!\n" "$GEEKCODE" >&2
-    exit 1
-fi
+[ -r "$GEEKCODE" ] || 
+    stdio::die 1 "%s not found. Exiting!" "$GEEKCODE"
 
 if [ "$block" = "y" ]; then
     version=$(head -1 "$GEEKCODE" | sed -e 's/^# *//')

@@ -17,30 +17,14 @@
 #
 # abstract: custom dmenu wrapper for anypinentry
 #
+# shellcheck disable=SC1090
+. "$LIBSH"
 
-LIBPATH="/usr/lib/dmenu:/usr/local/lib/dmenu:$HOME/lib/dmenu:$(dirname $0)"
+@import dmenu
+@import stdio
+@import stdlib
 
-oldifs="$IFS"
-IFS=:
-for d in $LIBPATH; do
-    if [ -r "$d/routines.sh" ]; then
-        dmenulib="$d/routines.sh"
-        break
-    fi
-done
-IFS="$oldifs"
+stdlib:have pinentry-any || stdio::die 1 "pinentry-any not found"
 
-if [ -n "${dmenulib-}" ]; then
-    source "$dmenulib"
-else
-    printf "dmenu shell library not found\n" >&2
-    exit 1
-fi
-
-if ! command -v pinentry-any >/dev/null; then
-    printf "pinentry-any not found\n" >&2
-    exit 1
-fi
-
-pinentry-any "$@" --prompt "dmenu $(make_dmenu_args) -c -P -p \"\$AP_PROMPT\""
+pinentry-any "$@" --prompt "dmenu $(dmenu::make_args) -c -P -p \"\$AP_PROMPT\""
 

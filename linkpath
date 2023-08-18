@@ -13,14 +13,26 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
-# Copyright 2015 Ray Donnelly <https://stackoverflow.com/users/3257826/ray-donnelly>
+# Copyright 2023 Jeremy Brubaker <orionarts.io>
 #
 # abstract: print the absolute path of the target of a symbolic link
 #
 # Usage: linkpath LINK
+#
+# shellcheck disable=SC1090
+. "$LIBSH"
 
-realfile=$( ls -l $1 | awk '{print $11}' )
-startdir=$( dirname $1 )
+@import stdlib
+@import error
+@import stdio
 
-printf "%s\n" $( cd $startdir/$( dirname $realfile); pwd )/$( basename $realfile )
+if [ $# -ne 1 ]; then
+    stdio::die 1 "%s: missing operand" "$0"
+fi
+
+stdlib::realpath "$1"
+case $? in
+    0) exit ;;
+    *) stdio::die 1 "%s: %s: %s" "$0" "$1" "$(error::strerror "$?")" ;;
+esac
 

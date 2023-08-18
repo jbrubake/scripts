@@ -18,10 +18,13 @@
 # abstract: sync calendars
 #
 
-echo >/dev/tcp/8.8.8.8/53 >/dev/null
-if test $? != 0; then
-    exit $?
-fi
+# shellcheck disable=SC1090
+. "$LIBSH"
+
+@import net
+@import stdio
+
+net::has_internet || stdio::die 1 "Cannot sync calendar: no internet connection"
 
 vdirsyncer sync
 

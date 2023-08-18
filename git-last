@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,25 +17,10 @@
 #
 # abstract: print out last commit message for each file in tree
 #
+# shellcheck disable=SC1090
+. "$LIBSH"
 
-if test $( tput colors ) -ge 0; then
-    FG() {
-        tput setaf $1
-    }
-
-    BG()
-    {
-        tput setab $1
-    }
-else
-    FG() {
-        :
-    }
-
-    BG() {
-        :
-    }
-fi
+@import FG from color
 
 git ls-tree --name-only HEAD | \
     while read -r f; do

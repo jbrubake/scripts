@@ -19,8 +19,12 @@
 #
 # Requires dialog(1) for the output and dnf(1) to get a list of packages
 #
+# shellcheck disable=SC1090
+. "$LIBSH"
 
-### Configurable settings
+@import stdlib
+@import stdio
+
 ### Configurable settings {{{1
 #
 # TODO: configure with options
@@ -31,19 +35,10 @@ TIME_MS_MIN=25
 TIME_MS_MAX=100
 BOX_LINES=6
 BOX_COLS=65 # This should be fairly large to keep package names visible
-### End configurable settings
-
-PROGNAME=$(basename "$0")
-
-random()
-{
-    awk -v min="$1" -v max="$2" 'BEGIN{srand(); print int(min+rand()*(max-min+1))}'
-}
 
 get_pkg_name() { # {{{1
     # Get a random letter
-    c=$(random 97 122) # 97-122: lowercase letter range
-    c=$(printf \\$(printf '%03o' $c))
+    c=$(stdlib::random_str 1)
 
     # Get a random package name that starts with that letter
     dnf list 2>/dev/null \
@@ -53,22 +48,10 @@ get_pkg_name() { # {{{1
 
 # Main {{{1
 #
-check_command()
-{
-    if ! command -v $1 >/dev/null; then
-        return 1
-    fi
-}
-
-if !  check_command dialog; then
-    printf "Missing dialog(1). Exiting\n" >&2
-    exit 1
-fi
-
-if !  check_command dnf; then
-    printf "Missing dnf(1). Exiting\n" >&2
-    exit 1
-fi
+for c in dialog dnf shuf mktemp foo; do
+    stdlib::have "$c" ||
+        stdio::die 1 "$c not found in path. Exiting"
+done
 
 TMPFILE=$(mktemp "$(basename "$0").XXXXXX")
 trap 'rm -f "$TMPFILE"' EXIT
@@ -89,12 +72,12 @@ while true; do
         echo $i
 
         # Increase % by last change +/- PERCENT_DELTA%
-        delta=$(random $((delta-PERCENT_DELTA)) $((delta+PERCENT_DELTA)))
+        delta=$(stdlib::random $((delta-PERCENT_DELTA)) $((delta+PERCENT_DELTA)))
         test "$delta" -lt "$PERCENT_DELTA_MIN" && delta="$PERCENT_DELTA_MIN"
         i=$(( i+delta ))
 
         # Delay a random time
-        time=$(random $TIME_MS_MIN $TIME_MS_MAX)
+        time=$(stdlib::random $TIME_MS_MIN $TIME_MS_MAX)
         sleep $((TIME_MS_MAX / time));
     done | dialog --gauge "$pkg" $BOX_LINES $BOX_COLS;
 

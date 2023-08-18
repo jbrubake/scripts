@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,25 +19,16 @@
 #
 # Requires 'my terimnal' to print terminal command
 #
+# shellcheck disable=SC1090
+source "$LIBSH"
+
+@import dmenu
+@import stdio
+@import stdlib
+
 set -u
-LIBPATH="/usr/lib/dmenu:/usr/local/lib/dmenu:$HOME/lib/dmenu:$(dirname $0)"
 
-oldifs="$IFS"
-IFS=:
-for d in $LIBPATH; do
-    if [ -r "$d/routines.sh" ]; then
-        dmenulib="$d/routines.sh"
-        break
-    fi
-done
-IFS="$oldifs"
-
-if [ -n "${dmenulib-}" ]; then
-    source "$dmenulib"
-else
-    printf "dmenu shell library not found\n" >&2
-    exit 1
-fi
+stdlib::have my || stdio::die 1 "'my' not found"
 
 term_cmd=$(my -v terminal)
 

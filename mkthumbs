@@ -27,17 +27,17 @@
 # EXAMPLE: to scale down your cwd .jpg's by a factor of 8:
 #          % ./mkthumbs . 8
 #
-# $Id: mkthumbs,v 1.0 2001.01.28 14:50:59 tkralidi Exp $
+# shellcheck disable=SC1090
+. "$LIBSH"
 
-if [ $# -ne 2 ]; then
-    echo "Usage: $0 [dir] [scalefac]"
-    exit 1
-fi
+@import stdio
+@import stdlib
 
-DJPEG=`which djpeg`
-CJPEG=`which cjpeg`
+[ $# -eq 2 ] || stdio::die 1 "Usage: %s [dir] [scalefac]" "$0"
 
-echo "Working on .jpg files in $1"
+for b in djpeg cjpeg; do
+    stdlib::have "$b" || stdio::die 1 "'%s' is required" "$b"
+done
 
 for i in "$1"/*.jpg; do
     if [ -f "$i" ]; then
@@ -45,9 +45,7 @@ for i in "$1"/*.jpg; do
         djpeg -scale "1/$2" "$i" | cjpeg > "$1/th.$i"
         printf "th.%s created\n" "$i"
     else
-        echo "No files in $1 of type .jpg"
-        echo "Exiting"
-        exit 2
+        stdio::die 2 "No JPEG files in %s. Exiting" "$1"
     fi
 done
 

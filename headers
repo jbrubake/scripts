@@ -19,14 +19,22 @@
 #
 # Requires: curl or wget
 #
+# shellcheck disable=SC1090
+. "$LIBSH"
 
-if command -v curl >/dev/null; then
+@import stdlib
+@import stdio
+
+if stdlib::have curl; then
     cmd="curl -sv"
-elif command -v wget >/dev/null; then
+elif stdlib::have wget; then
     cmd="wget -qSO-"
 else
-    printf "Cannot find curl or wget. Exiting\n" >&2
+    stdio::die 1 "Cannot find curl or wget. Exiting"
 fi
+
+[ -n "$1" ] ||
+    stdio::die 1 "No url provided"
 
 # Send stderr to stdout because that's what we're interested in
 $cmd "$@" 2>&1 >/dev/null | 

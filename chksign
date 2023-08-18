@@ -20,17 +20,18 @@
 # Usage: chksign <filename> <signers email>
 #
 
+# shellcheck disable=SC1090
+. "$LIBSH"
+
+@import stdio
+
 allowed_signers="$HOME/.ssh/allowed_signers"
 
-if [ -z "$1" ]; then
-    printf "No filename to check provided. Exiting\n" >&2
-    exit 1
-fi
+test -n "$1" || \
+    stdio::die 1 "No filename to check provided. Exiting"
 
-if [ -z "$2" ]; then
-    printf "No signer email provided. Exiting\n" >&2
-    exit 1
-fi
+test -n "$2" || \
+    stdio::die 1 "No signer email provided. Exiting"
 
 sig="$1.sig"
 

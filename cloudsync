@@ -18,16 +18,22 @@
 # abstract: use rclonesync to sync cloud storage
 #
 
+# shellcheck disable=SC1090
+. "$LIBSH"
+
+@import stdio
+@import net
+
 filter_dir="$HOME/.config/rclone/filters"
 sync_dir="$HOME/.sync"
 
-if ! getent ahosts www.google.com >/dev/null; then
-    printf "%s:      No internet connction. Aborting.\n" "$(date "+%Y-%m-%d %T")" >> "$logfile"
-    exit
-fi
+net::has_internet || \
+    stdio::die 1 "%s:      No internet connction. Aborting." "$(date "+%Y-%m-%d %T")" >> "$logfile"
 
 case $1 in
     --first-sync) opt="--first-sync" ;;
+    "") ;;
+    *) stdio::die 1 "Invalid option: %s" "$1" ;;
 esac
 
 while IFS= read -r line; do
@@ -46,8 +52,8 @@ while IFS= read -r line; do
         filter=
     fi
 
-    printf "%s\n" "Syncing $remote:$remote_dir..."
-    rclone bisync $opt --verbose $filter "$remote:$remote_dir" "$local_dir"
+    stdio::mesg 0 "%s" "Syncing $remote:$remote_dir..."
+    rclone bisync $opt --verbose "$filter" "$remote:$remote_dir" "$local_dir"
 
 done <<END
 # remote:remote_dir

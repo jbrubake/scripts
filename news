@@ -19,11 +19,19 @@
 #
 # -l list news items only
 #
+# shellcheck disable=SC1090
+. "$LIBSH"
+
+@import stdio
+@import FX from color
+@import FG from color
+FG=$(FG 13)
 
 NEWSDIR=/var/lib/news
 NEWSTIME=$HOME/.news_time
 
-cd "$NEWSDIR" # Find news
+cd "$NEWSDIR" || # Find news
+    stdio::die 1 "/var/lib/news not found"
 
 case $1 in
     -l) list=1 ;; # list only
@@ -36,7 +44,7 @@ for f in $( (find "$NEWSDIR" -mindepth 1 -printf "%T+\t%p\n";
     case $f in
         *.news_time) break ;; # Everything else has been read
         *)
-            find "$NEWSDIR" -name "$(basename "$f")" -printf "%p: (%u) %t\n"
+            find "$NEWSDIR" -name "$(basename "$f")" -printf "$FG%p: (%u) %t$(FX reset)\n"
 
             # Print news item unless -l specified
             if test -z $list; then

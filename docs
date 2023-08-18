@@ -17,6 +17,12 @@
 #
 # abstract: search multiple documentation databases and show the first one found
 #
+# shellcheck disable=SC1090
+. "$LIBSH"
+
+@import stdio
+@import stdlib
+
 # Documentation {{{1
 #
 VERSION='1.0'
@@ -174,18 +180,14 @@ while getopts ':s:hv' c; do
 done
 shift $((OPTIND-1))
 
-if [ $# -eq 0 ]; then
-    printf "No help topic requested\n" >&2
-    exit 1
-fi
+[ $# -eq 0 ] && stdio::die 1 "No help topic requested"
 
 # Exit if web searches are allowed but 'ddgr' not found
-if ! command -v ddgr >/dev/null; then
-    case "$srcs" in
-        *search*) printf "'ddgr' required for web searches\n" >&2; exit 1;;
-        *) ;;
-    esac
-fi
+case "$srcs" in
+    *search*)
+        stdlib::have ddgr || stdio::die 1 "'ddgr' required for web searches" ;;
+esac
+
 # Main {{{1
 #
 # Ignore info and readme for requests that include multiple words
@@ -220,6 +222,6 @@ while [ -n "$srcs" ]; do
     test $? -eq 0 && exit 0
 done
 
-printf "No documentation for \"%s\" found\n" "$@" >&2
+stdio::mesg 0 "No documentation for \"%s\" found" "$@"
 exit 1
 

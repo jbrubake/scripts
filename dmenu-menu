@@ -17,25 +17,13 @@
 #
 # abstract: present a menu based on commands in a config file
 #
+# shellcheck disable=SC1090
+source "$LIBSH"
+
+@import dmenu
+@import stdio
+
 set -u
-LIBPATH="/usr/lib/dmenu:/usr/local/lib/dmenu:$HOME/lib/dmenu:$(dirname $0)"
-
-oldifs="$IFS"
-IFS=:
-for d in $LIBPATH; do
-    if [ -r "$d/routines.sh" ]; then
-        dmenulib="$d/routines.sh"
-        break
-    fi
-done
-IFS="$oldifs"
-
-if [ -n "${dmenulib-}" ]; then
-    source "$dmenulib"
-else
-    printf "dmenu shell library not found\n" >&2
-    exit 1
-fi
 
 # Documentation {{{1
 #
@@ -83,7 +71,7 @@ case ${1-} in
     -h | --help)    print_help; exit 0 ;;
          --version) print_version; exit 0 ;;
     -*) print_help "Invalid option: $1"; exit 1 ;;
-    '') printf "%s: No menu file given.\n" "$0"; exit 1 ;;
+    '') stdio::die 1 "%s: No menu file given." "$0" ;;
 esac
 
 if [ -r "$1" ]; then
@@ -93,8 +81,7 @@ elif [ -r "$MENUDIR/$1" ]; then
 elif [ -r "$MENUDIR/$1.ini" ]; then
     MENUFILE="$MENUDIR/$1.ini"
 else
-    printf "%s: %s not found.\n" "$0" "$1"
-    exit 1
+    stdio::die 1 "%s: %s not found." "$0" "$1"
 fi
 shift
 
@@ -126,7 +113,7 @@ while read -r line; do
             val=$(echo "$val" | sed -e 's/^"\(.*\)"$/\1/' -e "s/^'\(.*\)'$/\1/")
             ;;
         \'*\" | \"*\')
-            printf "Ignoring quoting error on line %d (%s)\n" "$lineno" "$line" >&2
+            stdio::warn "Ignoring quoting error on line %d (%s)" "$lineno" "$line"
             continue
             ;;
     esac
