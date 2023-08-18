@@ -1,0 +1,8 @@
+#!/bin/sh
+#
+# Add clipboard contents as a buku bookmark
+#
+# Place in PATH and createt a keybinding to run bukuadd
+
+xsel | buku -a
+
