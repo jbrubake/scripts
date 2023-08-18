@@ -23,7 +23,7 @@ git module anypinentry:
     anypinentry: pinentry-any
   pick: pinentry-any
   executable: pinentry-any # abstract: A flexible pinentry script for gpg. Uses dmenu by default
-  rev: 1b958661c9081ac92f417ce44da7a55a76360db6
+  rev: 3302995faca21c4b003a517c4dae12ef8d7f7971
 
 git module wttr:
   url: https://github.com/chubin/wttr.in
@@ -31,7 +31,7 @@ git module wttr:
     share/bash-function.txt: wttr
   pick: wttr
   executable: wttr # abstract: The right way to check the weather 
-  rev: 60e1a3bf68180fa7e50f0434b50bda5d7fd51844
+  rev: 6b050470bcee33d265439b4e6df20e043cc621ad
 
 git module mutt_bgrun:
   url: https://github.com/RichiH/mutt_bgrun
@@ -43,7 +43,7 @@ git module mutt-trim:
   url: https://github.com/Konfekt/mutt-trim
   pick: mutt-trim
   executable: mutt-trim # abstract: unclutter and normalize quoted text in an e-mail 
-  rev: 08ef5faf07b06b9abda7909f5b15cf84150f821a
+  rev: 856fdeef2b14a0444188fb4af25912e980215763
 
 git module emojify:
   url: https://github.com/mrowa44/emojify
@@ -62,7 +62,7 @@ git module passmenu:
     contrib/dmenu/passmenu: passmenu
   pick: passmenu
   executable: passmenu # abstract: A dmenu-based interface to pass(1)
-  rev: dddca73694d1ecc2381cde6c02a9d1466cf0ab41
+  rev: 28cec11f1dbe6c4273d30370af45b69c9f408386
 
 curl module ix:
   url: http://ix.io/client
