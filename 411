@@ -17,5 +17,70 @@
 #
 # abstract: search personal phonebook for a pattern
 #
+# shellcheck disable=SC1090
+. "$LIBSH"
 
-grep -i "$*" $HOME/lib/phonebook
+@import stdio
+@import getopt
+
+# Defaults {{{1
+#
+VERSION='1.0'
+PHONEBOOK=${XDG_CONFIG_HOME:-"$HOME/etc"}/phonebook
+
+# Documentation {{{1
+#
+# shellcheck disable=SC2120
+print_help() (
+    [ -n "$1" ] && printf "%s\n" "$1"
+
+    cat <<EOF
+Usage: $(basename "$0") [OPTION] STRING
+Look for an entry in a phonebook
+
+STRING is the string to search for
+
+ -v | --version display version info and exit
+ -h | --help    display this help and exit
+EOF
+) >&2
+
+print_version() (
+    cat <<EOF
+$(basename "$0") $VERSION
+
+Copyright (C) 2014 Orion Arts
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Jeremy Brubaker.
+EOF
+) >&2
+
+# Process options {{{1
+#
+parse_error() {
+    case $2 in
+        unknown) print_help "unknown option: $3" ;;
+        required) print_help "$3 requires an argument" ;;
+    esac
+    return 1
+}
+
+parser() {
+    setup REST error:parse_error
+    param PHONEBOOK      -f --phonebook -- "phonebook"
+    disp  :print_help    -h --help
+    disp  :print_version -v --version
+}
+
+eval "$(getoptions parser - "$0")"
+
+[ -r "$PHONEBOOK" ] || 
+    stdio::die 1 "%s: phonebook not found: %s" "$0" "$PHONEBOOK"
+
+# Main {{{1
+#
+grep -i "$@" "$PHONEBOOK"
+
