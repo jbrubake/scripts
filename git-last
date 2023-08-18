@@ -42,5 +42,5 @@ git ls-tree --name-only HEAD | \
         git --no-pager log -n 1 --format="$f:|%s|(%h) %an" -- "$f"
     done | \
     column -t -s "|" | \
-    sed "s@\(.*:\)\(.*\)\((.*)\)\(.*\)@$(FG 2)\1$(FG 9)\2$(FG 3)\3$(FG 5)\4@"
+    sed "s@^\([^:]*:\)\([^(]*\)\(([^)]*)\)@$(FG 2)\1$(FG 9)\2$(FG 3)\3$(FG 5)@"
 
