@@ -22,7 +22,7 @@
 # standard error. This is useful for peeking in on a pipeline.
 #
 
-prefix="${1:-> }"
+prefix="${1-> }"
 while read -r line; do
     printf "%s\n" "$line"
     printf "%s%s\n" "$prefix" "$line" 1>&2

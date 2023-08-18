@@ -24,10 +24,10 @@
 msg_id=991049
 
 default_sink=$(LC_ALL=C pactl list sinks short | \
-                        grep $(\
+                        grep "$(\
                             pactl info | 
                             grep "Default Sink" | 
-                            sed 's/[^:]*: //') | 
+                            sed 's/[^:]*: //')" | 
                         cut -f1)
 
 case "$@" in
@@ -50,7 +50,7 @@ current_volume=$(LC_ALL=C pactl list sinks | \
                   grep -A9 "Sink #$default_sink" | 
                   grep Volume | 
                   awk '{print $5}' | 
-                  tr -dc '[^[:digit:]]')
+                  tr -dc '[:digit:]')
 
 if [ "$current_volume" = "0" ] || [ "$is_muted" = "yes" ]; then
     dunstify -a "changeVolume" -u low -i audio-volume-muted \

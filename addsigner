@@ -22,7 +22,8 @@
 
 allowed_signers="$HOME/.ssh/allowed_signers"
 
-while read type key id; do
-    printf "%s namespaces=\"file\" %s %s\n" "$id" "$type" "$key" >> "$allowed_signers"
+while read -r type key id; do
+    printf "%s namespaces=\"file\" %s %s\n" "$id" "$type" "$key" \
+        >> "$allowed_signers"
 done
 

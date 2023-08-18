@@ -23,67 +23,68 @@
 #		a single host.
 ################################################################################
 
-HOSTNAME=`hostname`
-mkdir $HOSTNAME.results && cd $HOSTNAME.results
+FG="[1;32m"
+RST="[0m"
+HOSTNAME=$(hostname)
+outdir="$HOSTNAME.results"
+outdir=/tmp/TEST
+mkdir "$outdir"
 
 ################################################################################
 # stuff that could take a while
 ################################################################################
 
+exit
 # grab the config files
-{ 	echo -e "\033[1;32mCopying /etc/... \033[0m"			;
-	cp -a /etc/ . 2>/dev/null					&&
-	echo -e "\033[1;32mCopying /etc/ Succeeded. \033[0m"		||
-	echo -e "\033[1;31mCopying /etc/ Failed. \033[0m" 		; } &
+( 	printf "%sCopying /etc/...%s\n" "$FG" "$RST"			;
+	cp -a /etc/ "$outdir" 2>/dev/null					&&
+	printf "%sCopying /etc/ Succeeded.%s\n" "$FG" "$RST"		||
+	printf "%sCopying /etc/ Failed.%s\n" "$FG" "$RST" 		; ) &
 
 # grab the log files
-{ 	echo -e "\033[1;32mCopying /var/log/... \033[0m"		;
-	cp -a /var/log/ . 2>/dev/null					&&
-	echo -e "\033[1;32mCopying /var/log/ Succeeded. \033[0m"	||
-	echo -e "\033[1;31mCopying /var/log/ Failed. \033[0m" 		; } &
+( 	printf "%sCopying /var/log/...%s\n" "$FG" "$RST"		;
+	cp -a /var/log/ "$outdir" 2>/dev/null					&&
+	printf "%sCopying /var/log/ Succeeded.%s\n" "$FG" "$RST"	||
+	printf "%sCopying /var/log/ Failed.%s\n" "$FG" "$RST" 		; ) &
 
 # grab the website if available
-{ 	echo -e "\033[1;32mCopying /var/www/... \033[0m"		;
-	cp -a /var/www/ . 2>/dev/null					&&
-	echo -e "\033[1;32mCopying /var/www/ Succeeded. \033[0m"	||
-	echo -e "\033[1;31mCopying /var/www/ Failed. \033[0m" 		; } &
+( 	printf "%sCopying /var/www/...%s\n" "$FG" "$RST"		;
+	cp -a /var/www/ "$outdir" 2>/dev/null					&&
+	printf "%sCopying /var/www/ Succeeded.%s\n" "$FG" "$RST"	||
+	printf "%sCopying /var/www/ Failed.%s\n" "$FG" "$RST" 		; ) &
 
 # grab the locate database
-{ 	echo -e "\033[1;32mCopying mlocate.db... \033[0m"		;
-	{ updatedb ; cp /var/lib/mlocate/mlocate.db . 2>/dev/null ; }	&&
-	echo -e "\033[1;32mCopying mlocate.db Succeeded. \033[0m"	||
-	echo -e "\033[1;31mCopying mlocate.db Failed. \033[0m" 		; } &
+( 	printf "%sCopying mlocate.db...%s\n" "$FG" "$RST"		;
+	( updatedb ; cp /var/lib/mlocate/mlocate.db "$outdir" 2>/dev/null ; )	&&
+	printf "%sCopying mlocate.db Succeeded.%s\n" "$FG" "$RST"	||
+	printf "%sCopying mlocate.db Failed.%s\n" "$FG" "$RST" 		; ) &
 
 # grab the mysql database
-{ service mysql start && mysqldump --all-databases > $HOSTNAME.mysql ; } &
+( service mysql start && mysqldump --all-databases > "$HOSTNAME.mysql" ; ) &
 
 # grab all files ending in .conf and store them in a directory hierarchy
-{
-	mkdir conf ; cd conf ; 
-	for FILE in `find / -name *.conf` ; do 
-		cp --parents $FILE . 2>/dev/null ; 
-	done ; 
-	cd .. ;
-} &
-
+(
+	mkdir conf ; cd conf || exit; 
+    find / -name '*.conf' -exec cp --parents {} . \;
+) &
 
 ################################################################################
 # Hardware
 ################################################################################
-mkdir hardware && cd hardware
+mkdir hardware && cd hardware || exit
 
-echo -e "\033[1;33mBeginning hardware discovery of $HOSTNAME... \033[0m"
+printf "%sBeginning hardware discovery of %s...%s\n" "$FG" "$RST" "$HOSTNAME"
 
 # what make/model of machine?
 # what serial number?
-echo -e "\033[1;33mMake sure you photograph the machine to get make/model, ports, etc.\033[0m"
+printf "%sMake sure you photograph the machine to get make/model, ports, etc.%s\n" "$FG" "$RST"
 
-echo "Manufacturer: `dmidecode -s system-manufacturer`"		| tee    hardwareinfo.out
-echo "Product Name: `dmidecode -s system-product-name`"		| tee -a hardwareinfo.out
-echo "Serial Number: `dmidecode -s system-serial-number`" 	| tee -a hardwareinfo.out
-echo "BIOS Vendor: `dmidecode -s bios-vendor`"			| tee -a hardwareinfo.out
-echo "BIOS Version: `dmidecode -s bios-version`"		| tee -a hardwareinfo.out
-echo "BIOS Release Date: `dmidecode -s bios-release-date`" 	| tee -a hardwareinfo.out
+echo "Manufacturer: $(dmidecode -s system-manufacturer)"		| tee    hardwareinfo.out
+echo "Product Name: $(dmidecode -s system-product-name)"		| tee -a hardwareinfo.out
+echo "Serial Number: $(dmidecode -s system-serial-number)" 	| tee -a hardwareinfo.out
+echo "BIOS Vendor: $(dmidecode -s bios-vendor)"			| tee -a hardwareinfo.out
+echo "BIOS Version: $(dmidecode -s bios-version)"		| tee -a hardwareinfo.out
+echo "BIOS Release Date: $(dmidecode -s bios-release-date)" 	| tee -a hardwareinfo.out
 # ...
 
 # what type of CPU?
@@ -111,16 +112,16 @@ lspci								| tee lspci.out
 lshal 								> lshal.out
 dmidecode							> dmidecode.out
 
-echo -e "\033[1;33mFinished hardware discovery of $HOSTNAME... \033[0m"
+printf "%sFinished hardware discovery of %s...%s\n" "$FG" "$RST" "$HOSTNAME"
 
 cd ..
 
 ################################################################################
 # software
 ################################################################################
-mkdir software && cd software
+mkdir software && cd software || exit
 
-echo -e "\033[1;33mBeginning software discovery of $HOSTNAME... \033[0m"
+printf "%sBeginning software discovery of %s...%s\n" "$FG" "$RST" "$HOSTNAME"
 
 # kernel version?
 # distribution?
@@ -147,14 +148,14 @@ netstat -pant | grep LISTEN				| tee netstat-pant-listen.out
 
 netstat -n						> netstat.out
 
-echo -e "\033[1;33mFinished software discovery of $HOSTNAME... \033[0m"
+printf "%sFinished software discovery of %s...%s\n" "$FG" "$RST" "$HOSTNAME"
 
 cd ..
 	
 ################################################################################
 # network
 ################################################################################
-mkdir network && cd network
+mkdir network && cd network || exit
 
 # ip address
 # subnet mask
@@ -182,12 +183,14 @@ cd ..
 ################################################################################
 # users
 ################################################################################
-mkdir users && cd users
+mkdir users && cd users || exit
 
-echo -e "\033[1;33mBeginning user discovery of $HOSTNAME... \033[0m"
+printf "%sBeginning user discovery of %s...%s\n" "$FG" "$RST" "$HOSTNAME"
 
 # which users have a password set?  did you retrieve the password hashes?
-cp /etc/{passwd,shadow,group} .
+cp /etc/passwd .
+cp /etc/shadow .
+cp /etc/group .
 
 # which users have logged in previously?
 last								| tee last.out
@@ -202,23 +205,23 @@ du /home/ -h --max-depth 1					| tee home-du.out
 ################################################################################
 # grab user files of interest in /home
 ################################################################################
-for USER in `ls /home` ; do
+for USER in /home/* ; do
 	
-	mkdir $USER && cd $USER
+	mkdir "$USER" && cd "$USER" || exit
 	
-	cp /home/$USER/.bash_history		./bash_history		2>/dev/null
-	cp /home/$USER/.bash_logout		./bash_logout		2>/dev/null
-	cp /home/$USER/.bashrc			./bashrc		2>/dev/null
-	cp /home/$USER/.profile			./profile		2>/dev/null
+	cp "/home/$USER/.bash_history"		./bash_history		2>/dev/null
+	cp "/home/$USER/.bash_logout"		./bash_logout		2>/dev/null
+	cp "/home/$USER/.bashrc"			./bashrc		2>/dev/null
+	cp "/home/$USER/.profile"			./profile		2>/dev/null
 	
-	cp -a /home/$USER/.config		./config		2>/dev/null
-	cp -a /home/$USER/.local		./local			2>/dev/null
-	cp -a /home/$USER/.mozilla		./mozilla		2>/dev/null
+	cp -a "/home/$USER/.config"		./config		2>/dev/null
+	cp -a "/home/$USER/.local"		./local			2>/dev/null
+	cp -a "/home/$USER/.mozilla"		./mozilla		2>/dev/null
 
-	cp -a /home/$USER/.cache/google-chrome	./cache-google-chrome	2>/dev/null
-	cp -a /home/$USER/.config/google-chrome	./config-google-chrome	2>/dev/null
+	cp -a "/home/$USER/.cache/google-chrome"	./cache-google-chrome	2>/dev/null
+	cp -a "/home/$USER/.config/google-chrome"	./config-google-chrome	2>/dev/null
 
-	cp -a /home/$USER/.ssh			./ssh			2>/dev/null
+	cp -a "/home/$USER/.ssh"			./ssh			2>/dev/null
 
 	cd ..
 
@@ -227,7 +230,7 @@ done
 # grab user files of interest in /root
 ################################################################################
 
-mkdir root && cd root
+mkdir root && cd root || exit
 	
 	cp /root/.bash_history			./bash_history		2>/dev/null
 	cp /root/.bash_logout			./bash_logout		2>/dev/null
@@ -245,7 +248,7 @@ mkdir root && cd root
 
 cd ..
 
-echo -e "\033[1;33mFinished software discovery of $HOSTNAME... \033[0m"
+printf "%sFinished software discovery of %s...%s\n" "$FG" "$RST" "$HOSTNAME"
 
 cd ..
 

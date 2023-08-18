@@ -21,8 +21,9 @@
 #
 VERSION='1.0'
 
-print_help() {
-    cat <<END >&2
+print_help() (
+    [ -n "$1" ] && printf "%s\n" "$1"
+    cat <<END
 Usage: $0 [OPTION] <license>
 
 Print various open source licenses
@@ -47,10 +48,10 @@ bsd|bsd2|3bsd      3-clause BSD License
 freebsd|2bsd       Free BSD License (2-clause BSD license)
 0bsd               BSD Zero Clause License
 END
-}
+) >&2
 
-print_version() {
-    cat <<END >&2
+print_version() (
+    cat <<END
 $0 $VERSION
 Copyright (C) 2022 Orion Arts
 License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
@@ -59,7 +60,7 @@ There is NO WARRANTY, to the extent permitted by law.
 
 Written by Jeremy Brubaker.
 END
-}
+) >&2
 
 # Process options {{{1
 #
@@ -69,18 +70,18 @@ while getopts ':n:e:hv' c; do
         e) email="$OPTARG" ;;
         h) print_help; exit 0 ;;
         v) print_version; exit 0 ;;
-        ?) printf "Invalid option: -%s\n" "$OPTARG" >&2; print_help; exit 1 ;;
+        ?) print_help "Invalid option: -$OPTARG"; exit 1 ;;
     esac
 done
 shift $((OPTIND-1))
 
 license=${1:-gpl}
 
-# name = passed in, /etc/passwd comment field, username
-name="${name:-$(getent passwd "$USER" | cut -d: -f5)}"
-name="${name:-"$USER"}"
-# email = passwed in, username@hostname
-email="${email:-$USER@$(hostname)}"
+# name = passed in, /etc/passwd comment field, $USER
+name=${name:-$(getent passwd "$USER" | cut -d: -f5)}
+name=${name:-"$USER"}
+# email = passwed in, $USER@hostname
+email=${email:-$USER@$(hostname)}
 
 # Main {{{1
 #
@@ -113,7 +114,7 @@ case "$license" in
 
     bsd|bsd2|3bsd)
 		cat <<EOF
-Copyright (c) $(date +%Y) $name <$mail>
+Copyright (c) $(date +%Y) $name <$email>
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -142,7 +143,7 @@ EOF
 
     freebsd|2bsd)
 		cat <<EOF
-Copyright (c) $(date +%Y) $name <$mail>
+Copyright (c) $(date +%Y) $name <$email>
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are met:

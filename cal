@@ -22,24 +22,22 @@
 
 # Separate options and arguments
 #
-for i
-do
+for i; do
     case $i in
         -h)
-            echo "Usage: cal [moth [year]] [options]"
+            printf "%s\n" "Usage: cal [month [year]] [options]"
             exit
             ;;
         -*) opts="$opts $i" ;;
-        *) args="$args $i" ;;
+        *)  args="$args $i" ;;
     esac
 done
 
 # Process args if we have any
-if test "$args"
-then
-    set $args # put args in $*
+if test "$args"; then
+    set "$args"
     case $# in
-        1) m=$1; set `date`; y=$6 ;; # 1 arg; use this year
+        1) m=$1; set "$(date)"; y=$6 ;; # 1 arg; use this year
         *) m=$1; y=$2 ;;
     esac
 fi
@@ -62,5 +60,7 @@ case $m in
         *) y=$m; m="" ;; # plain year
     esac
 
+# Do not quote in order to allow for empty arguments
+# shellcheck disable=SC2086
 /usr/bin/cal $opts $m $y
 

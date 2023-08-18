@@ -21,7 +21,9 @@
 #
 
 ### Configurable settings
+### Configurable settings {{{1
 #
+# TODO: configure with options
 PERCENT_DELTA_START=10
 PERCENT_DELTA=5
 PERCENT_DELTA_MIN=1
@@ -32,27 +34,25 @@ BOX_COLS=65 # This should be fairly large to keep package names visible
 ### End configurable settings
 
 PROGNAME=$(basename "$0")
-TMPFILE=$(mktemp "$PROGNAME.XXXXXX")
-trap 'rm -f "$TMPFILE"' EXIT
-
-exec 3<>"$TMPFILE"
-rm "$TMPFILE"
 
 random()
 {
     awk -v min="$1" -v max="$2" 'BEGIN{srand(); print int(min+rand()*(max-min+1))}'
 }
 
-get_pkg_name()
-{
+get_pkg_name() { # {{{1
     # Get a random letter
     c=$(random 97 122) # 97-122: lowercase letter range
     c=$(printf \\$(printf '%03o' $c))
 
     # Get a random package name that starts with that letter
-    echo "$(dnf list 2>/dev/null | grep -E "^$c" | awk '{print $1}' | shuf -n1)"
+    dnf list 2>/dev/null \
+        | grep -E "^$c" \
+        | awk '{print $1}' | shuf -n1
 }
 
+# Main {{{1
+#
 check_command()
 {
     if ! command -v $1 >/dev/null; then
@@ -70,6 +70,12 @@ if !  check_command dnf; then
     exit 1
 fi
 
+TMPFILE=$(mktemp "$(basename "$0").XXXXXX")
+trap 'rm -f "$TMPFILE"' EXIT
+
+exec 3<>"$TMPFILE"
+rm "$TMPFILE"
+
 part=1
 pkg="Preparing..."
 while true; do
@@ -82,7 +88,7 @@ while true; do
         # Send new % complete to output
         echo $i
 
-        # Increase % by last change +/-5%
+        # Increase % by last change +/- PERCENT_DELTA%
         delta=$(random $((delta-PERCENT_DELTA)) $((delta+PERCENT_DELTA)))
         test "$delta" -lt "$PERCENT_DELTA_MIN" && delta="$PERCENT_DELTA_MIN"
         i=$(( i+delta ))

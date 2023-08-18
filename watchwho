@@ -33,7 +33,7 @@ USAGE
         exit 1
         ;;
     -i) who >$old ;;
-    *) >$old ;;
+    *) : >$old ;;
 esac
 
 trap 'rm -f $new $old; exit 1' 1 2 15

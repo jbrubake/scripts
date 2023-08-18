@@ -24,11 +24,11 @@ VERSION='1.0'
 
 # Documentation {{{1
 #
-PROGNAME=$(basename $0)
+print_help() (
+    [ -n "$1" ] && printf "%s\n" "$1"
 
-print_help() {
     cat <<EOF
-Usage: $PROGNAME <darken | lighten> COLOR PERCENTAGE
+Usage: $0 <darken | lighten> COLOR PERCENTAGE
 Darken or lighten a color by a percentage
 
 COLOR is a six-digit hexadecimal string, optionally preceded by a '#'.
@@ -40,11 +40,11 @@ PERCENTAGE is a value from 0-100 with an optional trailing '%'.
 subcommands:
   {darken,lighten}
 EOF
-}
+) >&2
 
-print_version() {
+print_version() (
     cat <<EOF
-$PROGNAME $VERSION
+$0 $VERSION
 Copyright (C) 2021 Orion Arts
 License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
 This is free software: you are free to change and redistribute it.
@@ -52,32 +52,32 @@ There is NO WARRANTY, to the extent permitted by law.
 
 Written by Jeremy Brubaker.
 EOF
-}
+) >&2
 
 # Functions {{{1
 #
-function lighten_color() {
+lighten_color() {
     # Lighten a hexadecimal color by a percentage
     # of 0 (do nothing) to 100 (make it white)
 
-    r=$(printf "%.f" $(echo "(255-$1) * $amt + $1" | bc))
-    b=$(printf "%.f" $(echo "(255-$2) * $amt + $2" | bc))
-    g=$(printf "%.f" $(echo "(255-$3) * $amt + $3" | bc))
+    r=$(printf "%.f" "$(echo "(255-$1) * $amt + $1" | bc)")
+    b=$(printf "%.f" "$(echo "(255-$2) * $amt + $2" | bc)")
+    g=$(printf "%.f" "$(echo "(255-$3) * $amt + $3" | bc)")
 
     color=$((g | (b << 8) | (r <<16)))
-    printf "(%s,%s,%s) #%x\n" $r $b $g $color
+    printf "(%s,%s,%s) #%x\n" "$r" "$b" "$g" "$color"
 }
 
-function darken_color() {
+darken_color() {
     # Darken a hexadecimal color by a percentage
     # of 0 (do nothing) to 100 (make it black)
 
-    r=$(printf "%.f" $(echo "$amt * $1" | bc))
-    b=$(printf "%.f" $(echo "$amt * $2" | bc))
-    g=$(printf "%.f" $(echo "$amt * $3" | bc))
+    r=$(printf "%.f" "$(echo "$amt * $1" | bc)")
+    b=$(printf "%.f" "$(echo "$amt * $2" | bc)")
+    g=$(printf "%.f" "$(echo "$amt * $3" | bc)")
 
     color=$(((r<<16) + (b<<8) + g))
-    printf "#%x (%s,%s,%s)\n" $color $r $b $g
+    printf "#%x (%s,%s,%s)\n" "$color" "$r" "$b" "$g"
 }
 
 # Process command line {{{1
@@ -85,7 +85,7 @@ function darken_color() {
 # Options {{{2
 while getopts 'vh' opt; do
     case $opt in
-        v) print_version; exit ;;
+        v)   print_version; exit ;;
         h|?) print_help; exit ;;
     esac
 done
@@ -94,10 +94,7 @@ done
 case "$1" in
     d|da|dar|dark|darke|darken)         cmd=darken ;;
     l|li|lig|ligh|light|lighte|lighten) cmd=lighten ;;
-    *) printf "$0: invalid command\n" "$1" >&2
-       print_help
-       exit 1
-       ;;
+    *) print_help "$0: invalid command: $1"; exit 1 ;;
 esac
 
 # Pop the subcommand
@@ -105,8 +102,7 @@ shift
 
 # Check for parameters {{{2
 if [ "$#" -ne 2 ]; then
-    printf "$0: invalid arguments\n" >&2
-    print_help
+    print_help "$0: invalid arguments"
     exit 1
 fi
 
@@ -114,18 +110,16 @@ fi
 #
 
 # Convert hex string to decimal
-color=$(echo $1 | sed -e 's/^#//' | tr '[a-f]' '[A-F]')
-echo "$color" | grep -Evq "[^0-9A-F]"
-if [ $? -ne 0 ]; then
+color=$(echo "$1" | sed -e 's/^#//' | tr 'a-f' 'A-F')
+if ! echo "$color" | grep -Evq "[^0-9A-F]"; then
     printf "%s not hexadecimal\n" "$color" >&2
-fi
-if [ $(expr length "$color") -ne 6 ]; then
+elif [ "${#color}" -ne 6 ]; then
     printf "#%s is not six digits\n" "$color" >&2
 fi
 color=$(echo "ibase=16; $color" | bc)
 
 # Convert percentage to decimal
-amt=$(echo $2 | tr -d "%")
+amt=$(echo "$2" | tr -d "%")
 amt=$(echo "scale=2; 1-$amt/100" | bc)
 
 # Extract RBG in decimal
@@ -133,8 +127,8 @@ r=$(( color >> 16          ))
 b=$(((color >> 8)  & 0x00ff))
 g=$(( color        & 0x00ff))
 
-case "$cmd" in
-    darken) darken_color $r $b $g ;;
+case $cmd in
+    darken)  darken_color $r $b $g ;;
     lighten) lighten_color $r $b $g ;;
     *) printf "How the heck did we get here?\n" >&2 ;;
 esac

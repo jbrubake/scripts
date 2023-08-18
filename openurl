@@ -35,21 +35,21 @@ case "$BROWSER" in
         case "$TERM" in
             # In VTY use links -g
             linux)
-                links -g $url
+                links -g "$url"
                 ;;
             # Remote shell
             putty*)
-                links -g $url
+                links -g "$url"
                 ;;
             # Running under X
             *)
-                exec links -g $url &
+                exec links -g "$url" &
                 ;;
         esac
         ;;
 
-    $BROWSER|*)
-        $BROWSER $url
+    *)
+        $BROWSER "$url"
         ;;
 esac
 

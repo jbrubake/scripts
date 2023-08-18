@@ -26,18 +26,16 @@ if ! getent ahosts www.google.com >/dev/null; then
     exit
 fi
 
-case "$1" in
+case $1 in
     --first-sync) opt="--first-sync" ;;
 esac
 
-while IFS= read line; do
+while IFS= read -r line; do
     [ -z "$line" ] && continue
-    [[ "$line" =~ ^# ]] && continue 
+    case $line in \#*) continue ;; esac
 
-    IFS=':'
-    fields=($line)
-    remote=${fields[0]}
-    remote_dir=${fields[1]}
+    remote=$(echo "$line" | cut -d: -f1)
+    remote_dir=$(echo "$line" | cut -d: -f2)
 
     local_dir="$sync_dir/$remote/$remote_dir"
     filter_file="$(echo "$remote_dir" | tr ' /' '_.')"
@@ -49,7 +47,7 @@ while IFS= read line; do
     fi
 
     printf "%s\n" "Syncing $remote:$remote_dir..."
-    rclonesync $opt --verbose $filter "$remote:$remote_dir" "$local_dir"
+    rclonesync $opt --verbose "$filter" "$remote:$remote_dir" "$local_dir"
 
 done <<END
 # remote:remote_dir

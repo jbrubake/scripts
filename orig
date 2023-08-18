@@ -19,11 +19,11 @@
 #
 
 if [ $# = 0 ] ; then
-  printf "usage: orig FILE ..." >&2
-  printf "copy FILE(s) to FILE.orig" >&2
+    printf "usage: orig FILE ..." >&2
+    printf "copy FILE(s) to FILE.orig" >&2
 else
-  for f in "$@" ; do
-    cp -p "$f" "$f.orig"
-  done
+    for f in "$@"; do
+        cp -p "$f" "$f.orig"
+    done
 fi
 

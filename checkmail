@@ -28,8 +28,8 @@ if test $? != 0; then
 fi
 
 msmtp-queue -r
-date >> $LOGDIR/mbsync.log
-mbsync -a -V >> $LOGDIR/mbsync.log 2>&1
-date >> $LOGDIR/notmuch.log
-notmuch new >> $LOGDIR/notmuch.log 2>&1
+date         >> "$LOGDIR/mbsync.log"
+mbsync -a -V >> "$LOGDIR/mbsync.log"  2>&1
+date         >> "$LOGDIR/notmuch.log"
+notmuch new  >> "$LOGDIR/notmuch.log" 2>&1
 

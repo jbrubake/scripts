@@ -25,5 +25,5 @@ case $1 in
     *) lines=55 ;;
 esac
 
-exec wc $* | awk '$0 !~ /total/ { n += int (($1+'$lines') / ('$lines'+1)) } END {print n}'
+exec wc "$@" | awk '$0 !~ /total/ { n += int (($1+'$lines') / ('$lines'+1)) } END {print n}'
 

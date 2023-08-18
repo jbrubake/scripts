@@ -20,7 +20,6 @@
 
 MY_DIR=$HOME/etc/my
 
-PROGNAME=$(basename $0)
 case "$1" in
     -v)
         v='y'
@@ -37,7 +36,7 @@ case "$1" in
         ;;
     -h)
         cat <<EOF
-$PROGNAME: $PROGNAME [-dv] category [arg ...]
+$0: $0 [-dv] category [arg ...]
     Execute the correct command from a list of alternatives or display
     information about commands.
 
@@ -65,7 +64,7 @@ EOF
         return 2>/dev/null || exit
         ;;
     -*)
-        printf "%s: %s: invalid option\n" "$PROGNAME" "$1" >&2
+        printf "%s: %s: invalid option\n" "$0" "$1" >&2
         return 2>/dev/null || exit
         ;; 
 esac
@@ -77,21 +76,21 @@ if ! test -r "$f"; then
 fi
 shift
 
-while IFS=',' read cmd tag; do
+while IFS=',' read -r cmd tag; do
     if test "$tag" == "X" && test -z "$DISPLAY"; then
         continue
     fi
     if command -v "$cmd" >/dev/null 2>&1; then
         break
     fi
-done < $f
+done < "$f"
 
 if test -z "$cmd"; then
-    printf "No alternative found for 'category' %s\n" $1 >&2
+    printf "No alternative found for 'category' %s\n" "$1" >&2
 fi
 
 if test "$v" == "y"; then
-    echo $cmd
+    echo "$cmd"
 else
     if test "$tag" == "X"; then
         (exec $cmd "$@" &)

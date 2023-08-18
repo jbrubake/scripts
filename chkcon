@@ -20,5 +20,5 @@
 # Usage: chkcon [server] [port]
 #
 
-echo >/dev/tcp/${1:-8.8.8.8}/${2:-53} >/dev/null
+echo >"/dev/tcp/${1:-8.8.8.8}/${2:-53}"
 

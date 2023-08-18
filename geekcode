@@ -26,11 +26,9 @@ GEEKCODE="$HOME/.geekcode"
 
 # Documentation {{{1
 #
-PROGNAME=$(basename $0)
-
-print_help() {
+print_help() (
     cat <<EOF
-Usage: $PROGNAME [option]
+Usage: $0 [option]
 Convert a commented geekcode file into a proper geekcode
 
 See https://github.com/telavivmakers/geek_code for the Geek Code specification.
@@ -41,11 +39,11 @@ See https://github.com/telavivmakers/geek_code for the Geek Code specification.
  -v            display version info and exit
  -h            display this help and exit
 EOF
-}
+) >&2
 
-print_version() {
+print_version() (
     cat <<EOF
-$PROGNAME $VERSION
+$0 $VERSION
 Copyright (C) 2021 Orion Arts
 License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
 This is free software: you are free to change and redistribute it.
@@ -53,7 +51,7 @@ There is NO WARRANTY, to the extent permitted by law.
 
 Written by Jeremy Brubaker.
 EOF
-}
+) >&2
 
 # Process options {{{1
 #
@@ -77,16 +75,20 @@ if [ ! -r "$GEEKCODE" ]; then
     exit 1
 fi
 
-if [ "$block" == "y" ]; then
+if [ "$block" = "y" ]; then
     version=$(head -1 "$GEEKCODE" | sed -e 's/^# *//')
     printf "%s\n" "-----BEGIN GEEK CODE BLOCK-----"
     printf "%s\n" "$version"
 fi
 
-< $GEEKCODE sed -e '/^#/d' -e 's/ *#.*$//' | tr '\n' ' ' | sed -e 's/ *$//' | fold -w$width -s
+< "$GEEKCODE" sed -e '/^#/d' -e 's/ *#.*$//' \
+    | tr '\n' ' ' \
+    | sed -e 's/ *$//' \
+    | fold -w"$width" -s
+
 printf "%s\n" ""
 
-if [ "$block" == "y" ]; then
+if [ "$block" = "y" ]; then
     printf "%s\n" "------END GEEK CODE BLOCK------"
 fi
 

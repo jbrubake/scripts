@@ -18,13 +18,14 @@
 # abstract: print input in n columns based on command name (default = 2)
 #
 
-name=$(basename $0)
+name=$(basename "$0")
 
 # This test can be naive because `basename $0` is never empty
-if [ $name -eq $name ]; then
-    arg=$name
+if [ "$name" -eq "$name" ]; then
+    arg="$name"
 else
     arg=2
 fi
 
-pr -$arg -t -l1 $*
+pr -"$arg" -t -l1 "$@"
+

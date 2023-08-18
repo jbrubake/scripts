@@ -64,6 +64,7 @@ END
 try_man() { # {{{2
     # Allow 'docs git push' to find the manpage for 'git-push'
     arg=$(echo "$@" | tr ' ' '-')
+
     # How many manpages did we find?
     n=$(man -f "$arg" 2>/dev/null | wc -l)
 
@@ -77,7 +78,8 @@ try_man() { # {{{2
             printf "Multiple manpages found:\n"
             man -f "$arg" | nl
             while true; do
-                read -p "View which one? [1] " c
+                printf "%s" "View which one? [1] "
+                read -r c
                 if [ -z "$c" ]; then
                     c=1
                     break
@@ -86,32 +88,43 @@ try_man() { # {{{2
                 fi
             done
             # Convert the output of 'man -f' to a proper manpage request
-            man $(man -f "$arg" | sed -n "${c}p" | cut -d' ' -f1,2 | tr -d '()' | awk '{printf("%s %s", $2, $1)}')
+            man "$(man -f "$arg" \
+                | sed -n "${c}p" \
+                | cut -d' ' -f1,2 \
+                | tr -d '()' \
+                | awk '{printf("%s %s", $2, $1)}')"
             ;;
     esac
 }
 
 try_info() { # {{{2
     # Prefer pinfo(1) if installed
-    command -v info >/dev/null && infov=info
+    command -v info  >/dev/null && infov=info
     command -v pinfo >/dev/null && infov=pinfo
     test -z "$infov" && return 1
 
     # Look for info page that matches
-    test -z $(info -w "$@") && return 1
+    [ -z "$(info -w "$@")" ] && return 1
 
     $infov "$@"
 }
 
 try_readme() { # {{{2
-    docdirs="/usr/share/doc:/usr/share:/usr/share/games:/usr/local/share/doc:/usr/local/share:/usr/local/share/games"
+    docdirs="/usr/share/doc
+             /usr/share
+             /usr/share/games
+             /usr/local/share/doc
+             /usr/local/share
+             /usr/local/share/games"
 
-    echo "$docdirs" |
-    while read -rd: d || [ -n "$d" ]; do
-        if [ -f "$d/$@/README"* ]; then
-            # Use an interactive shell to take advantage of user-defined aliases
-            # and functions that may improve upon less(1)
-            sh -ic "less $d/$@/README*"
+    for d in $docdirs; do
+        ! [ -d "$d/$1" ] && continue
+        r=$(find "$d/$1" -name "README*" | head -1)
+        if [ -n "$r" ]; then
+            # Use an interactive shell to take advantage of
+            # user-defined aliases and functions that may improve
+            # upon less(1)
+            sh -ic "less '$r'"
             return 0
         fi
     done
@@ -120,7 +133,7 @@ try_readme() { # {{{2
 }
 
 try_webman() { # {{{2
-    url="http://man.he.net/?topic=$@&section=all"
+    url="http://man.he.net/?topic=$1&section=all"
 
     if curl "$url" 2>/dev/null | grep -q 'No matches for'; then
         return 1
@@ -129,15 +142,15 @@ try_webman() { # {{{2
 }
 
 try_dashhelp() { # {{{2
-# NOTE: This is a hack that often fails (e.g. printf(1))
+    # NOTE: This is a hack that often fails (e.g. printf(1))
     for f in '-h' '--help' 'help' '-?' '/?' '?'; do
-        if "$@" "$f" >/dev/null 2>&1; then
+        if "$1" "$f" >/dev/null 2>&1; then
             flag="$f"
             break
         fi
     done
     if [ -n "$flag" ]; then
-        "$@" "$flag"
+        "$1" "$flag"
         return 0
     else
         return 1
@@ -145,7 +158,7 @@ try_dashhelp() { # {{{2
 }
 
 try_search() { # {{{2
-    ddgr "$@"
+    ddgr "$1"
 }
 
 # Process options {{{1

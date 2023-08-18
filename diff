@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@
 
 if command -v diff-so-fancy >/dev/null; then
     /usr/bin/diff -u "$@" | diff-so-fancy
-    (exit ${PIPESTATUS[0]}) # Exit with $? from diff
+    (exit "${PIPESTATUS[0]}") # Exit with $? from diff
 else
     /usr/bin/diff "$@"
 fi
