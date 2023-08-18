@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 #
-# (C) 2010 Ryan Tomayko <tomayko.com>
+# (C) 2022 Jeremy Brubaker <orionarts.io>
 #
 # abstract: rename <file> to .<file>
 #
@@ -21,6 +21,9 @@
 #
 
 for f in "$@"; do
-  mv -v "$f" $(dirname "$f")/.$(basename "$f")
+    dest="$(dirname "$f")/.$(basename "$f")"
+
+    mv "$f" "$dest"
+    printf "renamed '%s' -> '%s'\n" "$f" "$dest"
 done
 
