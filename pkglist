@@ -90,7 +90,7 @@ list_cargo() {
 
 list_pipsafe() {
     command -v pip-safe >/dev/null || return
-    pip-safe list | grep '^*' | sed 's/\s\s*/-/; s/^*/pip-safe: /'
+    pip-safe list | grep '^\*' | sed 's/\s\s*/-/; s/^*/pip-safe: /'
 }
 
 list_porg() {
@@ -106,15 +106,16 @@ list_flatpak() {
 }
 
 # Main {{{1
-echo "$dbs" |
-while read -rd, p || [ -n "$p" ]; do
-    case "$p" in
-        apt) list_apt ;;
-        dnf) list_dnf ;;
-        cargo) list_cargo ;;
-        porg) list_porg ;;
-        pipsafe|pip-safe) list_pipsafe ;;
-        flatpak) list_flatpak ;;
-    esac
+echo "$dbs" | tr ',' '\n' | \
+    while read -r p; do
+        case "$p" in
+            apt) list_apt ;;
+            dnf) list_dnf ;;
+            cargo) list_cargo ;;
+            porg) list_porg ;;
+            pipsafe|pip-safe) list_pipsafe ;;
+            flatpak) list_flatpak ;;
+            *) ;;
+        esac
 done
 

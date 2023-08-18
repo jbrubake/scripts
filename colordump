@@ -18,16 +18,13 @@
 # abstract: dump 256 ansi colors to the terminal.
 #
 
-printf "How each ANSI color is displayed on your terminal:\n\n"
-
 i=0
 row=0
-while [ $i -lt 255 ]; do
-    newrow=$(expr $i / 10)
+for i in $(seq 1 255); do
+    newrow=$((i / 10))
     test $newrow -ne $row && echo
     row=$newrow
-    printf "\e[38;5;%dm %03d \e[0m" $i $i
-    i=$(expr $i + 1)
+    printf "\e[38;5;%dm %03d \e[0m" "$i" "$i"
 done
 
 printf '\n\n     e.g., "\\e[38;5;136mTEXT\\e[0m" '

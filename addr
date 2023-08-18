@@ -21,8 +21,10 @@
 #
 VERSION='1.0'
 
-print_help() {
-    cat <<END >&2
+print_help() (
+    [ -n "$1" ] && printf "%s\n" "$1"
+
+    cat <<END
 Usage: $0 [OPTION] [INTERFACE]
 
 List bound IP addresses
@@ -35,10 +37,10 @@ List bound IP addresses
   -h   	    display this help and exit
   -v        output version information and exit
 END
-}
+) >&2
 
-print_version() {
-    cat <<END >&2
+print_version() (
+    cat <<END
 $0 $VERSION
 Copyright (C) 2014 Orion Arts
 License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
@@ -47,7 +49,7 @@ There is NO WARRANTY, to the extent permitted by law.
 
 Written by Jeremy Brubaker.
 END
-}
+) >&2
 
 # Process options {{{1
 #
@@ -65,7 +67,7 @@ while getopts ':alshv46' c; do
         s) sort='y' ;;
         h) print_help; exit 0 ;;
         v) print_version; exit 0 ;;
-        ?) printf "Invalid option: -%s\n" "$OPTARG" >&2; print_help; exit 1 ;;
+        ?) print_help "Invalid option: -$OPTARG";  exit 1 ;;
     esac
 done
 shift $((OPTIND-1))
@@ -84,16 +86,22 @@ fi
 [ "$v4" = 'y' ] && inet="inet"
 [ "$v6" = 'y' ] && inet="inet6"
 
+# Not quoting $1 allows ignoring non-existent parameter
+# shellcheck disable=SC2086
 addrs=$(ip address show $1 | awk ' \
-    /^[[:digit:]]+:/ {iface = gensub(":", "", 1, $2)} \
-    /'$inet' /       {printf("%s\t%s\t%s\n", iface, gensub("/.*$", "", 1, $2), gensub("^[^/]*", "", 1, $2))}')
+    /^[[:digit:]]+:/ { iface = gensub(":", "", 1, $2) } \
+    /'$inet' /       { printf("%s\t%s\t%s\n", iface, \
+                           gensub("/.*$", "", 1, $2), \
+                           gensub("^[^/]*", "", 1, $2))}')
 
-[ "$all" != 'y' ]  && addrs=$(echo "$addrs" | grep -Ev '\s127')
-[ "$long" = 'n' ]  && addrs=$(echo "$addrs" | sed 's@^.*\s\(.*\)\s.*$@\1@')
+[ "$all" != 'y' ]  && addrs=$(echo "$addrs" \
+    | grep -Ev '\s127')
+[ "$long" = 'n' ]  && addrs=$(echo "$addrs" \
+    | sed 's@^.*\s\(.*\)\s.*$@\1@')
 
 # Pipe through sort if needed, otherwise tee just passes it on
 echo "$addrs" |
-if [ "$sort" = 'y' ]; then sort
-else tee
-fi | column --table
+    if [ "$sort" = 'y' ]; then sort
+    else tee
+    fi | column --table
 

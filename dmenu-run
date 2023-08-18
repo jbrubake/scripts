@@ -41,7 +41,6 @@ fi
 
 term_cmd=$(my -v terminal)
 
-max_history=100
 aliasfile="$HOME/.alias"
 functionfile="$HOME/.functions"
 
@@ -53,17 +52,20 @@ cachefile="$cachedir/run"
 
 # Instead of making this an interactive script, just
 # source the files we need
-test -r "$aliasfile"    && source $aliasfile 2>/dev/null
-test -r "$functionfile" && source $functionfile 2>/dev/null
+test -r "$aliasfile"    && source "$aliasfile"
+test -r "$functionfile" && source "$functionfile"
 
 (compgen -a; compgen -c | grep -vxF -- "$(compgen -a)") \
     | sort | grep -v "^[[:punct:]]" | uniq > "$cachefile"
 
+# Cannot quote dmenu args
+# shellcheck disable=SC2046
 cmdline=$(dmenu $(make_dmenu_args) "$@" < "$cachefile")
-test -z "$cmdline" && exit
-
+[ -z "$cmdline" ] && exit
 cmd=$(echo "$cmdline" | cut -d' ' -f1)
-if test -n "$cmd" && grep "${cmd/;/}" "$cachefile" 2>&1 >/dev/null; then
+[ -z "$cmd" ] && exit
+
+if grep "${cmd/;/}" "$cachefile" >/dev/null 2>&1; then
     # Trailing ';' means run it in a terminal
     case "$cmdline" in
         *\;)
@@ -75,7 +77,7 @@ if test -n "$cmd" && grep "${cmd/;/}" "$cachefile" 2>&1 >/dev/null; then
                             "
             ;;
         *)
-            (eval $cmdline &)
+            (eval "$cmdline &")
             ;;
     esac
 else

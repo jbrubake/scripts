@@ -18,8 +18,9 @@
 # abstract: print the <n> largest executables in $PATH
 #
 
-ls -lh $( echo $PATH | tr : ' ' ) \
+# shellcheck disable=SC2046
+find $(echo "$PATH" | tr : ' ') -type f -exec ls -lh {} \; \
     | awk '{ print $5 "\t" $9 }' \
-    | sort -h -k 1 -r \
-    | head -${1:-10}
+    | sort -h -r -k1 \
+    | head -"${1:-10}"
 

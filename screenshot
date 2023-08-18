@@ -49,7 +49,7 @@ if [ "$1" = "scr" ]; then $IMPORT -window root "$NAME"; fi
 # Screenshot a selected area
 if [ "$1" = "area" ]; then $IMPORT "$NAME"; fi
 
-if [[ $# = 0 ]]; then
+if [ $# = 0 ]; then
     # Display a warning if no area defined
     echo "No screenshot area has been specified. Screenshot not taken."
     echo "${DATE}: No screenshot area has been defined. Screenshot not taken." >> "$LOG"

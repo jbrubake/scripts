@@ -22,8 +22,7 @@ case $# in
     0) echo 'Usage: watchfor pattern' 1>&2; exit 1
 esac
 
-until who | egrep $*
-do
+until who | grep -E "$@"; do
     sleep 60
 done
 

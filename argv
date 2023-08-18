@@ -21,7 +21,6 @@
 #
 
 for a in "$@"; do
-  count=$(( count + 1 ))
-  printf "%d: %s\n" $count $a
+  printf "%d: %s\n" "$((i=i+1))" "$a"
 done
 

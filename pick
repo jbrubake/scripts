@@ -26,19 +26,17 @@ fd=0 # read interactive input from stdin by default
 # If args are on stdin set up a connection
 # to the tty for interactive input
 #
-if test "$1" = '-' || test $# -eq 0
-then
+if test "$1" = '-' || test $# -eq 0; then
     fd=3
     exec 3</dev/tty
 fi
 
-while :
-do
+while :; do
     # Read next arg based on where
     # interactive input comes from
     case $fd in
         0) arg=$1; shift ;; # input on stdin; read $*
-        3) read arg ;; # input on fd 3; read stdin
+        3) read -r arg ;; # input on fd 3; read stdin
     esac
 
     # Quit if out of args
@@ -46,9 +44,9 @@ do
 
     echo -n "$arg? " >/dev/tty
 
-    read -u $fd response
+    read -r response <"/dev/fd/$fd"
     case $response in
-        [yY]*) echo $arg ;;
+        [yY]*) echo "$arg" ;;
         [qQ]*) break ;;
     esac
 done

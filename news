@@ -20,36 +20,32 @@
 # -l list news items only
 #
 
-cd /var/lib/news # Find news
+NEWSDIR=/var/lib/news
+NEWSTIME=$HOME/.news_time
+
+cd "$NEWSDIR" # Find news
 
 case $1 in
     -l) list=1 ;; # list only
 esac
 
-IFS='
-' # Gracefully handle a missing ~/.news_time
+for f in $( (find "$NEWSDIR" -mindepth 1 -printf "%T+\t%p\n";
+    find "$HOME" -maxdepth 1 -name "$(basename "$NEWSTIME")" -printf "%T+\t%p\n") \
+                 | sort -r | cut -f2); do
 
-for i in `ls -t * $HOME/.news_time 2>&1` # Sort news and timestamp by MTIME
-do
-    IFS=' ' # Split ls on spaces
-    case $i in
-        'ls: cannot access'*) ;; # Skip missing files
-        */.news_time) break ;; # Everything else has been read
+    case $f in
+        *.news_time) break ;; # Everything else has been read
         *)
-            set X`ls -l $i` # Get newsfile info
-                            # (leading X deals with leading - in ls output)
-
-            echo "$i: ($3) $6 $7 $8" # filename: (user) date time
+            find "$NEWSDIR" -name "$(basename "$f")" -printf "%p: (%u) %t\n"
 
             # Print news item unless -l specified
-            if test -z $list
-            then
-                cat $i
+            if test -z $list; then
+                cat "$f"
                 echo
             fi
     esac
 done
 
 # All news has been read unless -l specified
-test -z $list &&  touch $HOME/.news_time
+test -z $list &&  touch "$NEWSTIME"
 

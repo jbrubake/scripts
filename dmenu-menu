@@ -41,8 +41,10 @@ fi
 #
 VERSION='1.0'
 
-print_help() {
-    cat <<END >&2
+print_help() (
+    [ -n "${1-}" ] && printf "%s\n" "$1"
+
+    cat <<END
 Usage: $0 [OPTION] [INTERFACE]
 
 Present a menu based on commands in a config file
@@ -59,10 +61,10 @@ cmd2 = <commands>
 [Config]
 prompt = "prompt string"
 END
-}
+) >&2
 
-print_version() {
-    cat <<END >&2
+print_version() (
+    cat <<END
 $0 $VERSION
 Copyright (C) 2021 Orion Arts
 License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
@@ -71,16 +73,16 @@ There is NO WARRANTY, to the extent permitted by law.
 
 Written by Jeremy Brubaker.
 END
-}
+) >&2
 
 # Process options {{{1
 #
 MENUDIR="${XDG_CONFIG_DIR:-$HOME/.config}/dmenu-menu"
 
-case "${1-}" in
-    -h | --help) print_help; exit 0 ;;
+case ${1-} in
+    -h | --help)    print_help; exit 0 ;;
          --version) print_version; exit 0 ;;
-    -*) printf "Invalid option: %s\n" "$1" >&2; print_help >&2; exit 1 ;;
+    -*) print_help "Invalid option: $1"; exit 1 ;;
     '') printf "%s: No menu file given.\n" "$0"; exit 1 ;;
 esac
 
@@ -106,7 +108,7 @@ while read -r line; do
     lineno=$((lineno + 1))
 
     # Which section are we in?
-    case "${line^^}" in
+    case ${line^^} in
         \#* | '')                    continue ;;
         \[CONFIG\])   section='cfg'; continue ;;
         \[COMMANDS\]) section='cmd'; continue ;;
@@ -129,19 +131,22 @@ while read -r line; do
             ;;
     esac
 
-    if [ "$section" = "cmd" ]; then
-        choices="$choices$key\n"
-        COMMANDS[$key]="$val"
-    elif [ "$section" = "cfg" ]; then
-        case "${key^^}" in
-            PROMPT) prompt=$val ;;
-        esac
-    fi
+    case $section in
+        cmd)
+            choices="$choices$key\n"
+            COMMANDS[$key]="$val"
+            ;;
+        cfg)
+            case "${key^^}" in
+                PROMPT) prompt=$val ;;
+            esac
+            ;;
+    esac
 done < "$MENUFILE"
 
 # Main {{{1
 #
-choice=$(echo -e "$choices" | dmenu $(make_dmenu_args) -i -p "${prompt-}" -l "${#COMMANDS[*]}" "$@")
+choice=$(echo -e "$choices" | dmenu "$(make_dmenu_args)" -i -p "${prompt-}" -l "${#COMMANDS[*]}" "$@")
 
 if [ -n "$choice" ]; then
     ${COMMANDS[$choice]}

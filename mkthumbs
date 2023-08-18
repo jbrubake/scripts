@@ -40,20 +40,15 @@ CJPEG=`which cjpeg`
 
 echo "Working on .jpg files in $1"
 
-cd $1
-for i in *.jpg; do
-    if [ -f $i ]; then
-        echo "Scaling $i by $2"
-        $DJPEG -scale 1/$2 $i | $CJPEG > th.$i
-        echo "th.$i created"
+for i in "$1"/*.jpg; do
+    if [ -f "$i" ]; then
+        printf "Scaling %s by %s..." "$i" "$2"
+        djpeg -scale "1/$2" "$i" | cjpeg > "$1/th.$i"
+        printf "th.%s created\n" "$i"
     else
         echo "No files in $1 of type .jpg"
         echo "Exiting"
         exit 2
     fi
 done
-
-echo "Done"
-
-exit 0
 
