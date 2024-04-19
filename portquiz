@@ -1,0 +1,79 @@
+#!/bin/sh
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Copyright 2024 Jeremy Brubaker <jbru362@gmail.com>
+#
+# abstract: use portquiz.net to find open ports
+#
+# Defaults {{{1
+VERBOSE_DFLT=
+
+# Documentation {{{1
+#
+VERSION='1.0'
+PROGNAME=$(basename $0)
+
+print_help() {
+    cat <<EOF
+Usage: $PROGNAME [OPTION] PORT
+Query portquiz.net on PORT
+ 
+ -v              turn on verbose output
+ -V              display version info and exit
+ -h              display this help and exit
+EOF
+}
+
+print_version() {
+    cat <<EOF
+$PROGNAME $VERSION
+Copyright (C) 2024 Orion Arts
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Jeremy Brubaker.
+EOF
+}
+
+# Process options {{{1
+#
+verbose=$VERBOSE_DFLT
+while getopts 'vVh' opt; do
+    case $opt in
+        v) verbose=1 ;;
+        V) print_version; exit ;;
+        h|?) print_help; exit ;;
+    esac
+done
+shift $((OPTIND - 1))
+
+if command -v curl >/dev/null; then
+    cmd='curl -s'
+elif command -v wget >/dev/null; then
+    cmd='wget -qO-'
+else
+    printf '%s\n' 'Cannot find curl or wget!' >&2
+    exit 1
+fi
+
+# Main {{{1
+#
+if [ -z "$verbose" ]; then
+    $cmd portquiz.net:"$1" >/dev/null
+else
+    $cmd portquiz.net:"$1"
+fi
+
