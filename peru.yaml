@@ -1,21 +1,27 @@
 imports:
-  MIMEmbellish: ./
-  mutt_bgrun: ./
-  mutt-trim: ./
-  emojify: ./
-  wttr: ./
   anypinentry: ./
-  passmenu: ./
-  ix: ./
-  cheat_dot_sh: ./
-  image2ascii: ./
-  octet-filter: ./
-  vcard-filter: ./
-  zxdvi: ./
-  imagick_type_gen: ./
-  rename: ./
   ben_alman: ./
+  cheat_dot_sh: ./
+  emojify: ./
+  image2ascii: ./
+  imagick_type_gen: ./
+  ix: ./
+  MIMEmbellish: ./
+  mutt-trim: ./
+  mutt_bgrun: ./
+  octet-filter: ./
+  passmenu: ./
+  rename: ./
+  vcard-filter: ./
   view-x-face: ./
+  wttr: ./
+  # Get zxdvi and make copies
+  # TODO: use (sym|hard)links when peru gets support for them
+  zxdvi: ./
+  zxdvi|zdvi2tty: ./
+  zxdvi|zghostview: ./
+  zxdvi|zgv: ./
+  zxdvi|zxpdf: ./
 
 git module anypinentry:
   url: https://github.com/phenax/any-pinentry
@@ -98,6 +104,26 @@ curl module zxdvi:
   url: https://www.spinnaker.de/mutt/zxdvi
   executable: zxdvi # abstract: View gzipped DVI, PS and PDF files (useful for Mutt .mailcap)
   sha1: a2b3306f834621995f22af9a8bccdd0bf5dc56c1
+
+rule zdvi2tty:
+  # url: https://www.spinnaker.de/mutt/zxdvi
+  move:
+    zxdvi: zdvi2tty # abstract: View gzipped DVI, PS and PDF files (useful for Mutt .mailcap)
+
+rule zghostview:
+  # url: https://www.spinnaker.de/mutt/zxdvi
+  move:
+    zxdvi: zghostview # abstract: View gzipped DVI, PS and PDF files (useful for Mutt .mailcap)
+
+rule zgv:
+  # url: https://www.spinnaker.de/mutt/zxdvi
+  move:
+    zxdvi: zgv # abstract: View gzipped DVI, PS and PDF files (useful for Mutt .mailcap)
+
+rule zxpdf:
+  # url: https://www.spinnaker.de/mutt/zxdvi
+  move:
+    zxdvi: zxpdf # abstract: View gzipped DVI, PS and PDF files (useful for Mutt .mailcap)
 
 curl module imagick_type_gen:
   url: https://legacy.imagemagick.org/Usage/scripts/imagick_type_gen
