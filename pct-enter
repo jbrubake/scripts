@@ -1,0 +1,54 @@
+#!/bin/sh
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Copyright 2024 Jeremy Brubaker <jbru362@gmail.com>
+#
+# abstract: remotely connect to a proxmox container by name
+#
+# Inspired by https://gist.github.com/Xenthys/eac5c4b46e8ad016ab8d6584883c754a
+#
+# NOTE: the remote user must have passwordless sudo permissions
+#
+if [ -z "$1" ]; then
+    printf '%s\n' 'No container requested' >&2
+    exit 1
+fi
+name=$1
+
+if [ -z "$PVE_HOST" ]; then
+    printf '%s\n' 'PVE_HOST is undefined' >&2
+    exit 1
+fi
+
+# Search for container by name first
+#   The pattern " $name " ensures only full matches are found
+id=$(ssh "$PVE_HOST" sudo pct list | grep " $name " | cut -d' ' -f1)
+# and then try by id number
+[ -z "$id" ] && id=$(ssh "$PVE_HOST" sudo pct list | grep "^$name " | cut -d' ' -f1)
+
+if [ -z "$id" ]; then
+    printf "Container '%s' does not exist.\n" "$name" >&2
+    exit 1
+fi
+
+# Get node CT is running on
+node=$(ssh "$PVE_HOST" 'sudo pvesh get /cluster/resources --type vm --output-format json' |
+           jq -r --arg id "lxc/$id" '.[] | select(.id == $id) | .node')
+
+# SSH to PVE_HOST and SSH again to the proper node
+# Do this even when the CT is on PVE_HOST so you land
+# in your home directory on the CT
+ssh -t "$PVE_HOST" sudo ssh -t "$node" pct enter "$id"
+
