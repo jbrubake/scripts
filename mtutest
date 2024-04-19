@@ -1,0 +1,91 @@
+#!/bin/sh
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Copyright 2023 Jeremy Brubaker <јЬruЬаkе@оrіоnаrtѕ.іо>
+#
+# abstract: determine optimal MTU size
+#
+# Defaults {{{1
+MTU_DFLT=1500
+DELTA_DFLT=10
+DEST_DFLT=1.1.1.1
+
+# Documentation {{{1
+#
+VERSION='1.0'
+PROGNAME=$(basename $0)
+
+print_help() {
+    cat <<EOF
+Usage: $PROGNAME [OPTION] [DEST]
+Determine the optimal MTU size for a network by testing
+the path to DEST (default = $DEST_DFLT).
+ 
+ -m [SIZE]     starting MTU size (default = $MTU_DFLT)
+ -d [NUM]      amount to reduce MTU by for each check
+                 (default = $DELTA_DFLT)
+ -v            verbose output
+ -V            display version info and exit
+ -h            display this help and exit
+EOF
+}
+
+print_version() {
+    cat <<EOF
+$PROGNAME $VERSION
+Copyright (C) 2023 Orion Arts
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Jeremy Brubaker.
+EOF
+}
+
+# Process options {{{1
+#
+mtu=$MTU_DFLT
+delta=$DELTA_DFLT
+verbose=
+
+while getopts 'm:d:vVh' opt; do
+    case $opt in
+        m) mtu=$OPTARG ;;
+        d) delta=$OPTARG ;;
+        v) verbose=y ;;
+        V) print_version; exit ;;
+        h|?) print_help; exit ;;
+    esac
+done
+shift $((OPTIND - 1))
+dest=${1:-$DEST_DFLT}
+
+# Main {{{1
+#
+# The ICMP header adds 28 bytes
+HEADER=28
+
+while
+    [ -n "$verbose" ] && printf 'Testing MTU of %s...\n' "$mtu"
+    ! ping -c 1 -s $((mtu - HEADER)) -M do "$dest" >/dev/null 2>&1
+do mtu=$((mtu - delta)); done
+
+if [ -n "$verbose" ]; then
+    echo
+    printf 'Set MTU to %s\n' "$mtu"
+else
+    printf '%s\n' "$mtu"
+fi
+
