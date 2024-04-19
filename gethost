@@ -1,0 +1,74 @@
+#!/bin/sh
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Copyright 2023 Jeremy Brubaker <јЬruЬаkе@оrіоnаrtѕ.іо>
+#
+# abstract: extract hostname from an SSH config file by 'Host' entry
+#
+# Defaults {{{1
+CONFIG_DFLT=
+
+# Documentation {{{1
+#
+VERSION='1.0'
+PROGNAME=$(basename $0)
+
+print_help() {
+    cat <<EOF
+Usage: $PROGNAME [OPTION] HOST
+Get the ssh(1) 'Hostname' for HOST
+ 
+ -F [CONFIGFILE] configuration file to use instead of the
+                 ssh(1) default
+ -v              display version info and exit
+ -h              display this help and exit
+EOF
+}
+
+print_version() {
+    cat <<EOF
+$PROGNAME $VERSION
+Copyright (C) 2023 Orion Arts
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Jeremy Brubaker.
+EOF
+}
+
+# Process options {{{1
+#
+config=$CONFIG_DFLT
+
+while getopts 'F:vh' opt; do
+    case $opt in
+        F) config="$OPTARG" ;;
+        v) print_version; exit ;;
+        h|?) print_help; exit ;;
+    esac
+done
+shift $((OPTIND - 1))
+
+host=$1
+if [ -z "$host" ]; then
+    printf '%s\n' "No HOST provided" >&2
+    exit 1
+fi
+
+# Main {{{1
+#
+ssh -G "$host" ${config:+-F "$config"} | awk '$1 == "hostname" { print $2 }'
+
