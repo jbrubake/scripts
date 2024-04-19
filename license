@@ -15,9 +15,8 @@
 #
 # Copyright 2022 Jeremy Brubaker <jbru362@gmail.com>
 #
-# abstrac: print various open source licenses
+# abstract: print various open source licenses
 #
-
 # Documentation {{{1
 #
 VERSION='1.0'

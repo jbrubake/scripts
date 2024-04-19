@@ -15,7 +15,7 @@
 #
 # Copyright 2015 Ray Donnelly <https://stackoverflow.com/users/3257826/ray-donnelly>
 #
-# abstratc: print the absolute path of the target of a symbolic link
+# abstract: print the absolute path of the target of a symbolic link
 #
 # Usage: linkpath LINK
 

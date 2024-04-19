@@ -15,7 +15,8 @@
 #
 # Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
 #
-
+# abstract: get all IPv4 addresses for a host
+#
 if [ "$#" -lt 1 ]; then
     echo "Usage: rlook host"
     exit
