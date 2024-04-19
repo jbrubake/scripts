@@ -1,0 +1,105 @@
+#!/bin/sh
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Copyright 2024 Jeremy Brubaker <jbru362@gmail.com>
+#
+# abstract: generate shims to run flatpaks
+#
+# Based on https://github.com/ronoaldo/tools/blob/master/bin/flatpak-gen-shims
+#
+# Defaults {{{1
+VERBOSE_DFLT=
+SHIMDIR_DFLT=$HOME/bin/.flatpak
+
+# Documentation {{{1
+#
+VERSION='1.0'
+PROGNAME=$(basename $0)
+
+print_help() {
+    cat <<EOF
+Usage: $PROGNAME [OPTION]
+Generate shims to run flatpaks
+ 
+ -d DIRECTORY    Place shims in DIRECTORY (Default = $SHIMDIR_DFLT)
+                   NOTE: all files in this directory are deleted so
+                   it should contain *only* flatpak shims
+ -v              turn on verbose output
+ -V              display version info and exit
+ -h              display this help and exit
+EOF
+}
+
+print_version() {
+    cat <<EOF
+$PROGNAME $VERSION
+Copyright (C) 2024 Orion Arts
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Jeremy Brubaker.
+EOF
+}
+
+# Process options {{{1
+#
+shimdir=$SHIMDIR_DFLT
+verbose=$VERBOSE_DFLT
+while getopts 'd:vVh' opt; do
+    case $opt in
+        d) shim_dir=$OPTARG ;;
+        v) verbose=-v ;;
+        V) print_version; exit ;;
+        h|?) print_help; exit ;;
+    esac
+done
+shift $((OPTIND - 1))
+
+# Functions {{{1
+#
+mkshim() {
+    appid=$1
+    cmd=$2
+
+    cat > "$cmd" <<EOF
+#!/bin/sh
+#
+# flatpak shim managed by $PROGNAME
+#
+exec flatpak run "$appid" "\$@"
+EOF
+
+    chmod +x "$cmd"
+}
+
+# Main {{{1
+#
+mkdir -p "$shimdir"
+
+# Removing all shims and recreating is the easy
+# way to keep them from being stale
+rm -f "$shimdir/*"
+
+for appid in $(flatpak list --app --columns=application); do
+    cmd=$(basename "$(flatpak info -m $appid | awk -F= '/^command=/ {print $2}')")
+    cmd=$(echo ${cmd##*.} | tr [:upper:] [:lower:])
+
+    [ -n "$verbose" ] &&
+        printf 'Creating shim for %s => %s\n' "$appid" "$cmd"
+
+    mkshim "$appid" "$shimdir/$cmd"
+done
+
