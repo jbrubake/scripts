@@ -1,0 +1,32 @@
+#!/bin/sh
+#
+# abstract: build patched VMware Workstation modules
+#
+# Modified from: https://www.reddit.com/r/Fedora/comments/yawfi1/comment/itdo0q0/
+#
+# Usage: build-vmware-modules [DIRECTORY]
+#
+#     DIRECTORY    Optional location for building the modules (Default = /tmp/vmware-modules)
+#
+repo=https://github.com/mkubecek/vmware-host-modules.git
+dir="${1:-/tmp/vmware-modules}"
+
+VMWARE_VERSION=$(grep player.product.version /etc/vmware/config | sed 's/^.*"\(.*\)"$/\1/')
+if [ -z "$VMWARE_VERSION" ]; then
+    printf '%s\n' 'VMWare not found. Exiting' >&2
+    exit 1
+fi
+
+[ -d "$dir" ] && rm -rf "$dir"
+
+mkdir -p "$dir"
+cd "$dir"
+
+# Download the Git repo with VMware kernel modules
+git clone -b "workstation-${VMWARE_VERSION}" "$repo" "$dir"
+
+# Install the VMware kernel modules
+make && sudo make install
+
+rm -rf "$dir"
+
