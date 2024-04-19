@@ -21,7 +21,8 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
+#
+# abstract: command line interface to man.cx
 #
 #/ Usage: man.cx [<section>] <topic>...
 #/ Open manpage <topic> on http://man.cx. When <section> is given, it

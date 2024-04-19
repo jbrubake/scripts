@@ -15,6 +15,9 @@
 # Boris Ranto <branto@redhat.com> 2014
 #
 # use proper binary (pinentry-qt, pinentry-gnome, pinentry-gtk-2 or pinentry-curses)
+#
+# abstract: pinentry wrapper
+#   modified from the original to include pinentry-dmenu
 
 kde_running=
 gnome_running=

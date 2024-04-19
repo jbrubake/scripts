@@ -1,6 +1,6 @@
 #!/usr/bin/env python2 
 #
-# Make beautifier
+# abstract: make beautifier
 #
 # Author   : Philippe Fremy <pfremy@kde.org>
 # 			 contributions from Adrian Thurston <adriant@ragel.ca>

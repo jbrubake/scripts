@@ -15,8 +15,7 @@
 #
 # Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
 #
-
-# NAME   : mkthumbs - script to scale images down
+# abstract: create image thumbnails
 #
 # USAGE  : mkthumbs [dir] [scalefac]
 #
