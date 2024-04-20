@@ -23,7 +23,11 @@ if [ $# = 0 ] ; then
     printf "copy FILE(s) to FILE.orig" >&2
 else
     for f in "$@"; do
-        cp -p "$f" "$f.orig"
+        dest="$(dirname "$f")/$(basename "$f").orig"
+
+        # TODO: Fail gracefully if -p isn't available
+        cp -pr "$f" "$dest"
+        printf "renamed '%s' -> '%s'\n" "$f" "$dest"
     done
 fi
 
