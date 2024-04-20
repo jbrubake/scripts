@@ -44,7 +44,7 @@
 #
 
 CURL='curl -s --header User-Agent:gxpr/1.0'
-SEARCH="http://www.google.com/search"
+SEARCH="https://www.google.com/search"
 EXPR=$(echo "$@" | sed -e 's/+/%2B/g' -e 's/ /+/g')
 
 res=$(
