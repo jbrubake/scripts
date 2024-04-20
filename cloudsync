@@ -47,7 +47,7 @@ while IFS= read -r line; do
     fi
 
     printf "%s\n" "Syncing $remote:$remote_dir..."
-    rclonesync $opt --verbose "$filter" "$remote:$remote_dir" "$local_dir"
+    rclone bisync $opt --verbose $filter "$remote:$remote_dir" "$local_dir"
 
 done <<END
 # remote:remote_dir
