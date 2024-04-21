@@ -7,96 +7,63 @@
 import os
 from pathlib import Path
 import subprocess
-import yaml
+import tomllib
 
-input  = "alacritty.yml.in"
-output = Path(input).stem
+file = "xresources.toml"
+output = Path(file)
 
-if "XDG_CONFIG_HOME" in os.environ and os.path.isfile(Path(os.environ["XDG_CONFIG_HOME"]) / "alacritty" / input):
-    input  = Path(os.environ["XDG_CONFIG_HOME"]) / "alacritty" / input
+if "XDG_CONFIG_HOME" in os.environ and os.path.isfile(Path(os.environ["XDG_CONFIG_HOME"]) / "alacritty"):
     output = Path(os.environ["XDG_CONFIG_HOME"]) / "alacritty" / output
-elif os.path.isfile(Path(os.environ["HOME"]) / ".config/alacritty" / input):
-    input  = Path(os.environ["HOME"]) / ".config/alacritty" / input
+elif "XDG_CONFIG_HOME" in os.environ and os.path.isfile(Path(os.environ["XDG_CONFIG_HOME"]) / "alacritty"):
+    output = Path(os.environ["XDG_CONFIG_HOME"]) / output
+elif os.path.isfile(Path(os.environ["HOME"]) / ".config/alacritty"):
     output = Path(os.environ["HOME"]) / ".config/alacritty" / output
-elif os.path.isfile(Path(os.environ["HOME"]) / ".alacritty.yml.in"):
-    input  = Path(os.environ["HOME"]) / f".{input}"
-    output = Path(os.environ["HOME"]) / f".{output}"
 else:
-    print(f"{input} not found")
-    exit(1)
+    file = Path("." + file)
+    output = Path(os.environ["HOME"]) / file
 
 def getresource(resource):
     return subprocess.Popen(['xrdb', '-get', resource.encode('utf-8')], \
             stdout=subprocess.PIPE).communicate()[0].decode("utf-8").strip('\n')
 
-# Map Xresources to alacritty configuration
-#
-xresources = {
-    "colors": {
-        "primary": {
-            "background": getresource('background'),
-            "foreground": getresource('foreground'),
-        },
-        "normal": {
-            "black":   getresource('color0'),
-            "red":     getresource('color1'),
-            "green":   getresource('color2'),
-            "yellow":  getresource('color3'),
-            "blue":    getresource('color4'),
-            "magenta": getresource('color5'),
-            "cyan":    getresource('color6'),
-            "white":   getresource('color7'),
-        },
-        "bright": {
-            "black":   getresource('color8'),
-            "red":     getresource('color9'),
-            "green":   getresource('color10'),
-            "yellow":  getresource('color11'),
-            "blue":    getresource('color12'),
-            "magenta": getresource('color13'),
-            "cyan":    getresource('color14'),
-            "white":   getresource('color15'),
-        },
-        "cursor": {
-            "text":   getresource('background'), 
-            "cursor": getresource('cursorColor'), 
-        },
-        "vi_mode_cursor": {
-            "text":   getresource('alacritty.vi_mode_cursor.text'), 
-            "cursor": getresource('alacritty.vi_mode_cursor.cursor'), 
-        },
-    },
-    "font": { # *font: <family>:size=<size>
-        "normal": {
-            "family": getresource('alacritty.font').split(':')[0],
-        },
-        "size": int(getresource('alacritty.font').split(':size=')[1]),
-    },
-}
+with open(output, "w") as f:
+    f.write(f"""
+[colors.primary]
+background = "{getresource('alacritty.background')}"
+foreground = "{getresource('alacritty.foreground')}"
 
-def merge_dicts(d1, d2):
-    """ values in d2 override d1 """
+[colors.normal]
+black = "{getresource('alacritty.color0')}"
+red = "{getresource('alacritty.color1')}"
+green = "{getresource('alacritty.color2')}"
+yellow = "{getresource('alacritty.color3')}"
+blue = "{getresource('alacritty.color4')}"
+magenta = "{getresource('alacritty.color5')}"
+cyan = "{getresource('alacritty.color6')}"
+white = "{getresource('alacritty.color7')}"
 
-    # Loop through all items in d2
-    for k, v in d2.items():
-        # Is it a sub-dictionary?
-        if isinstance(v, dict):
-            # If it doesn't exist in d1, create it
-            if not k in d1:
-                d1[k] = {}
-            # Recurse
-            merge_dicts(d1[k], v)
-        # It is just a value and is not empty
-        elif v:
-            # d2 overrides d1
-            d1[k] = v
-        # Skip empty values
-        else:
-            pass
+[colors.bright]
+black = "{getresource('alacritty.color8')}"
+red = "{getresource('alacritty.color9')}"
+green = "{getresource('alacritty.color10')}"
+yellow = "{getresource('alacritty.color11')}"
+blue = "{getresource('alacritty.color12')}"
+magenta = "{getresource('alacritty.color13')}"
+cyan = "{getresource('alacritty.color14')}"
+white = "{getresource('alacritty.color15')}"
 
-with open(input) as f:
-    config = yaml.load(f, yaml.FullLoader) or {}
-    merge_dicts(config, xresources)
-    with open(output, "w") as f:
-        yaml.dump(config, f)
+[colors.cursor]
+text = "{getresource('alacritty.background')}"
+cursor = "{getresource('alacritty.cursorColor')}"
+
+[colors.vi_mode_cursor]
+text = "{getresource('alacritty.background')}"
+cursor = "{getresource('alacritty.cursorColor')}"
+
+[font]
+size = {int(getresource('alacritty.font').split(':size=')[1])}
+
+[font.normal]
+family = "{getresource('alacritty.font').split(':')[0]}"
+""")
 
