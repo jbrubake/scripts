@@ -146,7 +146,7 @@ done < "$MENUFILE"
 
 # Main {{{1
 #
-choice=$(echo -e "$choices" | dmenu "$(make_dmenu_args)" -i -p "${prompt-}" -l "${#COMMANDS[*]}" "$@")
+choice=$(echo -e "$choices" | dmenu $(make_dmenu_args) -c -i -p "${prompt-}" -l "${#COMMANDS[*]}" "$@")
 
 if [ -n "$choice" ]; then
     ${COMMANDS[$choice]}
