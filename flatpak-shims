@@ -79,7 +79,8 @@ mkshim() {
 #
 # flatpak shim managed by $PROGNAME
 #
-exec flatpak run "$appid" "\$@"
+nohup flatpak run "$appid" "\$@" >/dev/null 2>&1 & disown
+
 EOF
 
     chmod +x "$cmd"
