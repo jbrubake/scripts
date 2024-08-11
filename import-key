@@ -139,7 +139,7 @@ END
 # Main {{{1
 #
 case $0 in
-    */import)
+    */import-key)
         while getopts ':hv' c; do
             case $c in
                 v) print_version; exit 0 ;;
@@ -156,7 +156,7 @@ case $0 in
 
         import_key "$archive"
         ;;
-    */export)
+    */export-key)
         KEYDIR=$DFLT_KEYDIR
         while getopts ':ld:hv' c; do
             case $c in
