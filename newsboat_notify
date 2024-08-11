@@ -1,0 +1,5 @@
+#!/bin/sh
+#
+#
+dunstify -a "Newsboat" -u low -i mail-unread "$1"
+
