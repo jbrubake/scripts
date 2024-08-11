@@ -23,8 +23,8 @@ fg=$(xrdb -query | awk '/xfortune\.bg/ {print $2}')
 
 args="-buttons OK -default OK -center -file -"
 
-type 2>&1 >/dev/null xmessage  && xmessage=xmessage
-type 2>&1 >/dev/null gxmessage && xmessage=gxmessage
+command -v xmessage  >/dev/null && xmessage=xmessage
+command -v gxmessage >/dev/null && xmessage=gxmessage
 
 if test -n "$xmessage"; then
     case $xmessage in
