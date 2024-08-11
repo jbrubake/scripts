@@ -30,8 +30,10 @@ if ! command -v scrot >/dev/null; then
     exit 1
 fi
 
+args='-q 100'
+
 if [ "$1" = '-d' ]; then
-    args='-d 3'
+    args="$args -d 3"
     shift
 fi
 
