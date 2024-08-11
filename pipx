@@ -1,0 +1,62 @@
+#!/bin/sh
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Copyright 2023 Jeremy Brubaker <jbru362@gmail.com>
+#
+# abstract: wrap pipx to allow system-wide installs
+#
+# Requires pipx
+#
+
+print_help() (
+cat <<END
+pipx wrapper
+usage: pipx [-h] [--system] <pipx arguments>
+
+options:
+-h, --help       show this help message and exit
+--system         Install for all users
+
+pipx
+END
+) >&2
+
+pipx_sys_home=/opt/pipx
+pipx_sys_bin_dir=/usr/local/bin
+use_emoji=false
+pipx=$pipx_sys_home/pipx/bin/pipx
+
+case "$1" in
+    -h | --help)
+        print_help;
+        USE_EMOJI=$use_emoji $pipx --help
+        ;;
+    -s | --system)
+
+        if [ "$(id -u)" -ne 0 ]; then
+            printf -- "--system requires running as root\n" >&2
+            exit 1
+        fi
+
+        shift
+        PIPX_HOME=$pipx_sys_home PIPX_BIN_DIR=$pipx_sys_bin_dir USE_EMOJI=$use_emoji \
+            $pipx "$@"
+        ;;
+    *)
+        PIPX_HOME=$pipx_sys_home PIPX_BIN_DIR=$pipx_sys_bin_dir USE_EMOJI=$use_emoji \
+            $pipx "$@"
+        ;;
+esac
+
