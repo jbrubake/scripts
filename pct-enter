@@ -50,5 +50,7 @@ node=$(ssh "$PVE_HOST" 'sudo pvesh get /cluster/resources --type vm --output-for
 # SSH to PVE_HOST and SSH again to the proper node
 # Do this even when the CT is on PVE_HOST so you land
 # in your home directory on the CT
-ssh -t "$PVE_HOST" sudo ssh -t "$node" pct enter "$id"
+#
+# use pct exec instead of enter so we can spawn a login shell
+ssh -t "$PVE_HOST" sudo ssh -t "$node" pct exec "$id" -- /bin/sh --login
 
