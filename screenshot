@@ -38,7 +38,7 @@ if [ "$1" = '-d' ]; then
 fi
 
 case $1 in
-    area)     args="$args -bs" ;;
+    area)     args="$args -bs -l mode=edge" ;;
     current)  args="$args -bu" ;;
     screen|*) args="$args" ;;
 esac
