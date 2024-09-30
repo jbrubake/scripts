@@ -33,6 +33,14 @@ while getopts "hoc" o; do case "${o}" in
 	h) printf "Optional arguments for custom use:\\n  -c: copy\\n  -o: xdg-open\\n  -h: Show this message\\n" && exit 1 ;;
 	o) chosen="$(echo "$urls" | dmenu "$dmenu_opts" -p 'Follow which url?' -l 10)"
 	setsid xdg-open "$chosen" >/dev/null 2>&1 & ;;
-	c) echo "$urls" | dmenu "$dmenu_opts" -p 'Copy which url?' | tr -d '\n' | xclip -selection clipboard ;;
+	c)
+        if command -v xclip >/dev/null; then
+            copy='xclip -selection clipboard'
+        elif command -v xsel >/dev/null; then
+            copy='xsel -b'
+        else
+            copy=tee
+        fi
+        echo "$urls" | dmenu "$dmenu_opts" -p 'Copy which url?' | tr -d '\n' | "$cmd" ;;
 	*) printf "Invalid option: -%s\\n" "$OPTARG" && exit 1 ;;
 esac done
