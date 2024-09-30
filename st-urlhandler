@@ -19,7 +19,7 @@
 #     modified from https://github.com/LukeSmithxyz/st/blob/master/st-urlhandler
 #
 urlregex="(((http|https|gopher|gemini|ftp|ftps|git)://|www\\.)[a-zA-Z0-9.]*[:]?[a-zA-Z0-9./@$&%?$\#=_~-]*)|((magnet:\\?xt=urn:btih:)[a-zA-Z0-9]*)"
-dmenu_opts="-l 10 -bw 1 -c -i -w $WINDOWID"
+dmenu_opts="-l 10 -c -i -w $WINDOWID"
 
 urls="$(sed 's/.*│//g' | tr -d '\n' | # First remove linebreaks and mutt sidebars:
 	grep -aEo "$urlregex" | # grep only urls as defined above.
