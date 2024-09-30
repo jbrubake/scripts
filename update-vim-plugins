@@ -1,0 +1,41 @@
+#!/bin/sh
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Copyright 2024 Jeremy Brubaker <jbru362@gmail.com>
+#
+# abstract: update vim plugins and links
+#
+MINPAC_OPT=$HOME/.vim/pack/minpac/opt
+FTDETECT=$HOME/.vim/ftdetect
+
+# Update plugins
+#
+#vim '+call minpac#init({"confirm":"false"})' \
+vim '+call minpac#clean()' \
+    '+call minpac#update("", {"do": "quitall"})'
+
+# Create links to all optional ftdetect scripts
+#
+for p in $(find "$MINPAC_OPT" \
+           -path '*/ftdetect/*.vim' \
+           -exec realpath -s --relative-to "$FTDETECT" {} \;
+         ); do
+    ln -sf "$p" "$FTDETECT/$(basename "$p")"
+done
+
+# Delete stale ftdetect links
+#
+find -L "$FTDETECT" -type l -exec rm {} \;
+
