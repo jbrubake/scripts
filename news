@@ -22,8 +22,10 @@
 newsdir=${NEWSDIR:-/var/lib/news}
 newstime=${XDG_STATE_HOME}/misc/news_time
 
-
-cd "$newsdir" # Find news
+if ! [ -d "$newsdir" ]; then
+    printf 'newsdir not found: %s\n' "$newsdir" >&2
+    exit 1
+fi
 
 case $1 in
     -l) list=1 ;; # list only
