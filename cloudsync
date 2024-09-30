@@ -211,6 +211,7 @@ esac
 for r in $(rclone listremotes); do
     [ -n "$remote" ] && [ "${remote%:}:" != "$r" ] && continue
     mkdir -p "$SYNC_ROOT/${r%:}"
+    echo $cmd "${r%:}:" "$@" >> ~/var/log/cloudsync
     $cmd "${r%:}:" "$@"
 done
 
