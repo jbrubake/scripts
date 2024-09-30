@@ -4,5 +4,13 @@
 #
 # Place in PATH and createt a keybinding to run bukuadd
 
-xsel | buku -a
+if command -v xclip >/dev/null; then
+    cmd=xclip
+elif command -v xsel >/dev/null; then
+    cmd=xsel
+else
+    exit
+fi
+
+"$cmd" | buku -a
 
