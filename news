@@ -17,7 +17,7 @@
 #
 # abstract: print the latest news
 #
-# -l list news items only
+# -l, --list list news items only
 #
 newsdir=${NEWSDIR:-/var/lib/news}
 newstime=${XDG_STATE_HOME}/misc/news_time
@@ -28,7 +28,7 @@ if ! [ -d "$newsdir" ]; then
 fi
 
 case $1 in
-    -l) list=1 ;; # list only
+    -l | --list) list=1 ;; # list only
 esac
 
 for f in $( (find "$newsdir" -mindepth 1 -printf "%T+\t%p\n";
