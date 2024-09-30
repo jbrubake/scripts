@@ -19,24 +19,24 @@
 #
 # -l list news items only
 #
+newsdir=${NEWSDIR:-/var/lib/news}
 
-NEWSDIR=/var/lib/news
 NEWSTIME=$HOME/.news_time
 
-cd "$NEWSDIR" # Find news
+cd "$newsdir" # Find news
 
 case $1 in
     -l) list=1 ;; # list only
 esac
 
-for f in $( (find "$NEWSDIR" -mindepth 1 -printf "%T+\t%p\n";
+for f in $( (find "$newsdir" -mindepth 1 -printf "%T+\t%p\n";
     find "$HOME" -maxdepth 1 -name "$(basename "$NEWSTIME")" -printf "%T+\t%p\n") \
                  | sort -r | cut -f2); do
 
     case $f in
         *.news_time) break ;; # Everything else has been read
         *)
-            find "$NEWSDIR" -name "$(basename "$f")" -printf "%p: (%u) %t\n"
+            find "$newsdir" -name "$(basename "$f")" -printf "%p: (%u) %t\n"
 
             # Print news item unless -l specified
             if test -z $list; then
