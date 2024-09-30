@@ -20,8 +20,8 @@
 # -l list news items only
 #
 newsdir=${NEWSDIR:-/var/lib/news}
+newstime=${XDG_STATE_HOME}/misc/news_time
 
-NEWSTIME=$HOME/.news_time
 
 cd "$newsdir" # Find news
 
@@ -30,11 +30,11 @@ case $1 in
 esac
 
 for f in $( (find "$newsdir" -mindepth 1 -printf "%T+\t%p\n";
-    find "$HOME" -maxdepth 1 -name "$(basename "$NEWSTIME")" -printf "%T+\t%p\n") \
+    find "$(dirname "$newstime")" -maxdepth 1 -name "$(basename "$newstime")" -printf "%T+\t%p\n") \
                  | sort -r | cut -f2); do
 
     case $f in
-        *.news_time) break ;; # Everything else has been read
+        "$newstime") break ;; # Everything else has been read
         *)
             find "$newsdir" -name "$(basename "$f")" -printf "%p: (%u) %t\n"
 
@@ -47,5 +47,5 @@ for f in $( (find "$newsdir" -mindepth 1 -printf "%T+\t%p\n";
 done
 
 # All news has been read unless -l specified
-test -z $list &&  touch "$NEWSTIME"
+test -z $list &&  touch "$newstime"
 
