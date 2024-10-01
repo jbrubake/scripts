@@ -77,7 +77,7 @@ if grep "${cmd/;/}" "$cachefile" >/dev/null 2>&1; then
                             "
             ;;
         *)
-            (eval "$cmdline &")
+            eval $cmdline &
             ;;
     esac
 else
