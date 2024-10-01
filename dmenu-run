@@ -69,7 +69,8 @@ if grep "${cmd/;/}" "$cachefile" >/dev/null 2>&1; then
     # Trailing ';' means run it in a terminal
     case "$cmdline" in
         *\;)
-            $term_cmd -- bash -ic "
+            # BUG: does not work with gnome-terminal unless -e is replaced by --
+            $term_cmd -e bash -ic "
             __t=\$(date +%s)
             $cmdline
             test \$((\$(date +%s) - __t)) -lt 1 &&
