@@ -80,8 +80,18 @@ END
 MENUDIR="${XDG_CONFIG_DIR:-$HOME/.config}/dmenu-menu"
 
 case ${1-} in
-    -h | --help)    print_help; exit 0 ;;
-         --version) print_version; exit 0 ;;
+    -h | --help)     print_help; exit 0 ;;
+         --version)  print_version; exit 0 ;;
+    -d | --menu-dir) 
+        if [ $# -gt 2 ]; then
+            shift
+            MENUDIR=$1
+            shift
+        else
+            print_help
+            exit 1
+        fi
+        ;;
     -*) print_help "Invalid option: $1"; exit 1 ;;
     '') printf "%s: No menu file given.\n" "$0"; exit 1 ;;
 esac
