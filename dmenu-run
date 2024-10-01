@@ -81,6 +81,6 @@ if grep "${cmd/;/}" "$cachefile" >/dev/null 2>&1; then
             ;;
     esac
 else
-    exec "$0" "$@" -p "${cmd/;/} not found:"  < "$cachefile"
+    exec "$0" "$@" -p "${cmd/;/} not found:"
 fi
 
