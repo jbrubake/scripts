@@ -33,7 +33,7 @@ VERSION='1.0'
 print_help() (
     [ -n "$2" ] && printf "%s\n" "$2"
     case $1 in
-        */export) # {{{
+        export) # {{{
             cat <<END
 Usage: $0 [options] KEYID BASENAME
 
@@ -46,7 +46,7 @@ Options:
   -v        output version information and exit
 END
             ;; # }}}
-        */import) # {{{
+        import) # {{{
             cat <<END
 Usage: $0 [options] ARCHIVE
 
@@ -143,15 +143,15 @@ case $0 in
         while getopts ':hv' c; do
             case $c in
                 v) print_version; exit 0 ;;
-                h) print_help "$0"; exit 0 ;;
-                ?) print_help "" "Invalid option: -$OPTARG";  exit 1 ;;
+                h) print_help import; exit 0 ;;
+                ?) print_help import "Invalid option: -$OPTARG";  exit 1 ;;
             esac
         done
         shift $((OPTIND-1))
 
         case $# in
             1) archive=$1; shift ;;
-            *) print_help 'import' ''; exit 1 ;;
+            *) printf 'Usage: %s ARCHIVE\n' "$0"; exit 1 ;;
         esac
 
         import_key "$archive"
@@ -163,15 +163,15 @@ case $0 in
                 l) list_keys; exit 0 ;;
                 d) KEYDIR=$OPTARG; mkdir -p "$KEYDIR" ;;
                 v) print_version; exit 0 ;;
-                h) print_help "$0"; exit 0 ;;
-                ?) print_help "" "Invalid option: -$OPTARG";  exit 1 ;;
+                h) print_help export; exit 0 ;;
+                ?) print_help export "Invalid option: -$OPTARG";  exit 1 ;;
             esac
         done
         shift $((OPTIND-1))
 
         case $# in
             2) id=$1; out=$2; shift 2 ;;
-            *) printf 'Usage: %s export KEYID OUTPUTNAME\n' "$0"; exit 1 ;;
+            *) printf 'Usage: %s KEYID OUTPUTNAME\n' "$0"; exit 1 ;;
         esac
 
         export_key "$id" "$out"
