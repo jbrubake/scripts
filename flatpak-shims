@@ -100,7 +100,7 @@ mkdir -p "$shimdir"
 
 # Removing all shims and recreating is the easy
 # way to keep them from being stale
-rm -f "$shimdir/*"
+rm -f "$shimdir"/*
 
 for appid in $(flatpak list --app --columns=application); do
     cmd=
