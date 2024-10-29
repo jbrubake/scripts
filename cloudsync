@@ -24,6 +24,12 @@ SYNC_ROOT_DFLT=${RCLONE_SYNC_ROOT:-$HOME/.sync}
 
 RCLONE_SYNC_OPTIONS='--check-access --resilient --recover --max-lock 2m'
 
+if [ -d ~/var/log ]; then
+    logfile=~/var/log/cloudsync
+else
+    logfile=/dev/null
+fi
+
 # Documentation {{{1
 #
 VERSION='1.0'
@@ -211,7 +217,7 @@ esac
 for r in $(rclone listremotes); do
     [ -n "$remote" ] && [ "${remote%:}:" != "$r" ] && continue
     mkdir -p "$SYNC_ROOT/${r%:}"
-    echo $cmd "${r%:}:" "$@" >> ~/var/log/cloudsync
+    printf '%s %s %s\n' "$cmd" "${r%:}:" "$@" >> "$logfile"
     $cmd "${r%:}:" "$@"
 done
 
