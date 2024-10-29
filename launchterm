@@ -1,0 +1,10 @@
+#!/bin/sh
+#
+# abstract: quick wrapper to support tmux, tmuxp and tabbed
+
+if tmux ls | grep "^$1:" | grep -q '(attached)$'; then
+    $SHELL
+else
+    tmuxp load -y $1
+fi
+
