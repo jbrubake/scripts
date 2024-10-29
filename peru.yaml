@@ -36,7 +36,7 @@ git module wttr:
     share/bash-function.txt: wttr
   pick: wttr
   executable: wttr # abstract: The right way to check the weather 
-  rev: 6b050470bcee33d265439b4e6df20e043cc621ad
+  rev: 235581925fa2e09a42e9631e2c23294a1972ee0e
 
 git module mutt_bgrun:
   url: https://github.com/RichiH/mutt_bgrun
@@ -67,7 +67,7 @@ git module passmenu:
     contrib/dmenu/passmenu: passmenu
   pick: passmenu
   executable: passmenu # abstract: A dmenu-based interface to pass(1)
-  rev: 28cec11f1dbe6c4273d30370af45b69c9f408386
+  rev: b5e965a838bb68c1227caa2cdd874ba496f10149
 
 curl module cheat_dot_sh:
   url: https://cht.sh/:cht.sh
