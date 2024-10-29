@@ -28,7 +28,7 @@ git module anypinentry:
     anypinentry: pinentry-any
   pick: pinentry-any
   executable: pinentry-any # abstract: A flexible pinentry script for gpg. Uses dmenu by default
-  rev: 3302995faca21c4b003a517c4dae12ef8d7f7971
+  rev: 931135ba08cabdc9cfe547d16fceb14ef0d3e22e
 
 git module wttr:
   url: https://github.com/chubin/wttr.in
