@@ -87,7 +87,7 @@ mkshim() {
 #
 # flatpak shim managed by $PROGNAME
 #
-nohup flatpak run "$appid" "\$@" >/dev/null 2>&1 & disown
+nohup flatpak run "$appid" "\$@" >/dev/null 2>&1 &
 
 EOF
 
