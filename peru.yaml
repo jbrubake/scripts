@@ -48,7 +48,7 @@ git module mutt-trim:
   url: https://github.com/Konfekt/mutt-trim
   pick: mutt-trim
   executable: mutt-trim # abstract: unclutter and normalize quoted text in an e-mail 
-  rev: 856fdeef2b14a0444188fb4af25912e980215763
+  rev: d08ff7d759ed0422db144c478d2bb48e9f1f1d28
 
 git module emojify:
   url: https://github.com/mrowa44/emojify
