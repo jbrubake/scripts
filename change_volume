@@ -17,40 +17,63 @@
 #
 # abstract: change volume
 #
-# Requires pactl, dunst
+# Requires (wpctl | pactl) and dunst
 #
 
 # Arbitrary but unique message id for dunst
 msg_id=991049
 
-default_sink=$(LC_ALL=C pactl list sinks short | \
-                        grep "$(\
-                            pactl info | 
-                            grep "Default Sink" | 
-                            sed 's/[^:]*: //')" | 
-                        cut -f1)
+if command -v wpctl >/dev/null; then
 
-case "$@" in
-    mute)
-        pactl set-sink-mute @DEFAULT_SINK@ toggle
-        is_muted=$(LC_ALL=C pactl list sinks | \
-                        grep -A9 "Sink #$default_sink" | \
-                        grep Mute | \
-                        awk '{print $2}')
-        ;;
+    case "$1" in
+        mute)
+            wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+            if wpctl get-volume @DEFAULT_AUDIO_SINK@ | grep -q MUTED; then
+                is_muted=yes
+            else
+                is_muted=no
+            fi
+            ;;
+        +*|-*)
+            sign=$(echo "$1" | cut -c1)
+            amnt=$(echo "$1" | cut -c2-)
 
-    +*|-*)
-        pactl set-sink-volume @DEFAULT_SINK@ "$@"
-        ;;
+            wpctl set-volume -l 1.5 @DEFAULT_AUDIO_SINK@ "$amnt$sign"
+            ;;
+    esac
+    current_volume=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ |
+        cut -d' ' -f2 | sed -e 's/^0//' -e 's/\.//')
+elif command -v pactl >/dev/null; then
+    default_sink=$(LC_ALL=C pactl list sinks short | \
+        grep "$(\
+            pactl info | 
+            grep "Default Sink" | 
+            sed 's/[^:]*: //')" | 
+            cut -f1)
 
-    *) exit 1 ;;
-esac
+    case "$@" in
+        mute)
+            pactl set-sink-mute @DEFAULT_SINK@ toggle
+            is_muted=$(LC_ALL=C pactl list sinks | \
+                grep -A9 "Sink #$default_sink" | \
+                grep Mute | \
+                awk '{print $2}')
+            ;;
+        +*|-*)
+            pactl set-sink-volume @DEFAULT_SINK@ "$@"
+            ;;
+        *) exit 1 ;;
+    esac
 
-current_volume=$(LC_ALL=C pactl list sinks | \
-                  grep -A9 "Sink #$default_sink" | 
-                  grep Volume | 
-                  awk '{print $5}' | 
-                  tr -dc '[:digit:]')
+    current_volume=$(LC_ALL=C pactl list sinks | \
+        grep -A9 "Sink #$default_sink" | 
+        grep Volume | 
+        awk '{print $5}' | 
+        tr -dc '[:digit:]')
+else
+    printf '%s\n' 'Neither wpctl or pactl found' >&2
+    exit 1
+fi
 
 if [ "$current_volume" = "0" ] || [ "$is_muted" = "yes" ]; then
     dunstify -a "changeVolume" -u low -i audio-volume-muted \
