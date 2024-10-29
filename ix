@@ -764,6 +764,13 @@ fi
 
 # Main {{{1
 #
+if command -v xclip >/dev/null; then
+    copy='xclip -selection clipboard'
+elif command -v xsel >/dev/null; then
+    copy='xsel -b'
+else
+    copy=tee
+fi
 case $cmd in
     fzf)
         do_list ${NETRC:-$NETRC_DFLT} | fzf \
@@ -776,7 +783,7 @@ case $cmd in
             --bind    "Ctrl-R:reload-sync(do_list '${NETRC:-$NETRC_DFLT}')" \
             --bind    "Ctrl-P:execute(do_paste '${NETRC:-$NETRC_DFLT}')+reload-sync(do_list '${NETRC:-$NETRC_DFLT}')" |
         cut -d' ' -f1 |
-        xargs -I{} curl -s "$URL/{}" | tee /dev/tty | xclip -selection clipboard
+        xargs -I{} curl -s "$URL/{}" | tee /dev/tty | "$copy"
         ;;
     list)    do_list    "${NETRC:-"$NETRC_DFLT"}" ${ANON:+-a} ${WHO:+-u $WHO} ;;
     get)     do_get     "$@" ;;
