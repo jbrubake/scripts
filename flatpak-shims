@@ -22,6 +22,7 @@
 # Defaults {{{1
 VERBOSE_DFLT=
 SHIMDIR_DFLT=$HOME/bin/.flatpak
+MAPFILE_DFLT=${XDG_DATA_HOME:-~/.local/share}/flatpak-shims/mapping.conf
 
 # Documentation {{{1
 #
@@ -36,6 +37,8 @@ Generate shims to run flatpaks
  -d DIRECTORY    Place shims in DIRECTORY (Default = $SHIMDIR_DFLT)
                    NOTE: all files in this directory are deleted so
                    it should contain *only* flatpak shims
+ -f FILE         Alternate appid to name mapping file
+                   (Default = $MAPFILE_DFLT)
  -v              turn on verbose output
  -V              display version info and exit
  -h              display this help and exit
@@ -58,9 +61,11 @@ EOF
 #
 shimdir=$SHIMDIR_DFLT
 verbose=$VERBOSE_DFLT
-while getopts 'd:vVh' opt; do
+MAPFILE=$MAPFILE_DFLT
+while getopts 'd:f:vVh' opt; do
     case $opt in
         d) shim_dir=$OPTARG ;;
+        f) MAPFILE=$OPTARG ;;
         v) verbose=-v ;;
         V) print_version; exit ;;
         h|?) print_help; exit ;;
@@ -68,13 +73,16 @@ while getopts 'd:vVh' opt; do
 done
 shift $((OPTIND - 1))
 
+[ -r "$MAPFILE" ] || printf 'Mapping file not found: %s\n' "$MAPFILE" >&2
+
 # Functions {{{1
 #
 mkshim() {
+    [ $# = "2" ] || return
     appid=$1
-    cmd=$2
+    shim=$2
 
-    cat > "$cmd" <<EOF
+    cat > "$shim" <<EOF
 #!/bin/sh
 #
 # flatpak shim managed by $PROGNAME
@@ -83,7 +91,7 @@ nohup flatpak run "$appid" "\$@" >/dev/null 2>&1 & disown
 
 EOF
 
-    chmod +x "$cmd"
+    chmod +x "$shim"
 }
 
 # Main {{{1
@@ -95,12 +103,17 @@ mkdir -p "$shimdir"
 rm -f "$shimdir/*"
 
 for appid in $(flatpak list --app --columns=application); do
-    cmd=$(basename "$(flatpak info -m $appid | awk -F= '/^command=/ {print $2}')")
-    cmd=$(echo ${cmd##*.} | tr [:upper:] [:lower:])
+    cmd=
+    [ -r "$MAPFILE" ] &&
+        cmd=$(grep "^$appid:" < "$MAPFILE" | cut -d: -f2)
+    [ -z "$cmd" ] &&
+        cmd=$(flatpak list --app |
+                grep "$appid" |
+                cut -f1 |
+                tr [:upper:] [:lower:] |
+                sed -e 's/  */-/')
 
-    [ -n "$verbose" ] &&
-        printf 'Creating shim for %s => %s\n' "$appid" "$cmd"
-
+    [ -n "$verbose" ] && printf 'Creating shim for %s => %s\n' "$appid" "$cmd"
     mkshim "$appid" "$shimdir/$cmd"
 done
 
