@@ -5,7 +5,6 @@ imports:
   emojify: ./
   image2ascii: ./
   imagick_type_gen: ./
-  ix: ./
   MIMEmbellish: ./
   mutt-trim: ./
   mutt_bgrun: ./
@@ -69,14 +68,6 @@ git module passmenu:
   pick: passmenu
   executable: passmenu # abstract: A dmenu-based interface to pass(1)
   rev: 28cec11f1dbe6c4273d30370af45b69c9f408386
-
-curl module ix:
-  url: http://ix.io/client
-  move:
-    client: ix
-  pick: ix
-  executable: ix # abstract: Command line pastebinx
-  sha1: cbbad364df3a53c95e678e3273f8cc0424937248
 
 curl module cheat_dot_sh:
   url: https://cht.sh/:cht.sh
