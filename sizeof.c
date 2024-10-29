@@ -31,6 +31,7 @@ main ()
     printf ("float         %lu\n", sizeof (float));
     printf ("double        %lu\n", sizeof (double));
     printf ("long double   %lu\n", sizeof (long double));
+    printf ("size_t        %lu\n", sizeof (size_t));
 
     return 0;
 }
