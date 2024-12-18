@@ -19,13 +19,13 @@
 #
 # Documentation {{{1
 #
-VERSION='2.0'
+VERSION='2.1'
 
 print_help() {
     cat <<END >&2
 Usage: $0 [OPTION] <ip/cidr>
 
-Ping all addresses in a subnet
+Ping all addresses in a subnet. If the CIDR is ommited, a /24 is assumed.
 
   -p        ping hosts in parellel
   -C        do not use color
@@ -156,6 +156,7 @@ cidr2mask() {(
 # Extract address and CIDR
 ip=$(echo $1 | sed 's@/.*$@@')
 cidr=$(echo $1 | sed 's@^.*/@@')
+[ "$cidr" = "$ip" ] && cidr=24 # no cidr was passed
 
 # Validate input
 if ! isip "$ip" || ! iscidr "$cidr"; then
