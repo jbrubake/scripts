@@ -167,9 +167,6 @@ fi
 if [ "$bg" = 'y' ]; then
     tmpfile=$(mktemp "$(basename "$0").XXXXXX")
     trap 'rm -f "$tmpfile"' EXIT
-
-    printf "# pingsweep of %s.0/24...\n" "$net" >>"$tmpfile"
-    printf "# start: %s\n" "$(date)" >>"$tmpfile"
 else
     printf "${COLOR}Beginning pingsweep of %s/%s...${RESET}\n\n" "$ip" "$cidr"
 fi
@@ -215,23 +212,16 @@ for host in $(seq "$first" "$last"); do
     fi
 done
 
-# Output background scan {{{1
+# Output background scan results {{{2
 #
 if [ "$bg" = 'y' ]; then
     wait # for all the backgrounded pings
 
-    # Use awk to sort the list of alive IPs because they may be printed in any
-    # order due to the backgrounding
+    # Use awk to sort the list of alive IPs because they
+    # may be printed in any order due to the backgrounding
     < "$tmpfile" awk '
-    /^# ping/  { header[1] = $0 }
-    /^# start/ { header[2] = $0 }
-    /^[^#]/    { ips[i] = $0
-                 i++ }
-    END        { print header[1]
-                 print header[2]
-                 for (i in ips)
-                    print ips[i] | "sort -t. -k4 -n" }'
-
-    printf "# end: %s\n" "$(date)"
+    /^[^#]/    { alive[$0] = 1 }
+    END        { for (h in alive)
+                    print h | "sort -t. -k4 -n" }'
 fi
 
