@@ -204,11 +204,10 @@ for host in $(seq "$first" "$last"); do
                 printf "%s\n" "$(dec2ip "$host")" >>"$tmpfile"
         } &
     else
-        printf "trying %s..." "$(dec2ip "$host")"
-        if ping -c1 "$$host" >/dev/null 2>&1; then
+        printf "%s..." "$(dec2ip "$host")"
+        ping -c1 "$host" >/dev/null 2>&1 &&
             printf "${COLOR}alive${RESET}"
-        fi
-       echo
+        echo
     fi
 done
 
