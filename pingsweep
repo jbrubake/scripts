@@ -171,7 +171,7 @@ if [ "$bg" = 'y' ]; then
     printf "# pingsweep of %s.0/24...\n" "$net" >>"$tmpfile"
     printf "# start: %s\n" "$(date)" >>"$tmpfile"
 else
-    printf "\033[1;32mBeginning pingsweep of %s/$s...\033[0m\n\n" "$ip" "$cidr"
+    printf "${COLOR}Beginning pingsweep of %s/%s...${RESET}\n\n" "$ip" "$cidr"
 fi
 
 # Ping the network {{{2
