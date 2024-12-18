@@ -19,7 +19,7 @@
 #
 # Based on: https://gist.github.com/chr15m/8a79b891c680af3bff7704d3d3860fb4
 #
-pi_macs='dc:a6:32|d8:3a:dd|e4:5f:01|28:cd:c1|b8:27:eb'
+pi_macs='28:cd:c1|2c:cf:67|3a:35:41|b8:27:eb|d8:3a:dd|dc:a6:32|e4:5f:01'
 
 # scan each network
 for n in $(ip -br a | awk '/^lo/ {next}; {print $3}'); do
