@@ -20,7 +20,7 @@
 IPMSK=0xffffffff # 32-bits on
 # Documentation {{{1
 #
-VERSION='2.1'
+VERSION='2.2'
 
 print_help() {
     cat <<END >&2
@@ -136,44 +136,72 @@ cidr2mask() { echo $(( 0xffffffff ^ (2 ** (32 - $1) - 1) )); }
 
 # Main {{{1
 #
-# Extract address and CIDR
-ip=$(echo $1 | sed 's@/.*$@@')
-cidr=$(echo $1 | sed 's@^.*/@@')
-[ "$cidr" = "$ip" ] && cidr=24 # no cidr was passed
+# Get first and last IP to ping {{{2
+case $# in
+    2) # Ping a range
+        # Validate input
+        for ip in "$1" "$2"; do
+            if ! isip "$1"; then
+                printf "%s: invalid IPv4 address: '%s'\n" "$0" "$ip" >&2
+                exit 1
+            fi
+        done
 
-# Validate input
-if ! isip "$ip" || ! iscidr "$cidr"; then
-    printf "%s: invalid network address: '%s'\n" "$0" "$1" >&2
-    exit 1
-fi
+        first=$(ip2dec "$1")
+        last=$(ip2dec "$2")
 
-# Print header
+        if [ "$last" -lt "$first" ]; then
+            t=$first
+            first=$last
+            last=$t
+        fi
+        ;;
+
+    1) # Ping a subnet
+        # Extract address and CIDR
+        ip=$(echo $1 | sed 's@/.*$@@')
+        cidr=$(echo $1 | sed 's@^.*/@@')
+        [ "$cidr" = "$ip" ] && cidr=24 # no cidr was passed
+
+        # Validate input
+        if ! isip "$ip" || ! iscidr "$cidr"; then
+            printf "%s: invalid network address: '%s'\n" "$0" "$1" >&2
+            exit 1
+        fi
+
+        # Get network address and mask as integers
+        msk=$(cidr2mask "$cidr")
+        net=$(($(ip2dec "$ip") & msk))
+
+        # Get the first and last IP on the network
+        # /31 and /32 are special cases
+        if [ "$cidr" -eq 32 ]; then
+            first=$net
+            last=$net
+        elif [ "$cidr" -eq 31 ]; then
+            first=$net
+            last=$((net + 1))
+        else
+            first=$((net + 1))
+            last=$((net + (IPMSK ^ msk) - 1))
+        fi
+        ;;
+
+    0) # Missing IPs
+        printf '%s: No IP addresses specified\n' "$0" >&2
+        print_help
+        exit 1
+        ;;
+esac
+
+# Ping the network {{{2
+#
+# Create background sweep output file or print header
 if [ "$bg" = 'y' ]; then
     tmpfile=$(mktemp "$(basename "$0").XXXXXX")
     trap 'rm -f "$tmpfile"' EXIT
 else
     printf "${COLOR}Beginning pingsweep of %s/%s...${RESET}\n\n" "$ip" "$cidr"
-fi
-
-# Ping the network {{{2
-#
-
-# Get network address and mask as integers
-net=$(ip2dec $ip)
-msk=$(cidr2mask "$cidr"")
-net=$((net & msk))
-
-# Get the first and last IP on the network
-# /31 and /32 are special cases
-if [ "$cidr" -eq 32 ]; then
-    first=$net
-    last=$net
-elif [ "$cidr" -eq 31 ]; then
-    first=$net
-    last=$((net + 1))
-else
-    first=$((net + 1))
-    last=$((net + (IPMSK ^ msk) - 1))
 fi
 
 # ^C kills the whole sweep
