@@ -24,9 +24,12 @@ VERSION='2.2'
 
 print_help() {
     cat <<END >&2
-Usage: $0 [OPTION] <ip/cidr>
+Usage:
+    Ping a subnet: $0 [OPTION] <ip/cidr>
+    Ping an arbitrary range: $0 [OPTION] <first ip> <last ip>
 
-Ping all addresses in a subnet. If the CIDR is ommited, a /24 is assumed.
+Ping all addresses in a subnet or an arbitrary range. If the CIDR is ommited, a
+/24 is assumed.
 
   -p        ping hosts in parellel
   -C        do not use color
