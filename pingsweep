@@ -17,6 +17,7 @@
 #
 # abstract:	hasty pingsweep script when nmap is not available
 #
+IPMSK=0xffffffff # 32-bits on
 # Documentation {{{1
 #
 VERSION='2.1'
@@ -129,27 +130,9 @@ ip2dec() {
 #
 # @arg $1 int CIDR
 #
-# @stdout Subnet mask
+# @stdout Subnet mask as a 32-bit integer
 #
-cidr2mask() {(
-    full_octets=$(($1/8))
-    partial_octet=$(($1%8))
-	mask=
-	for octet in $(seq 0 3); do
-        if [ $octet -lt "$full_octets" ]; then
-            mask="${mask}255"
-        elif [ $octet -eq "$full_octets" ]; then
-			mask="$mask$(echo "256 - 2^(8-$partial_octet)" | bc)"
-        else
-            mask="${mask}0"
-        fi
-
-        [ $octet -lt 3 ] && mask="$mask."
-    done
-
-    echo $mask
-)}
-
+cidr2mask() { echo $(( 0xffffffff ^ (2 ** (32 - $1) - 1) )); }
 
 # Main {{{1
 #
@@ -174,11 +157,10 @@ fi
 
 # Ping the network {{{2
 #
-IPMSK=0xffffffff
 
 # Get network address and mask as integers
 net=$(ip2dec $ip)
-msk=$(ip2dec "$(cidr2mask "$cidr")")
+msk=$(cidr2mask "$cidr"")
 net=$((net & msk))
 
 # Get the first and last IP on the network
