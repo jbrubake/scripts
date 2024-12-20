@@ -29,11 +29,10 @@ VERSION='2.0'
 #
 print_help() (
     cat <<EOF
-Usage: $0 [option]
+Usage: $0 [option] [cookie_file]
 Print a fortune that is a specified number of lines (one by default). Add any
-attribution to the last line if possible.
+attribution to the last line if possible. Get fortunes from COOKIE_FILE if specified
  
- -f FILE       get fortunes from FILE
  -l LINES      get a fortune that is LINES long (Default: 1)
  -w WIDTH      use WIDTH as the maximum line width (Default: $DEFAULT_WIDTH)
  -v            display version info and exit
@@ -59,17 +58,18 @@ DEFAULT_WIDTH=72
 cookie_file=
 width=$DEFAULT_WIDTH
 lines=1
-<<<<<<< HEAD
 
-while getopts 'f:l:w:vh' opt; do
+while getopts 'l:w:vh' opt; do
     case $opt in
-        f) cookie_file=$OPTARG ;;
         l) lines=$OPTARG ;;
         w) width=$OPTARG ;;
         v) print_version; exit ;;
         h|?) print_help; exit ;;
     esac
 done
+shift $((OPTIND-1))
+
+[ $# -ge 1 ] && cookie_file=$1
 
 # Generate fortune {{{1
 #
