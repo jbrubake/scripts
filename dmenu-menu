@@ -50,6 +50,7 @@ Usage: $0 [OPTION] [INTERFACE]
 Present a menu based on commands in a config file
 
   -h        display menu horizontally instead of vertically
+  -s        sort menu options
   -h   	    display this help and exit
   -v        output version information and exit
 
@@ -80,6 +81,7 @@ END
 #
 MENUDIR="${XDG_CONFIG_DIR:-$HOME/.config}/dmenu-menu"
 layout=v
+sort=
 case ${1-} in
     -h | --help)     print_help; exit 0 ;;
          --version)  print_version; exit 0 ;;
@@ -94,6 +96,7 @@ case ${1-} in
         fi
         ;;
     -H | --horizontal) layout=h; shift ;;
+    -s | --sort) sort=y; shift ;;
     -*) print_help "Invalid option: $1"; exit 1 ;;
     '') printf "%s: No menu file given.\n" "$0"; exit 1 ;;
 esac
@@ -163,6 +166,11 @@ case $layout in
     h) layout= ;;
     *) printf "%s: layout '%s' is invalid.\n" "$0" "$layout"; exit 1 ;;
 esac
+
+case $sort in
+    y) choices=$(echo -e "$choices" | sort) ;;
+esac
+
 choice=$(echo -e "$choices" | dmenu $(make_dmenu_args) -i -p "${prompt-}" $layout "$@")
 
 if [ -n "$choice" ]; then
