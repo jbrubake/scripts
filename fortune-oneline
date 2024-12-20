@@ -33,6 +33,9 @@ Usage: $0 [option] [cookie_file]
 Print a fortune that is a specified number of lines (one by default). Add any
 attribution to the last line if possible. Get fortunes from COOKIE_FILE if specified
  
+ -a            choose from all lists of maxims (fortune(6) option)
+ -e            consider all fortune files to be of equal size (fortune(6) option,
+                   see man 6 fortune for explanation)
  -l LINES      get a fortune that is LINES long (Default: 1)
  -w WIDTH      use WIDTH as the maximum line width (Default: $DEFAULT_WIDTH)
  -v            display version info and exit
@@ -58,9 +61,12 @@ DEFAULT_WIDTH=72
 cookie_file=
 width=$DEFAULT_WIDTH
 lines=1
-
-while getopts 'l:w:vh' opt; do
+opt_a=
+opt_e=
+while getopts 'ael:w:vh' opt; do
     case $opt in
+        a) opt_a=-a ;;
+        e) opt_e=-e ;;
         l) lines=$OPTARG ;;
         w) width=$OPTARG ;;
         v) print_version; exit ;;
@@ -74,7 +80,7 @@ shift $((OPTIND-1))
 # Generate fortune {{{1
 #
 # Get a fortune until it fits the requirements
-until fortune -sn "$width" "$cookie_file" |
+until fortune $opt_e $opt_a -sn "$width" "$cookie_file" |
     awk -v width="$width" -v lines="$lines" '
     # Get the number of lines requested
     NR <= lines { L[i++] = $0 }
