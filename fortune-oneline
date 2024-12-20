@@ -34,6 +34,9 @@ Print a fortune that is a specified number of lines (one by default). Add any
 attribution to the last line if possible. Get fortunes from COOKIE_FILE if specified
  
  -a            choose from all lists of maxims (fortune(6) option)
+ -c            show the cookie file from which the fortune came (fortune(6) option)
+                   This will print one more line than requested as the cookie file
+                   name is printed one line one by itself
  -e            consider all fortune files to be of equal size (fortune(6) option,
                    see man 6 fortune for explanation)
  -l LINES      get a fortune that is LINES long (Default: 1)
@@ -63,9 +66,10 @@ width=$DEFAULT_WIDTH
 lines=1
 opt_a=
 opt_e=
-while getopts 'ael:w:vh' opt; do
+while getopts 'acel:w:vh' opt; do
     case $opt in
         a) opt_a=-a ;;
+        c) opt_c=-c ;;
         e) opt_e=-e ;;
         l) lines=$OPTARG ;;
         w) width=$OPTARG ;;
@@ -80,8 +84,14 @@ shift $((OPTIND-1))
 # Generate fortune {{{1
 #
 # Get a fortune until it fits the requirements
-until fortune $opt_e $opt_a -sn "$width" "$cookie_file" |
-    awk -v width="$width" -v lines="$lines" '
+until fortune $opt_e $opt_a $opt_c -sn "$width" "$cookie_file" |
+    awk -v width="$width" -v lines="$lines" -v opt_c=$opt_c '
+    # If -c set and cookie file name is not set
+    opt_c != "" && file == "" { file = $0 ; next }
+    # If -c set and we got the % separator line,
+    # reset NR to count real lines
+    opt_c != "" && NR == 2 { NR = 0; next }
+
     # Get the number of lines requested
     NR <= lines { L[i++] = $0 }
 
@@ -103,6 +113,7 @@ until fortune $opt_e $opt_a -sn "$width" "$cookie_file" |
         L[i-1] = $0
     }
     END {
+    if (file != "") print file
         # Fail if we got too many lines
         if (NR > lines) exit 1
 
