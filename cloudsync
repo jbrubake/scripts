@@ -218,6 +218,8 @@ case $1 in
     *) remote=$1; shift ;;
 esac
 
+# Dump stdout unless in verbose mode
+[ -z "$VERBOSE" ] && exec 1>/dev/null
 for r in $(rclone listremotes); do
     [ -n "$remote" ] && [ "${remote%:}:" != "$r" ] && continue
     mkdir -p "$SYNC_ROOT/${r%:}"
