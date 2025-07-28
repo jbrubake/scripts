@@ -5,6 +5,7 @@ imports:
   emojify: ./
   image2ascii: ./
   imagick_type_gen: ./
+  git-toolbelt: ./
   MIMEmbellish: ./
   mutt-trim: ./
   mutt_bgrun: ./
@@ -115,6 +116,13 @@ rule zxpdf:
   # url: https://www.spinnaker.de/mutt/zxdvi
   move:
     zxdvi: zxpdf # abstract: View gzipped DVI, PS and PDF files (useful for Mutt .mailcap)
+
+git module git-toolbelt:
+  url: https://github.com/nvie/git-toolbelt
+  pick:
+    - git-sha # abstract: Show the latest commit SHA
+    - git-current-branch # abstract: Show the current branch name
+  rev: 3f568cf72ea0fe1b4234a1bf87574a9a4692bc3a
 
 curl module imagick_type_gen:
   url: https://legacy.imagemagick.org/Usage/scripts/imagick_type_gen
