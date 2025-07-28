@@ -3,6 +3,7 @@ peru.yaml
 README.md
 COPYING.md
 Makefile
+LICENSE.*
 *.c
 *.o
 tags
