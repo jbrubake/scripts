@@ -21,7 +21,7 @@
 #
 
 # Arbitrary but unique message id for dunst
-msg_id=991049
+msg_id=chgvol-$0
 
 if command -v wpctl >/dev/null; then
 
