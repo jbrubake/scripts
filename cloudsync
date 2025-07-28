@@ -220,10 +220,18 @@ esac
 
 # Dump stdout unless in verbose mode
 [ -z "$VERBOSE" ] && exec 1>/dev/null
+
+unset found
 for r in $(rclone listremotes); do
-    [ -n "$remote" ] && [ "${remote%:}:" != "$r" ] && continue
+    if [ -n "$remote" ]; then
+        [ "${remote%:}:" != "$r" ] && continue
+        found=1
+    fi
     mkdir -p "$SYNC_ROOT/${r%:}"
     printf '%s:%s %s %s\n' "$(eval "$date")" "$cmd" "${r%:}:" "$@" | tee -a "$logfile"
     $cmd "${r%:}:" "$@" 2>&1 | tee -a "$logfile" >&2
 done
+
+[ -n "$remote" ] && [ -z "$found" ] &&
+        printf '%s:Remote "%s" does not exist\n' "$(eval "$date")" "${remote%:}" | tee -a "$logfile" >&2
 
