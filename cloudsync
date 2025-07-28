@@ -224,6 +224,6 @@ for r in $(rclone listremotes); do
     [ -n "$remote" ] && [ "${remote%:}:" != "$r" ] && continue
     mkdir -p "$SYNC_ROOT/${r%:}"
     printf '%s:%s %s %s\n' "$(eval "$date")" "$cmd" "${r%:}:" "$@" | tee -a "$logfile"
-    $cmd "${r%:}:" "$@"
+    $cmd "${r%:}:" "$@" 2>&1 | tee -a "$logfile" >&2
 done
 
