@@ -173,6 +173,7 @@ while getopts ':s:hv' c; do
     esac
 done
 shift $((OPTIND-1))
+OPTIND=1
 
 if [ $# -eq 0 ]; then
     printf "No help topic requested\n" >&2

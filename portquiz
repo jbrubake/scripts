@@ -59,6 +59,7 @@ while getopts 'vVh' opt; do
     esac
 done
 shift $((OPTIND - 1))
+OPTIND=1
 
 if command -v curl >/dev/null; then
     cmd='curl -s'

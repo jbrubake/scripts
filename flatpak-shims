@@ -72,6 +72,7 @@ while getopts 'd:f:vVh' opt; do
     esac
 done
 shift $((OPTIND - 1))
+OPTIND=1
 
 [ -r "$MAPFILE" ] || printf 'Mapping file not found: %s\n' "$MAPFILE" >&2
 

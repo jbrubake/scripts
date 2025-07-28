@@ -155,7 +155,9 @@ case $1 in --*) ;; *)
             h|?) print_help; exit ;;
         esac
     done
-    shift $((OPTIND - 1)) ;;
+    shift $((OPTIND - 1))
+    OPTIND=1
+    ;;
 esac
 
 case $1 in

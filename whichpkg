@@ -58,6 +58,7 @@ while getopts ':hv' c; do
     esac
 done
 shift $((OPTIND-1))
+OPTIND=1
 
 if ! command -v realpath >/dev/null; then
     printf "realpath(1) required\n" >&2

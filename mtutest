@@ -70,6 +70,7 @@ while getopts 'm:d:vVh' opt; do
     esac
 done
 shift $((OPTIND - 1))
+OPTIND=1
 dest=${1:-$DEST_DFLT}
 
 # Main {{{1

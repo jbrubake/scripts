@@ -74,6 +74,7 @@ while getopts ':n:e:hv' c; do
     esac
 done
 shift $((OPTIND-1))
+OPTIND=1
 
 license=${1:-gpl}
 
