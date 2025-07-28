@@ -25,7 +25,7 @@ SYNC_ROOT_DFLT=${RCLONE_SYNC_ROOT:-$HOME/.sync}
 RCLONE_SYNC_OPTIONS='--check-access --resilient --recover --max-lock 2m'
 
 if [ -d ~/var/log ]; then
-    logfile=~/var/log/cloudsync
+    logfile=~/var/log/cloudsync.log
 else
     logfile=/dev/null
 fi
