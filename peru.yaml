@@ -127,6 +127,7 @@ git module git-toolbelt:
     - git-current-branch # abstract: Show the current branch name
     - git-remote-tracking-branch # (required for git-spinoff) abstract: Print remote tracking branch name
     - git-spinoff # abstract: Spinoff a new branch from current work and reset current branch
+    - git-undo-commit # abstract: Undo a commit but keep all the changes staged
   rev: 3f568cf72ea0fe1b4234a1bf87574a9a4692bc3a
 
 curl module imagick_type_gen:
