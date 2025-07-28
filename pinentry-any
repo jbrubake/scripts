@@ -13,6 +13,7 @@ prompt_string_default="PIN: "
 
 title="";
 prompt_string="$prompt_string_default";
+error_string="";
 description="";
 keyinfo="";
 repeat="";
@@ -22,12 +23,12 @@ AP_YES="Yes";
 AP_NO="No";
 
 prompt_action='dmenu -P -p "$AP_PROMPT"';
-confirm_action='echo -e "$AP_YES\n$AP_NO" | dmenu -p "$AP_PROMPT"';
+confirm_action='printf "%s\n%s" "$AP_YES" "$AP_NO" | dmenu -p "$AP_PROMPT"';
 display_error_action='notify-send -a "Pinentry" "$AP_ERROR"';
 
 # :: Prompt string (default if empty)
 ask_password() {
-  export AP_PROMPT="${1:-"$prompt_string"}";
+  export AP_PROMPT="${error_string}${1:-"$prompt_string"}";
   printf '' | sh -c "$prompt_action" 2> /dev/null;
 }
 # :: Prompt string (default if empty)
@@ -51,6 +52,7 @@ unknown_error() { echo "ERR 536871187 Unknown IPC command <User defined source 1
 reset() {
     description= 
     prompt_string="$prompt_string_default" 
+    error_string= 
     keyinfo= 
     repeat= 
     error__password_mismatch= 
@@ -100,6 +102,7 @@ password_prompt() {
     cancelled_error;
   fi;
   repeat=
+  error_string=
 }
 
 # :: OK | ERR
@@ -109,6 +112,7 @@ confirm_prompt() {
   else
     cancelled_error;
   fi
+  error_string=
 }
 
 pinentry_help() {
@@ -151,7 +155,7 @@ interpret_command() {
     return
   fi
   cmd="$(echo "$1" | cut -d' ' -f1 | tr a-z A-Z)";
-  data="$(echo "$1" | cut -d' ' -f2-)";
+  data="$(echo "$1" | cut -d' ' -sf2-)";
 
   case "${cmd}" in
     NOP)              ;;
@@ -167,7 +171,7 @@ interpret_command() {
     SETKEYINFO)       keyinfo="$data"; echo "OK" ;;
     SETREPEAT)        repeat="${data:-"repeat"}"; echo "OK" ;;
     SETREPEATERROR)   error__password_mismatch="$data"; echo "OK" ;;
-    SETERROR)         not_implemented_error ;;
+    SETERROR)         error_string="[$data] "; echo "OK" ;;
     SETOK)            setok="$data" ;;
     SETNOTOK)         setnotok="$data" ;;
     SETCANCEL)        setcancel="$data" ;;
@@ -212,7 +216,7 @@ Options:
 CMD will be executed by sh(1). The defaults are:
 
 prompt ='dmenu -P -p "$prompt_string"';
-confirm ='echo -e "$AP_YES\n$AP_NO" | dmenu -p "$prompt_string"';
+confirm ='printf "%s\n%s" "$AP_YES" "$AP_NO" | dmenu -p "$prompt_string"';
 error-command ='notify-send -a "Pinentry" "$error__password_mismatch"';
 
 Standard pinentry options
