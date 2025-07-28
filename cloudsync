@@ -205,8 +205,10 @@ esac
 
 # Main {{{1
 #
+date='echo $(date "+%Y-%m-%d %T")'
+
 if ! getent ahosts www.google.com >/dev/null; then
-    printf "%s:      No internet connction. Aborting.\n" "$(date "+%Y-%m-%d %T")" >> "$logfile"
+    printf "%s: No internet connction. Aborting.\n" "$(eval "$date")" | tee -a "$logfile" >&2
     exit
 fi
 
@@ -219,7 +221,7 @@ esac
 for r in $(rclone listremotes); do
     [ -n "$remote" ] && [ "${remote%:}:" != "$r" ] && continue
     mkdir -p "$SYNC_ROOT/${r%:}"
-    printf '%s %s %s\n' "$cmd" "${r%:}:" "$@" >> "$logfile"
+    printf '%s:%s %s %s\n' "$(eval "$date")" "$cmd" "${r%:}:" "$@" | tee -a "$logfile"
     $cmd "${r%:}:" "$@"
 done
 
