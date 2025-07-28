@@ -125,6 +125,8 @@ git module git-toolbelt:
   pick:
     - git-sha # abstract: Show the latest commit SHA
     - git-current-branch # abstract: Show the current branch name
+    - git-remote-tracking-branch # (required for git-spinoff) abstract: Print remote tracking branch name
+    - git-spinoff # abstract: Spinoff a new branch from current work and reset current branch
   rev: 3f568cf72ea0fe1b4234a1bf87574a9a4692bc3a
 
 curl module imagick_type_gen:

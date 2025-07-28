@@ -125,7 +125,9 @@ These files come from external repositories, but are synced here using [peru](ht
 - [emojify](https://github.com/mrowa44/emojify) - Emoji on the command linescream 
 - [git-current-branch](https://github.com/nvie/git-toolbelt) - Show the current branch name (BSD-3 [LICENSE.git-toolbelt])
 - [git-jump](https://github.com/cowboy/dotfiles) - replay git commits safely (MIT [LICENSE.benalman])
+- [git-remote-tracking-branch](https://github.com/nvie/git-toolbelt) - Print remote tracking branch name (BSD-3 [LICENSE.git-toolbelt])
 - [git-sha](https://github.com/nvie/git-toolbelt) - Show the latest commit SHA (BSD-3 [LICENSE.git-toolbelt])
+- [git-spinoff](https://github.com/nvie/git-toolbelt) - Spinoff a new branch from current work and reset current branch (BSD-3 [LICENSE.git-toolbelt])
 - [image2ascii](https://www.spinnaker.de/mutt/image2ascii) - Convert images to ASCII (useful for Mutt .mailcap)
 - [imagick_type_gen](https://legacy.imagemagick.org/Usage/scripts/imagick_type_gen) - Generate an ImageMagick font listn
 - [MIMEmbellish](https://gist.githubusercontent.com/oblitum/6eeffaebd9a4744e762e49e6eb19d189/raw/c39c19d7c505cacdcb798b5069d3dd2582b539aa/MIMEmbellish) - Transform text-only email to multipart text+HTML
