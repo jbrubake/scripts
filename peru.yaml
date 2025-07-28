@@ -25,6 +25,7 @@ imports:
 
 git module anypinentry:
   url: https://github.com/phenax/any-pinentry
+  # license: MIT [LICENSE.akshaynair]
   move:
     anypinentry: pinentry-any
   pick: pinentry-any
@@ -120,6 +121,7 @@ rule zxpdf:
 
 git module git-toolbelt:
   url: https://github.com/nvie/git-toolbelt
+  # license: BSD-3 [LICENSE.git-toolbelt]
   pick:
     - git-sha # abstract: Show the latest commit SHA
     - git-current-branch # abstract: Show the current branch name
@@ -138,6 +140,7 @@ git module rename:
 
 git module ben_alman:
   url: https://github.com/cowboy/dotfiles
+  # license: MIT [LICENSE.benalman]
   move:
     bin/curlsubl: curlvim
     bin/git-jump: git-jump
