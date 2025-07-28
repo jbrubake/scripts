@@ -2,6 +2,9 @@
 
 A collection of scripts that I wrote or modified from someone else
 
+(Files licensed under different terms than GPLv3 have the license
+ embedded in the file.)
+
 - [$](https://github.com/jbrubake/scripts/blob/master/$) - Run copy-paste commands that accidentally start with '$'
 - [2](https://github.com/jbrubake/scripts/blob/master/2) - print input in n columns based on command name (default = 2)
 - [3](https://github.com/jbrubake/scripts/blob/master/3) - print input in n columns based on command name (default = 2)
@@ -12,10 +15,12 @@ A collection of scripts that I wrote or modified from someone else
 - [addr](https://github.com/jbrubake/scripts/blob/master/addr) - list bound IP addresses
 - [addsigner](https://github.com/jbrubake/scripts/blob/master/addsigner) - add an SSH public key to an "allowed signers" file
 - [adjustcolor](https://github.com/jbrubake/scripts/blob/master/adjustcolor) - Darken or lighten a color by a percentage
+- [anagram](https://github.com/jbrubake/scripts/blob/master/anagram) - print list of words that contain only a given set of characters
 - [ansitest](https://github.com/jbrubake/scripts/blob/master/ansitest) - Test terminal ANSI escape capabilities
 - [argv](https://github.com/jbrubake/scripts/blob/master/argv) - dump arguments
 - [bigbin](https://github.com/jbrubake/scripts/blob/master/bigbin) - print the <n> largest executables in $PATH
 - [bosskey](https://github.com/jbrubake/scripts/blob/master/bosskey) - "install" packages forever
+- [build-vmware-modules](https://github.com/jbrubake/scripts/blob/master/build-vmware-modules) - build patched VMware Workstation modules
 - [cal](https://github.com/jbrubake/scripts/blob/master/cal) - cal(1) wrapper with a nicer interface
 - [change_brightness](https://github.com/jbrubake/scripts/blob/master/change_brightness) - change screen brightness
 - [change_volume](https://github.com/jbrubake/scripts/blob/master/change_volume) - change volume
@@ -24,7 +29,7 @@ A collection of scripts that I wrote or modified from someone else
 - [checkmail](https://github.com/jbrubake/scripts/blob/master/checkmail) - snd queued emails, sync with remote and refresh notmuch
 - [chkcon](https://github.com/jbrubake/scripts/blob/master/chkcon) - check for internet connectivity
 - [chksign](https://github.com/jbrubake/scripts/blob/master/chksign) - verify a SSH-key signed file
-- [cloudsync](https://github.com/jbrubake/scripts/blob/master/cloudsync) - use rclonesync to sync cloud storage
+- [cloudsync](https://github.com/jbrubake/scripts/blob/master/cloudsync) - run 'rclone bisync' with sensible options.
 - [colcheck](https://github.com/jbrubake/scripts/blob/master/colcheck) - check consistency of columns
 - [colordump](https://github.com/jbrubake/scripts/blob/master/colordump) - dump 256 ansi colors to the terminal.
 - [colortrans](https://github.com/jbrubake/scripts/blob/master/colortrans) - convert values between RGB hex codes and xterm-256 color codes.
@@ -34,16 +39,21 @@ A collection of scripts that I wrote or modified from someone else
 - [dmenu-run](https://github.com/jbrubake/scripts/blob/master/dmenu-run) - use dmenu as a run dialog
 - [docs](https://github.com/jbrubake/scripts/blob/master/docs) - search multiple documentation databases and show the first one found
 - [double](https://github.com/jbrubake/scripts/blob/master/double) - report double words
+- [export-key](https://github.com/jbrubake/scripts/blob/master/export-key) - export and import gpg keys
 - [field](https://github.com/jbrubake/scripts/blob/master/field) - print nth field from each input line
-- [find-pis](https://github.com/jbrubake/scripts/blob/master/find-pis) - scan local network for Raspberry Pis
+- [find-pis](https://github.com/jbrubake/scripts/blob/master/find-pis) - scan local networks for Raspberry Pis
+- [flatpak-shims](https://github.com/jbrubake/scripts/blob/master/flatpak-shims) - generate shims to run flatpaks
 - [fortune-oneline](https://github.com/jbrubake/scripts/blob/master/fortune-oneline) - print a one-line fortune. Convert two-line fortunes to one-liners if possible
 - [geekcode](https://github.com/jbrubake/scripts/blob/master/geekcode) - convert a commented geekcode file into a proper geekcode
+- [gethost](https://github.com/jbrubake/scripts/blob/master/gethost) - extract hostname from an SSH config file by 'Host' entry
 - [git-last](https://github.com/jbrubake/scripts/blob/master/git-last) - print out last commit message for each file in tree
 - [git-pager](https://github.com/jbrubake/scripts/blob/master/git-pager) - git pager with fallback options
 - [gxpr](https://github.com/jbrubake/scripts/blob/master/gxpr) - like expr(1), but uses Google's calculator to evaluate <expression>
 - [headers](https://github.com/jbrubake/scripts/blob/master/headers) - show HTTP headers for <url>
 - [hide](https://github.com/jbrubake/scripts/blob/master/hide) - rename <file> to .<file>
 - [hostdiscovery](https://github.com/jbrubake/scripts/blob/master/hostdiscovery) - # abstract:	debian linux based host discovery script that captures info
+- [import-key](https://github.com/jbrubake/scripts/blob/master/import-key) - export and import gpg keys
+- [launchterm](https://github.com/jbrubake/scripts/blob/master/launchterm) - quick wrapper to support tmux, tmuxp and tabbed
 - [license](https://github.com/jbrubake/scripts/blob/master/license) - print various open source licenses
 - [linkpath](https://github.com/jbrubake/scripts/blob/master/linkpath) - print the absolute path of the target of a symbolic link
 - [logoutmsg](https://github.com/jbrubake/scripts/blob/master/logoutmsg) - presents a dialog box to verify that you really want to logout of X
@@ -52,39 +62,47 @@ A collection of scripts that I wrote or modified from someone else
 - [maketree](https://github.com/jbrubake/scripts/blob/master/maketree) - create a Makefile dependency graph
 - [man.cx](https://github.com/jbrubake/scripts/blob/master/man) - command line interface to man.cx
 - [mkthumbs](https://github.com/jbrubake/scripts/blob/master/mkthumbs) - create image thumbnails
+- [mtutest](https://github.com/jbrubake/scripts/blob/master/mtutest) - determine optimal MTU size
 - [my](https://github.com/jbrubake/scripts/blob/master/my) - execute the correct command from a list of alternatives
 - [news](https://github.com/jbrubake/scripts/blob/master/news) - print the latest news
 - [openurl](https://github.com/jbrubake/scripts/blob/master/openurl) - open a URL in $BROWSER
 - [orig](https://github.com/jbrubake/scripts/blob/master/orig) - rename <file(s)> to <file(s)>.orig
 - [passgen](https://github.com/jbrubake/scripts/blob/master/passgen) - generate a password as in XKCD #936
 - [passwdchk](https://github.com/jbrubake/scripts/blob/master/passwdchk) - check a file in /etc/passwd format for errors
+- [pct-enter](https://github.com/jbrubake/scripts/blob/master/pct-enter) - remotely connect to a proxmox container by name
 - [pf](https://github.com/jbrubake/scripts/blob/master/pf) - present a menu of pass(1) entries that match <tag>
 - [pick](https://github.com/jbrubake/scripts/blob/master/pick) - interactively select arguments and print them to stdout
 - [pinentry](https://github.com/jbrubake/scripts/blob/master/pinentry) - pinentry wrapper
 - [pinentry-dmenu](https://github.com/jbrubake/scripts/blob/master/pinentry-dmenu) - custom dmenu wrapper for anypinentry
 - [pinentry-ssh-askpass](https://github.com/jbrubake/scripts/blob/master/pinentry-ssh-askpass) - pinentry wrapper to allow it to be used for SSH_ASKPASS and SUDO_ASKPASS
 - [pingsweep](https://github.com/jbrubake/scripts/blob/master/pingsweep) - # abstract:	hasty pingsweep script when nmap is not available
+- [pipx](https://github.com/jbrubake/scripts/blob/master/pipx) - wrap pipx to allow system-wide installs
 - [pkglist](https://github.com/jbrubake/scripts/blob/master/pkglist) - print a listing of manually installed packages
+- [portquiz](https://github.com/jbrubake/scripts/blob/master/portquiz) - use portquiz.net to find open ports
 - [ports](https://github.com/jbrubake/scripts/blob/master/ports) - show processes listening on TCP ports
 - [portscan](https://github.com/jbrubake/scripts/blob/master/portscan) - # abstract:	hasty portscan script when nmap is not available
+- [portscan.devtcp](https://github.com/jbrubake/scripts/blob/master/portscan) - quick and dirty /dev/tcp portscan
 - [ppeek](https://github.com/jbrubake/scripts/blob/master/ppeek) - send stdin to stdout and stderr
 - [pretty_make](https://github.com/jbrubake/scripts/blob/master/pretty_make) - make beautifier
 - [prpages](https://github.com/jbrubake/scripts/blob/master/prpages) - compute number of pages that pr will print
 - [raxfr](https://github.com/jbrubake/scripts/blob/master/raxfr) - perform a reverse zone transfer
+- [README.md](https://github.com/jbrubake/scripts/blob/master/README) - - [hostdiscovery](https://github.com/jbrubake/scripts/blob/master/hostdiscovery) - # abstract:	debian linux based host discovery script that captures info
+- [README.md](https://github.com/jbrubake/scripts/blob/master/README) - - [pingsweep](https://github.com/jbrubake/scripts/blob/master/pingsweep) - # abstract:	hasty pingsweep script when nmap is not available
 - [relpath](https://github.com/jbrubake/scripts/blob/master/relpath) - print the relative path from <src> to <tgt>
 - [rlook](https://github.com/jbrubake/scripts/blob/master/rlook) - get all IPv4 addresses for a host
 - [routines.sh](https://github.com/jbrubake/scripts/blob/master/routines) - dmenu shell routines
 - [ruler](https://github.com/jbrubake/scripts/blob/master/ruler) - print a ruler across the screen
 - [screenshot](https://github.com/jbrubake/scripts/blob/master/screenshot) - take a screenshot
+- [sidetone](https://github.com/jbrubake/scripts/blob/master/sidetone) - enable headset sidetone
 - [siggen](https://github.com/jbrubake/scripts/blob/master/siggen) - generate an email/Usenet signature with an optional fortune cookie
 - [sign](https://github.com/jbrubake/scripts/blob/master/sign) - digitally sign a file with a SSH key
 - [sizeof.c](https://github.com/jbrubake/scripts/blob/master/sizeof) - print sizes of C data types
 - [sound-change.sh](https://github.com/jbrubake/scripts/blob/master/sound-change) - change sound output device
 - [st-urlhandler](https://github.com/jbrubake/scripts/blob/master/st-urlhandler) - utility used by st(1) to open links from the terminal
-- [tar](https://github.com/jbrubake/scripts/blob/master/tar) - hack around packer-plugin-lxc Issue #5
 - [truecolor](https://github.com/jbrubake/scripts/blob/master/truecolor) - test terminal true color capability
 - [trunc](https://github.com/jbrubake/scripts/blob/master/trunc) - truncate files
 - [update-fingerfarm](https://github.com/jbrubake/scripts/blob/master/update-fingerfarm) - upload .plan and .project to finger.farm
+- [update-vim-plugins](https://github.com/jbrubake/scripts/blob/master/update-vim-plugins) - update vim plugins and links
 - [vis.c](https://github.com/jbrubake/scripts/blob/master/vis) - show non-printing characters as hexadecimal escapes/
 - [watchfor](https://github.com/jbrubake/scripts/blob/master/watchfor) - report when someone logs on
 - [watchwho](https://github.com/jbrubake/scripts/blob/master/watchwho) - periodically report who has logged on and logged out
@@ -99,22 +117,26 @@ A collection of scripts that I wrote or modified from someone else
 
 These files come from external repositories, but are synced here using [peru](https://github.com/buildinspace/peru)
 
+(Files licensed under different terms than GPLv3 are indicated, along with the
+ name of the license file if necessary.)
+
 - [cht.sh](https://cht.sh/:cht.sh) - The only cheat sheet you need
-- [curlvim](https://github.com/cowboy/dotfiles) - download and edit a remote file with Vim
+- [curlvim](https://github.com/cowboy/dotfiles) - download and edit a remote file with Vim (MIT [LICENSE.benalman])
 - [emojify](https://github.com/mrowa44/emojify) - Emoji on the command linescream 
-- [git-jump](https://github.com/cowboy/dotfiles) - replay git commits safely
+- [git-current-branch](https://github.com/nvie/git-toolbelt) - Show the current branch name (BSD-3 [LICENSE.git-toolbelt])
+- [git-jump](https://github.com/cowboy/dotfiles) - replay git commits safely (MIT [LICENSE.benalman])
+- [git-sha](https://github.com/nvie/git-toolbelt) - Show the latest commit SHA (BSD-3 [LICENSE.git-toolbelt])
 - [image2ascii](https://www.spinnaker.de/mutt/image2ascii) - Convert images to ASCII (useful for Mutt .mailcap)
 - [imagick_type_gen](https://legacy.imagemagick.org/Usage/scripts/imagick_type_gen) - Generate an ImageMagick font listn
-- [ix](http://ix.io/client) - Command line pastebinx
 - [MIMEmbellish](https://gist.githubusercontent.com/oblitum/6eeffaebd9a4744e762e49e6eb19d189/raw/c39c19d7c505cacdcb798b5069d3dd2582b539aa/MIMEmbellish) - Transform text-only email to multipart text+HTML
 - [mutt_bgrun](https://github.com/RichiH/mutt_bgrun) - View attachments in mutt in the background
 - [mutt-trim](https://github.com/Konfekt/mutt-trim) - unclutter and normalize quoted text in an e-mail 
 - [octet-filter](https://www.spinnaker.de/mutt/octet-filter) - Last-resort filter to convert any octet-stream data to ASCII (useful for Mutt .mailcap)
 - [passmenu](https://git.zx2c4.com/password-store) - A dmenu-based interface to pass(1)
-- [pid](https://github.com/cowboy/dotfiles) - get PIDs of processes matching pattern
-- [pinentry-any](https://github.com/phenax/any-pinentry) - A flexible pinentry script for gpg. Uses dmenu by default
+- [pid](https://github.com/cowboy/dotfiles) - get PIDs of processes matching pattern (MIT [LICENSE.benalman])
+- [pinentry-any](https://github.com/phenax/any-pinentry) - A flexible pinentry script for gpg. Uses dmenu by default (MIT [LICENSE.akshaynair])
 - [rename](https://github.com/ap/rename) - Rename multiple filesme
-- [serve](https://github.com/cowboy/dotfiles) - serve a directory over HTTP
+- [serve](https://github.com/cowboy/dotfiles) - serve a directory over HTTP (MIT [LICENSE.benalman])
 - [vcard-filter](https://www.spinnaker.de/mutt/vcard-filter) - Convert VCards to ASCII (useful for Mutt .mailcap)
 - [view-x-face](https://www.spinnaker.de/mutt/view-x-face) - View X-Face images embedded in emails
 - [wttr](https://github.com/chubin/wttr.in) - The right way to check the weather 
