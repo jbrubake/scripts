@@ -97,6 +97,7 @@ curl module zxdvi:
   executable: zxdvi # abstract: View gzipped DVI, PS and PDF files (useful for Mutt .mailcap)
   sha1: a2b3306f834621995f22af9a8bccdd0bf5dc56c1
 
+# NOTE: These rules are used to create the different 'flavors' of zxdvi
 rule zdvi2tty:
   # url: https://www.spinnaker.de/mutt/zxdvi
   move:
