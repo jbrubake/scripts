@@ -27,14 +27,11 @@ if command -v wpctl >/dev/null; then
 
     case "$1" in
         mute)
+            cmd=mute
             wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
-            if wpctl get-volume @DEFAULT_AUDIO_SINK@ | grep -q MUTED; then
-                is_muted=yes
-            else
-                is_muted=no
-            fi
             ;;
         +*|-*)
+            cmd=adj
             sign=$(echo "$1" | cut -c1)
             amnt=$(echo "$1" | cut -c2-)
 
@@ -43,6 +40,13 @@ if command -v wpctl >/dev/null; then
     esac
     current_volume=$(wpctl get-volume @DEFAULT_AUDIO_SINK@ |
         cut -d' ' -f2 | sed -e 's/^0\.//' -e 's/^0//')
+
+    if wpctl get-volume @DEFAULT_AUDIO_SINK@ | grep -q MUTED; then
+        is_muted=yes
+    else
+        is_muted=no
+    fi
+
 elif command -v pactl >/dev/null; then
     default_sink=$(LC_ALL=C pactl list sinks short | \
         grep "$(\
@@ -54,10 +58,6 @@ elif command -v pactl >/dev/null; then
     case "$@" in
         mute)
             pactl set-sink-mute @DEFAULT_SINK@ toggle
-            is_muted=$(LC_ALL=C pactl list sinks | \
-                grep -A9 "Sink #$default_sink" | \
-                grep Mute | \
-                awk '{print $2}')
             ;;
         +*|-*)
             pactl set-sink-volume @DEFAULT_SINK@ "$@"
@@ -70,16 +70,28 @@ elif command -v pactl >/dev/null; then
         grep Volume | 
         awk '{print $5}' | 
         tr -dc '[:digit:]')
+
+    is_muted=$(LC_ALL=C pactl list sinks | \
+        grep -A9 "Sink #$default_sink" | \
+        grep Mute | \
+        awk '{print $2}')
 else
     printf '%s\n' 'Neither wpctl or pactl found' >&2
     exit 1
 fi
 
-if [ "$current_volume" = "0" ] || [ "$is_muted" = "yes" ]; then
-    dunstify -a "changeVolume" -u low -i audio-volume-muted \
-             -r "$msg_id" "Volume muted" 
+if [ "$is_muted" = 'yes' ] || [ "$current_volume" = '0' ]; then
+    icon=audio-volume-muted
 else
-    dunstify -a "changeVolume" -u low -i audio-volume-high \
-        -r "$msg_id" -h int:value:"$current_volume" "Volume: ${current_volume}%"
+    icon=audio-volume-high
+fi
+
+if [ "$cmd" = 'mute' ] && [ "$is_muted" = 'yes' ]; then
+    dunstify -a "changeVolume" -u low -i "$icon" \
+        -h "string:x-dunst-stack-tag:$msg_id" "Volume muted" 
+else
+    dunstify -a "changeVolume" -u low -i "$icon" \
+        -h "string:x-dunst-stack-tag:$msg_id" \
+        -h int:value:"$current_volume" "Volume: ${current_volume}%"
 fi
 
