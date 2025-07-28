@@ -25,7 +25,6 @@ else
     for f in "$@"; do
         dest="$(dirname "$f")/$(basename "$f").orig"
 
-        # TODO: Fail gracefully if -p isn't available
         cp -pr "$f" "$dest"
         printf "renamed '%s' -> '%s'\n" "$f" "$dest"
     done

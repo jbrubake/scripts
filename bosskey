@@ -20,7 +20,6 @@
 # Requires dialog(1) for the output and dnf(1) to get a list of packages
 #
 
-### Configurable settings
 ### Configurable settings {{{1
 #
 # TODO: configure with options

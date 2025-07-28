@@ -15,12 +15,7 @@
 #
 # Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
 #
-################################################################################
-# file:		portscan
-# usage:	portscan host portsfile
-#		ex. # portscan.sh 192.168.1.1 commonports
 # abstract:	hasty portscan script when nmap is not available
-################################################################################
 
 HOST=$1
 PORTSFILE=$2
