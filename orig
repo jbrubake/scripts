@@ -26,7 +26,7 @@ else
         dest="$(dirname "$f")/$(basename "$f").orig"
 
         cp -pr "$f" "$dest"
-        printf "renamed '%s' -> '%s'\n" "$f" "$dest"
+        printf "copied '%s' -> '%s'\n" "$f" "$dest"
     done
 fi
 
