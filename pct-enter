@@ -40,11 +40,9 @@ if [ -z "$PVE_HOST" ]; then
     exit 1
 fi
 
-# Search for container by name first
-#   The pattern " $name " ensures only full matches are found
-id=$(ssh "$PVE_HOST" sudo pct list | grep " $name " | cut -d' ' -f1)
-# and then try by id number
-[ -z "$id" ] && id=$(ssh "$PVE_HOST" sudo pct list | grep "^$name " | cut -d' ' -f1)
+# Get CT ID by name or number
+id=$(ssh "$PVE_HOST" 'sudo pvesh get /cluster/resources --output-format=json' |
+    jq -r --arg id "$name" '.[] | select(.name==$id or .vmid==($id|tonumber? // .)) | .vmid')
 
 if [ -z "$id" ]; then
     printf "Container '%s' does not exist.\n" "$name" >&2
