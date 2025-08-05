@@ -51,14 +51,9 @@ if [ -z "$id" ]; then
     exit 1
 fi
 
-# Get node CT is running on
-node=$(ssh "$PVE_HOST" 'sudo pvesh get /cluster/resources --type vm --output-format json' |
-           jq -r --arg id "lxc/$id" '.[] | select(.id == $id) | .node')
-
-# SSH to PVE_HOST and SSH again to the proper node
-# Do this even when the CT is on PVE_HOST so you land
-# in your home directory on the CT
+# SSH and enter the CT
 #
-# use pct exec instead of enter so we can spawn a login shell
-ssh -t "$PVE_HOST" sudo ssh -t "$node" pct exec "$id" -- /bin/sh
+# The `-i` flag is required so that you land in /root
+# on entering the CT
+ssh -t "$PVE_HOST" sudo -i pct enter "$id"
 
