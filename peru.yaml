@@ -7,6 +7,7 @@ imports:
   imagick_type_gen: ./
   git-toolbelt: ./
   MIMEmbellish: ./
+  mini_ca: ./
   mutt-trim: ./
   mutt_bgrun: ./
   octet-filter: ./
@@ -39,6 +40,10 @@ git module wttr:
   pick: wttr
   executable: wttr # abstract: The right way to check the weather 
   rev: a3736d17b4220a3f4d617e62684ed2ca19205791
+
+curl module mini_ca:
+  url: https://impson.tzo.com/~jdimpson/bin/mini_ca
+  executable: mini_ca # abstract: Low security certificate authority for testing
 
 git module mutt_bgrun:
   url: https://github.com/RichiH/mutt_bgrun

@@ -1,0 +1,181 @@
+#!/bin/sh
+
+PREF=$1;
+if test -z "$PREF"; then
+	#PREF="my";
+	ME=`basename $0`;
+	echo "usage: $ME <project_name>";
+	exit 1;
+fi;
+
+CADIR=`pwd`/$PREF-ca
+CA_CONF="$CADIR/$PREF-ca_openssl.cnf"
+PASS_FILE="$CADIR/$PREF-ca_password";
+CADAYS=100000
+CERTBITS=2048
+DHBITS=512
+CACERT="$PREF-cacert.pem"
+CERT_USER_SCRIPT="create_${PREF}_user_cert.sh";
+
+indent () {
+	local N=$1;
+	local C=$2;
+	[ -z "$N" ] && N=1;
+	[ -z "$C" ] && C="	";
+	local ARGS;
+	for i in `seq $N`; do
+		ARGS="$ARGS s/^/$C/;";
+	done
+	sed -e "$ARGS";
+}
+
+###
+# ca dir setup
+###
+mkdir -p "$CADIR" 2> /dev/null
+cd "$CADIR" 2> /dev/null || exit 1;
+mkdir -p "$CADIR/certs/" 2> /dev/null
+mkdir -p "$CADIR/private/" 2> /dev/null
+chmod go-rwx "$CADIR/private/";
+touch "$CADIR/private/index.txt";
+echo "1234" > "$PASS_FILE";
+
+###
+# create config file
+###
+if [ ! -e "$CA_CONF" ]; then
+	cat > "$CA_CONF" << HERE
+# CA configuration for $PREF project
+#
+####################################################################
+[ ca ]
+default_ca      = CA_default            # The default ca section
+####################################################################
+[ CA_default ]
+dir             = $CADIR			# Where everything is kept
+certificate     = \$dir/$CACERT		# The CA certificate
+database        = \$dir/private/index.txt	# database index file.
+new_certs_dir   = \$dir/certs			# default place for new certs.
+private_key     = \$dir/private/cakey.pem	# The private key
+certs           = \$dir/certs			# Where the issued certs are kept
+serial          = \$dir/private/serial		# The current serial number
+crl_dir         = \$dir/crl			# Where the issued crl are kept
+default_days    = 700				# how long to certify for
+default_crl_days= 300				# how long before next CRL
+default_md      = md5				# which md to use.
+policy          = CertAuthCA_policy
+x509_extensions = certificate_extensions	# The extentions to add to the cert
+
+# For the CA policy
+[ CertAuthCA_policy ]
+commonName              = supplied
+stateOrProvinceName     = supplied
+countryName             = supplied
+emailAddress            = supplied
+organizationName        = supplied
+organizationalUnitName  = optional
+
+[ certificate_extensions ]
+basicConstraints=CA:FALSE
+####################################################################
+[ req ]
+default_bits            = $CERTBITS
+default_keyfile         = $CADIR/private/cakey.pem
+defualt_md              = md5
+prompt                  = no
+distinguished_name      = root_ca_distinguished_name
+x509_extensions         = root_ca_extensions
+
+[ root_ca_distinguished_name ]
+commonName              = CA for a $PREF project
+stateOrProvinceName     = New York
+countryName             = US
+emailAddress            = $PREF@localhost
+organizationName        = $PREF Users
+
+[ root_ca_extensions ]
+basicConstraints        = CA:true
+HERE
+	echo "Created $CA_CONF CA configuration file.";
+else 
+	echo Using existent CA configuration file $CA_CONF.;
+fi
+
+###
+# create the CA cert
+###
+if [ ! -e "$CACERT" ]; then
+	echo Creating $PREF CA certificate.
+	openssl req -config $CA_CONF -x509 -newkey rsa:$CERTBITS -out $CACERT -outform PEM -days $CADAYS -passout "file:$PASS_FILE" 2>&1 | indent
+	# openssl x509 -in $CACERT -text -noout
+	echo 00 > "$CADIR/private/serial";
+	echo "Created $CACERT CA certificate";
+else
+	echo Using existent CA certifcate $CACERT.;
+fi
+
+###
+# create user certifcate req/gen script
+###
+cat > "$CERT_USER_SCRIPT" <<HERE
+#!/bin/sh
+
+CADIR="$CADIR"
+CA_CONF="$CA_CONF"
+CACERT="$CACERT"
+UDIR="$CADIR/users"
+
+indent () {
+	local N=\$1;
+	local C=\$2;
+	[ -z "\$N" ] && N=1;
+	[ -z "\$C" ] && C="	";
+	local ARGS;
+	for i in \`seq \$N\`; do
+		ARGS="\$ARGS s/^/\$C/;";
+	done
+	sed -e "\$ARGS";
+}
+
+mkdir -p "\$UDIR" 2>/dev/null
+cd "\$UDIR" || exit 1;
+
+umask 0066;
+user=\$1; 
+
+if [ -z "\$user" ]; then
+	ME=\`basename \$0\`;
+	echo "usage: \$ME <username>";
+	exit 1;
+fi
+shift;
+
+subj="/DC=${PREF}/stateOrProvinceName=New York/countryName=US/emailAddress=\$user@localhost/organizationName=$PREF Users/CN=user \$user"
+
+echo "Creating key, req, & cert for \$user";
+
+KEY="$PREF-\$user-key.pem";
+REQ="$PREF-\$user-req.pem";
+CERT="$PREF-\$user-cert.cert";
+DH="$PREF-\$user-dh.pem";
+OUT="$PREF-\$user.pem";
+
+if [ -e "\$KEY" -a -e "\$REQ" ]; then
+	echo "A key and request for this user already exists. Will reuse.";
+else
+	openssl req -subj "\$subj" -newkey rsa:$CERTBITS -keyout "\$KEY" -keyform PEM -out "\$REQ" -outform PEM -nodes 2>&1 | indent 1
+	#openssl req -in "\$REQ" -text
+fi
+
+yes | openssl ca -config "\$CA_CONF" -in "\$REQ" -passin "file:$PASS_FILE" -notext -out "\$CERT" 2>&1 | indent 1
+#openssl x509 -config "\$CA_CONF" -in "\$CERT" -text
+
+( dd if=/dev/urandom count=2 | openssl dhparam -rand - $DHBITS > "\$DH" ) 2>&1 | indent 1;
+
+cat "\$KEY" "\$CERT" "\$DH" > "\$CADIR/certs/\$OUT";
+chmod 600 "\$CADIR/certs/\$OUT";
+echo "Use file \$CADIR/certs/\$OUT, it contains \${user}'s key, certicicate, and diffie hellman seed."
+HERE
+
+chmod a+x "$CERT_USER_SCRIPT";
+echo "Created $PREF project certificate generator script \"$CERT_USER_SCRIPT\"";
