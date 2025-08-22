@@ -1,0 +1,144 @@
+#!/bin/sh
+
+#####################################################################
+## sslrsh - Remote Shell over SSL using certificate authentication ##
+#####################################################################
+
+###
+# defaults
+###
+PORT=1479 # 433(SSL) + 22(SSH) + 1024(non-priv)
+CACERT=sslrsh-cacert.pem
+SRVCERT=sslrsh-server.pem
+CLNTCERT=sslrsh-client.pem
+PROXYPORT=8888 # default port, should be 80?
+ME=`basename "$0"`;
+HOSTNAME=`uname -n`;
+SHELL="echo Welcome to $ME on $HOSTNAME; /bin/bash --login -i";
+# use the following if you want to challenge for password, 
+# but then the server needs to run as root!
+#SHELL="echo welcome to $ME on $HOSTNAME; /bin/login" 
+
+###
+# process command line
+###
+while [ ! -z "$1" ]; do
+        case "$1" in
+                "-h") HELP=1;;
+		"-s") SERVER=1;;
+                "-p") shift; PORT="$1";;
+                "-P") shift; PROXY="$1";;
+		"-c") shift; CERT="$1";;
+		"-a") shift; CACERT="$1";;
+		"-e") shift; SHELL=$1;;
+                *) DEST="$1";
+        esac;
+        shift;
+done
+
+if [ ! -z "$CERT" ]; then
+	 test -z $SERVER && CLNTCERT="$CERT" || SRVCERT="$CERT";
+fi
+
+###
+# usage
+###
+if [ ! -z $HELP ] || ( [ -z "$DEST" ] && [ -z $SERVER ] ); then
+	echo "Usage:	$ME [-h] 
+	$ME [-p port] [-P proxy:port] [-c /path/to/cert] [-a /path/to/cacert] remotehost
+	$ME -s [-p port] [-c /path/to/certificate] [-a /path/to/cacertificate] [ -e "shell commands to execute" ]
+        
+	-h		This helpful information.
+	-p		Port to use (currently $PORT).
+	-P		CONNECT proxy server to use. http_proxy environment variable will be used if set, but will be overridden by this flag.
+	-c		Path to the client or server certificate (must include key)
+			(currently \"$CLNTCERT\" for client, \"$SRVCERT\" for server)
+	-a		Path to the signing Certificate Authority's certificate
+			(currently \"$CACERT\")
+	remotehost	System to connect to (client mode)
+	-s		Listen for connections (server mode)
+	-e		Shell command or commands to execute as the server, defaults to \"$SHELL\"
+
+$ME is copyright 2009 by Jeremy D. Impson <jdimpson@acm.org>.  
+Licensed under the Apache License, Version 2.0 (the "License"); you 
+may not use this file except in compliance with the License. You may 
+obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0 
+Unless required by applicable law or agreed to in writing, software 
+distributed under the License is distributed on an \"AS IS\" BASIS, WITHOUT 
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the 
+License for the specific language governing permissions and limitations 
+under the License.
+";
+        exit 1;
+fi
+
+###
+# check for cert files
+###
+if [ ! -r "$CACERT" ]; then
+	echo "Can't open CA certficate \"$CACERT\" for reading!  Use \"-a\" to set."; 
+	exit 2;
+fi
+if [ -f $SERVER ]; then
+	if [ ! -r "$CLNTCERT" ]; then
+		echo "Can't open client certficate/key \"$CLNTCERT\" for reading!  Use \"-c\" to set."; 
+		exit 2;
+	fi
+else
+	if [ ! -r "$SRVCERT" ]; then
+		echo "Can't open server certficate/key \"$SRVCERT\" for reading!  Use \"-c\" to set."; 
+		exit 2;
+	fi
+fi
+
+###
+# figure out proxy setting
+###
+if [ -z "$PROXY" ] && [ ! -z "$http_proxy" ] && [ -z "$SERVER" ]; then
+	echo "Detected http_proxy environment variable \"$http_proxy\"";
+	PROXY="$http_proxy";
+fi
+if [ ! -z "$PROXY" ]; then
+	# strip out starting http:// and trailing /'s
+	if echo "$PROXY" | grep -q 'http:'; then
+		PROXY=`echo "$PROXY" | sed -e 's/^http:\/\///' -e 's/\/*$//'`;
+	fi
+	# find port (following proxy hostname and colon)
+	if echo "$PROXY" | grep -q ':'; then
+		PROXYPORT=`echo "$PROXY" | sed -e 's/.*://'`;
+		PROXY=`echo "$PROXY" | sed -e 's/:.*//'`;
+	fi
+fi
+
+###
+# figure out mode and run
+###
+if [ -z "$SERVER" ]; then
+	# Client mode
+	echo "Connecting to \"$DEST:$PORT\"";
+	if [ ! -z "$PROXY" ]; then
+		echo "	via \"$PROXY:$PROXYPORT\" proxy";
+		# socat 2.0 should make the following go away
+		socat -ls -lp "$ME(proxy)" TCP-L:$PORT,reuseaddr PROXY:$PROXY:$DEST:$PORT,proxyport=$PROXYPORT & 
+		DEST="localhost";
+	fi
+
+	#socat -,raw,echo=0 TCP:$DEST:$PORT
+	exec socat -lp "$ME(client)" -,raw,echo=0 SSL:$DEST:$PORT,cert="$CLNTCERT",cafile="$CACERT",verify=1
+else
+	# Server mode
+	echo "Listening on \"$PORT\"";
+	if [ ! -z "$DEST" ]; then
+		echo "	Ignoring destination \"$DEST\" while in server mode.";
+	fi
+	if [ ! -z "$PROXY" ]; then
+		echo "	Ignoring CONNECT proxy \"$PROXY:$PROXYPORT\" while in server mode.";
+	fi
+	#socat -ls -d -d TCP-L:$PORT,reuseaddr,fork SYSTEM:"$SHELL",pty,setsid,setpgid,stderr,ctty
+	exec socat -ls -lp "$ME(server)" -d -d \
+		SSL-L:$PORT,cert="$SRVCERT",cafile="$CACERT",verify=1,reuseaddr,fork \
+		SYSTEM:"$SHELL",pty,setsid,setpgid,ctty,stderr
+fi
+echo "Shouldn't reach here; something went wrong!";
+exit 3;
+

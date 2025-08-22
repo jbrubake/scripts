@@ -13,6 +13,7 @@ imports:
   octet-filter: ./
   passmenu: ./
   rename: ./
+  sslrsh: ./
   vcard-filter: ./
   view-x-face: ./
   wttr: ./
@@ -139,6 +140,10 @@ curl module imagick_type_gen:
   url: https://legacy.imagemagick.org/Usage/scripts/imagick_type_gen
   executable: imagick_type_gen # abstract: Generate an ImageMagick font listn
   sha1: 932f84de0e471b7457054a86d305eee20b4b5e67
+
+curl module sslrsh:
+  url: https://impson.tzo.com/~jdimpson/bin/sslrsh
+  executable: sslrsh # abstract: SSL Remote Shell
 
 git module rename:
   url: https://github.com/ap/rename
