@@ -4,7 +4,7 @@
 SRC := $(wildcard *.c)
 BINS := $(patsubst %.c,%$(SUFFIX),$(SRC))
 
-all: $(BINS)
+all: $(BINS) README.md
 
 clean:
 	$(RM) $(BINS)
@@ -18,9 +18,12 @@ install: all
 # Generate README.md from scripts 'abstract' tag
 #
 SRCPATH=https://github.com/jbrubake/scripts/blob/master
-scripts=$(filter-out Makefile,$(filter-out peru.yaml,$(wildcard *)))
+# Look for 'abstract' in all files except $(ignore)
+ignore = Makefile peru.yaml LICENSE% %.md tags cscope.out %.c
+scripts = $(filter-out $(ignore),$(wildcard *))
 
-readme:
+README.md: $(scripts)
+	@echo Building README.md...
 	@> README.md
 	@echo "## My Scripts" >> README.md
 	@echo >> README.md
@@ -35,7 +38,7 @@ readme:
 	            FILENAME, \
 	            gensub(/\..*$$/, "", 1, FILENAME), \
 	            gensub(/^.*abstract: /, "", 1, $$0)) \
-	    }' $(scripts) >> README.md
+	    }' $(filter-out $<,$^) >> README.md
 	@echo >> README.md
 	@echo "## External Files" >> README.md
 	@echo >> README.md
