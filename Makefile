@@ -22,7 +22,7 @@ SRCPATH=https://github.com/jbrubake/scripts/blob/master
 ignore = Makefile peru.yaml LICENSE% %.md tags cscope.out %.c
 scripts = $(filter-out $(ignore),$(wildcard *))
 
-README.md: $(scripts)
+README.md: .peru/lastimports $(scripts)
 	@echo Building README.md...
 	@> README.md
 	@echo "## My Scripts" >> README.md
@@ -58,4 +58,7 @@ README.md: $(scripts)
                 ) \
             }' peru.yaml | sort >> README.md
 	@echo >> README.md
+
+.peru/lastimports: peru.yaml
+	peru sync
 
