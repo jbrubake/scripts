@@ -17,7 +17,7 @@ install: all
 #
 # Generate README.md from scripts 'abstract' tag
 #
-SRCPATH=https://github.com/jbrubake/scripts/blob/master
+SRCPATH = https://github.com/jbrubake/scripts/blob/master
 # Look for 'abstract' in all files except $(ignore)
 ignore = Makefile peru.yaml LICENSE% %.md tags cscope.out %.c
 scripts = $(filter-out $(ignore),$(wildcard *))
