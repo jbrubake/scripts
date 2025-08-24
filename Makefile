@@ -4,6 +4,8 @@
 SRC := $(wildcard *.c)
 BINS := $(patsubst %.c,%$(SUFFIX),$(SRC))
 
+peru := .peru/lastimports
+
 all: $(BINS) README.md
 
 clean:
@@ -22,7 +24,7 @@ SRCPATH = https://github.com/jbrubake/scripts/blob/master
 ignore = Makefile peru.yaml LICENSE% %.md tags cscope.out
 scripts = $(filter-out $(ignore),$(wildcard *))
 
-README.md: .peru/lastimports $(scripts)
+README.md: $(peru) $(scripts)
 	@echo Building README.md...
 	@> README.md
 	@echo "## My Scripts" >> README.md
@@ -61,6 +63,6 @@ README.md: .peru/lastimports $(scripts)
             }' peru.yaml | sort >> README.md
 	@echo >> README.md
 
-.peru/lastimports: peru.yaml
+$(peru): peru.yaml
 	peru sync
 
