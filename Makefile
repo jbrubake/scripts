@@ -19,7 +19,7 @@ install: all
 #
 SRCPATH = https://github.com/jbrubake/scripts/blob/master
 # Look for 'abstract' in all files except $(ignore)
-ignore = Makefile peru.yaml LICENSE% %.md tags cscope.out %.c
+ignore = Makefile peru.yaml LICENSE% %.md tags cscope.out
 scripts = $(filter-out $(ignore),$(wildcard *))
 
 README.md: .peru/lastimports $(scripts)
@@ -34,8 +34,10 @@ README.md: .peru/lastimports $(scripts)
 	@echo >> README.md
 	@awk ' \
 	    /abstract:/ { \
+		file = FILENAME; \
+		sub("\\.c$$", "", file); \
 	        printf("- [%s]($(SRCPATH)/%s) - %s\n", \
-	            FILENAME, \
+		    file, \
 	            gensub(/\..*$$/, "", 1, FILENAME), \
 	            gensub(/^.*abstract: /, "", 1, $$0)) \
 	    }' $(filter-out $<,$^) >> README.md
