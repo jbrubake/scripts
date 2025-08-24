@@ -22,7 +22,6 @@
 
 ### Configurable settings {{{1
 #
-# TODO: configure with options
 PERCENT_DELTA_START=10
 PERCENT_DELTA=5
 PERCENT_DELTA_MIN=1

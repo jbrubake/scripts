@@ -18,7 +18,6 @@ imports:
   view-x-face: ./
   wttr: ./
   # Get zxdvi and make copies
-  # TODO: use (sym|hard)links when peru gets support for them
   zxdvi: ./
   zxdvi|zdvi2tty: ./
   zxdvi|zghostview: ./
