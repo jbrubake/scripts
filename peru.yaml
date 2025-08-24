@@ -40,11 +40,12 @@ git module wttr:
     share/bash-function.txt: wttr
   pick: wttr
   executable: wttr # abstract: The right way to check the weather 
-  rev: a3736d17b4220a3f4d617e62684ed2ca19205791
+  rev: 7c2a0328eb54cb0944119cf0ff7497f41619e8c8
 
 curl module mini_ca:
   url: https://impson.tzo.com/~jdimpson/bin/mini_ca
   executable: mini_ca # abstract: Low security certificate authority for testing
+  sha1: 0ff44772d44f5803139130ff9e304129cf9067dc
 
 git module mutt_bgrun:
   url: https://github.com/RichiH/mutt_bgrun
@@ -144,6 +145,7 @@ curl module imagick_type_gen:
 curl module sslrsh:
   url: https://impson.tzo.com/~jdimpson/bin/sslrsh
   executable: sslrsh # abstract: SSL Remote Shell
+  sha1: fc51e62a6ce9cd6d42168f23e256088cc4c5845d
 
 git module rename:
   url: https://github.com/ap/rename
