@@ -39,7 +39,7 @@ README.md: .peru/lastimports $(scripts)
 	        printf("- [%s]($(SRCPATH)/%s) - %s\n", \
 		    file, \
 	            gensub(/\..*$$/, "", 1, FILENAME), \
-	            gensub(/^.*abstract: /, "", 1, $$0)) \
+		    gensub(/^.*abstract:[[:space:]]*/, "", 1, $$0)) \
 	    }' $(filter-out $<,$^) >> README.md
 	@echo >> README.md
 	@echo "## External Files" >> README.md
