@@ -15,7 +15,7 @@
 #
 # Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
 #
-# abstract:	hasty portscan script when nmap is not available
+# abstract: hasty portscan script when nmap is not available
 #
 print_help() {
     [ -n "$1" ] && printf '%s\n' "$1"

@@ -15,7 +15,7 @@
 #
 # Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
 #
-# abstract:	hasty pingsweep script when nmap is not available
+# abstract: hasty pingsweep script when nmap is not available
 #
 IPMSK=0xffffffff # 32-bits on
 # Documentation {{{1
