@@ -18,9 +18,7 @@
 ################################################################################
 # file:		hostdiscovery
 # usage:	hostdiscovery
-# abstract:	debian linux based host discovery script that captures info
-#		about the hardware, software, network, configs, users, etc of 
-#		a single host.
+# abstract:	get hardware, software, network, user, etc info from a host
 ################################################################################
 
 FG="[1;32m"
