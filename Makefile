@@ -14,9 +14,6 @@ clean:
 install: all
 	./install.sh -Vf
 
-#
-# Additional targets
-#
 # Generate README.md from scripts 'abstract' tag
 #
 SRCPATH = https://github.com/jbrubake/scripts/blob/master
