@@ -51,7 +51,7 @@ A collection of scripts that I wrote or modified from someone else
 - [gxpr](https://github.com/jbrubake/scripts/blob/master/gxpr) - like expr(1), but uses Google's calculator to evaluate <expression>
 - [headers](https://github.com/jbrubake/scripts/blob/master/headers) - show HTTP headers for <url>
 - [hide](https://github.com/jbrubake/scripts/blob/master/hide) - rename <file> to .<file>
-- [hostdiscovery](https://github.com/jbrubake/scripts/blob/master/hostdiscovery) - # abstract:	debian linux based host discovery script that captures info
+- [hostdiscovery](https://github.com/jbrubake/scripts/blob/master/hostdiscovery) - get hardware, software, network, user, etc info from a host
 - [import-key](https://github.com/jbrubake/scripts/blob/master/import-key) - export and import gpg keys
 - [launchterm](https://github.com/jbrubake/scripts/blob/master/launchterm) - quick wrapper to support tmux, tmuxp and tabbed
 - [license](https://github.com/jbrubake/scripts/blob/master/license) - print various open source licenses
@@ -75,19 +75,17 @@ A collection of scripts that I wrote or modified from someone else
 - [pinentry](https://github.com/jbrubake/scripts/blob/master/pinentry) - pinentry wrapper
 - [pinentry-dmenu](https://github.com/jbrubake/scripts/blob/master/pinentry-dmenu) - custom dmenu wrapper for anypinentry
 - [pinentry-ssh-askpass](https://github.com/jbrubake/scripts/blob/master/pinentry-ssh-askpass) - pinentry wrapper to allow it to be used for SSH_ASKPASS and SUDO_ASKPASS
-- [pingsweep](https://github.com/jbrubake/scripts/blob/master/pingsweep) - # abstract:	hasty pingsweep script when nmap is not available
+- [pingsweep](https://github.com/jbrubake/scripts/blob/master/pingsweep) - hasty pingsweep script when nmap is not available
 - [pipx](https://github.com/jbrubake/scripts/blob/master/pipx) - wrap pipx to allow system-wide installs
 - [pkglist](https://github.com/jbrubake/scripts/blob/master/pkglist) - print a listing of manually installed packages
 - [portquiz](https://github.com/jbrubake/scripts/blob/master/portquiz) - use portquiz.net to find open ports
 - [ports](https://github.com/jbrubake/scripts/blob/master/ports) - show processes listening on TCP ports
-- [portscan](https://github.com/jbrubake/scripts/blob/master/portscan) - # abstract:	hasty portscan script when nmap is not available
+- [portscan](https://github.com/jbrubake/scripts/blob/master/portscan) - hasty portscan script when nmap is not available
 - [portscan.devtcp](https://github.com/jbrubake/scripts/blob/master/portscan) - quick and dirty /dev/tcp portscan
 - [ppeek](https://github.com/jbrubake/scripts/blob/master/ppeek) - send stdin to stdout and stderr
 - [pretty_make](https://github.com/jbrubake/scripts/blob/master/pretty_make) - make beautifier
 - [prpages](https://github.com/jbrubake/scripts/blob/master/prpages) - compute number of pages that pr will print
 - [raxfr](https://github.com/jbrubake/scripts/blob/master/raxfr) - perform a reverse zone transfer
-- [README.md](https://github.com/jbrubake/scripts/blob/master/README) - - [hostdiscovery](https://github.com/jbrubake/scripts/blob/master/hostdiscovery) - # abstract:	debian linux based host discovery script that captures info
-- [README.md](https://github.com/jbrubake/scripts/blob/master/README) - - [pingsweep](https://github.com/jbrubake/scripts/blob/master/pingsweep) - # abstract:	hasty pingsweep script when nmap is not available
 - [relpath](https://github.com/jbrubake/scripts/blob/master/relpath) - print the relative path from <src> to <tgt>
 - [rlook](https://github.com/jbrubake/scripts/blob/master/rlook) - get all IPv4 addresses for a host
 - [routines.sh](https://github.com/jbrubake/scripts/blob/master/routines) - dmenu shell routines
@@ -96,14 +94,15 @@ A collection of scripts that I wrote or modified from someone else
 - [sidetone](https://github.com/jbrubake/scripts/blob/master/sidetone) - enable headset sidetone
 - [siggen](https://github.com/jbrubake/scripts/blob/master/siggen) - generate an email/Usenet signature with an optional fortune cookie
 - [sign](https://github.com/jbrubake/scripts/blob/master/sign) - digitally sign a file with a SSH key
-- [sizeof.c](https://github.com/jbrubake/scripts/blob/master/sizeof) - print sizes of C data types
+- [sizeof](https://github.com/jbrubake/scripts/blob/master/sizeof) - print sizes of C data types
 - [sound-change.sh](https://github.com/jbrubake/scripts/blob/master/sound-change) - change sound output device
+- [stdin2browser](https://github.com/jbrubake/scripts/blob/master/stdin2browser) - Pass stdin to $BROWSER
 - [st-urlhandler](https://github.com/jbrubake/scripts/blob/master/st-urlhandler) - utility used by st(1) to open links from the terminal
 - [truecolor](https://github.com/jbrubake/scripts/blob/master/truecolor) - test terminal true color capability
 - [trunc](https://github.com/jbrubake/scripts/blob/master/trunc) - truncate files
 - [update-fingerfarm](https://github.com/jbrubake/scripts/blob/master/update-fingerfarm) - upload .plan and .project to finger.farm
 - [update-vim-plugins](https://github.com/jbrubake/scripts/blob/master/update-vim-plugins) - update vim plugins and links
-- [vis.c](https://github.com/jbrubake/scripts/blob/master/vis) - show non-printing characters as hexadecimal escapes/
+- [vis](https://github.com/jbrubake/scripts/blob/master/vis) - show non-printing characters as hexadecimal escapes/
 - [watchfor](https://github.com/jbrubake/scripts/blob/master/watchfor) - report when someone logs on
 - [watchwho](https://github.com/jbrubake/scripts/blob/master/watchwho) - periodically report who has logged on and logged out
 - [whichpkg](https://github.com/jbrubake/scripts/blob/master/whichpkg) - determine the package and package manager that provides a file
@@ -111,6 +110,8 @@ A collection of scripts that I wrote or modified from someone else
 - [x-face-unicode](https://github.com/jbrubake/scripts/blob/master/x-face-unicode) - view X-Face images in Unicode
 - [xfortune](https://github.com/jbrubake/scripts/blob/master/xfortune) - display a fortune cookie in an X dialog
 - [xkcd](https://github.com/jbrubake/scripts/blob/master/xkcd) - display the latest xkcd comic, including the alt text
+- [xresources2alacritty](https://github.com/jbrubake/scripts/blob/master/xresources2alacritty) - Create an alacritty colorscheme config from Xresources
+- [ytget](https://github.com/jbrubake/scripts/blob/master/ytget) - yt-dlp wrapper
 - [zap](https://github.com/jbrubake/scripts/blob/master/zap) - kill processes by name
 
 ## External Files
@@ -132,6 +133,7 @@ These files come from external repositories, but are synced here using [peru](ht
 - [image2ascii](https://www.spinnaker.de/mutt/image2ascii) - Convert images to ASCII (useful for Mutt .mailcap)
 - [imagick_type_gen](https://legacy.imagemagick.org/Usage/scripts/imagick_type_gen) - Generate an ImageMagick font listn
 - [MIMEmbellish](https://gist.githubusercontent.com/oblitum/6eeffaebd9a4744e762e49e6eb19d189/raw/c39c19d7c505cacdcb798b5069d3dd2582b539aa/MIMEmbellish) - Transform text-only email to multipart text+HTML
+- [mini_ca](https://impson.tzo.com/~jdimpson/bin/mini_ca) - Low security certificate authority for testing
 - [mutt_bgrun](https://github.com/RichiH/mutt_bgrun) - View attachments in mutt in the background
 - [mutt-trim](https://github.com/Konfekt/mutt-trim) - unclutter and normalize quoted text in an e-mail 
 - [octet-filter](https://www.spinnaker.de/mutt/octet-filter) - Last-resort filter to convert any octet-stream data to ASCII (useful for Mutt .mailcap)
@@ -140,6 +142,7 @@ These files come from external repositories, but are synced here using [peru](ht
 - [pinentry-any](https://github.com/phenax/any-pinentry) - A flexible pinentry script for gpg. Uses dmenu by default (MIT [LICENSE.akshaynair])
 - [rename](https://github.com/ap/rename) - Rename multiple filesme
 - [serve](https://github.com/cowboy/dotfiles) - serve a directory over HTTP (MIT [LICENSE.benalman])
+- [sslrsh](https://impson.tzo.com/~jdimpson/bin/sslrsh) - SSL Remote Shell
 - [vcard-filter](https://www.spinnaker.de/mutt/vcard-filter) - Convert VCards to ASCII (useful for Mutt .mailcap)
 - [view-x-face](https://www.spinnaker.de/mutt/view-x-face) - View X-Face images embedded in emails
 - [wttr](https://github.com/chubin/wttr.in) - The right way to check the weather 
