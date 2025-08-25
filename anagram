@@ -1,0 +1,180 @@
+#!/bin/sh
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Copyright 2025 Jeremy Brubaker <jbru362@gmail.com>
+#
+# abstract: print list of words that contain only a given set of characters
+#
+# Usage: anagram <characters>
+#
+# Defaults {{{1
+#
+ANAGRAM_DB_DFLT=${XDG_STATE_HOME:-~/.local/share}/misc/anagram.db
+WORDLIST_DFLT=/usr/share/dict/words
+
+# Documentation {{{1
+#
+VERSION='1.0'
+
+print_help() {
+    [ -n "$2" ] && printf "%s\n" "$2"
+    cat <<EOF
+Usage: $0 [OPTION] <WORDS>
+
+List anagrams of the letters in WORDS.
+
+Options: 
+ -d [PATH]       write anagram database to PATH (Default: $ANAGRAM_DB_DFLT)
+ -w [PATH]       use PATH as word list (Default: $WORLIST_DFLT)
+ -V              display version info and exit
+ -h              display this help and exit
+EOF
+} >&2
+
+print_version() {
+    cat <<EOF
+$PROGNAME $VERSION
+Copyright (C) 2025 Orion Arts
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Jeremy Brubaker.
+EOF
+} >&2
+
+# Functions {{{1
+#
+# Generate anagram database {{{
+#
+# An implementation of the anagram-finding algorithm from Jon Bentley's
+# "Programming Pearls," 2nd edition. Addison Wesley, 2000, ISBN 0-201-65788-0.
+# Column 2, Problem C, section 2.8, pp 18-20.
+#
+# From: https://www.gnu.org/software/gawk/manual/html_node/Anagram-Program.html
+#
+mkdb() {
+    AWK=$(cat << 'END'
+# Split word apart into letters, sort, and join back together
+function word2key(word,     a, i, n, result)
+{
+    n = split(tolower(word), a, "")
+    asort(a)
+
+    for (i = 1; i <= n; i++)
+        result = result a[i]
+
+    return result
+}
+
+/^.$/            { next } # Skip single letters
+/[^[:alpha:]]/   { next } # Skip words with non-letters
+/^[[:upper:]]*$/ { next } # Skip acronyms
+
+{
+    key = word2key($1) # Build signature
+    data[key][$1]      # Store word with signature
+}
+
+END {
+    # Set shell sorting program
+    sort = "sort"
+
+    for (key in data) {
+        # Sort words with same key
+        n = asorti(data[key])
+
+        # Skip if there are no anagrams
+        if (n == 1) continue
+
+        # Print key followed by the anagrams
+        printf("%s ", key) | sort
+        for (i = 1; i <= n; i++)
+            printf("%s%s", data[key][i], i < n ? " " : "\n") | sort
+    }
+    close(sort)
+}
+END
+)
+
+    mkdir -p "$(dirname "$anagram_db")"
+    awk "$AWK" "$wordlist" > "$anagram_db"
+} # }}}
+
+# Get the mtime of a file
+mtime() {
+    # It's OK that the result is a YYYY-MM-DD HH:MM:SS... format
+    # because we just need to sort two results
+    command -p diff -u "$1" /dev/null | head -n1 | cut -f2
+}
+
+# Return true if the mtime of $1 is older than that of $2
+isolder() {
+    # Do a simple text compare because the mtimes we are
+    # comparing are not simple numbers
+    [ "$(mtime "$1")" '<' "$(mtime "$2")" ]
+}
+
+# Process options {{{1
+#
+anagram_db=$ANAGRAM_DB_DFLT
+wordlist=$WORDLIST_DFLT
+while getopts 'd:w:Vh' opt; do
+    case $opt in
+        d) anagram_db=$OPTARG ;;
+        w) wordlist=$OPTARG ;;
+        V) print_version; exit ;;
+        h|?) print_help; exit ;;
+    esac
+done
+shift $((OPTIND - 1))
+OPTIND=1
+
+# Main {{{1
+#
+if [ $# -eq 0 ]; then
+    printf 'Show anagrams for what?\n\n' >&2
+    print_help
+    exit 1
+fi
+
+if ! [ -f "$wordlist" ]; then
+    printf 'Wordlist not found: %s\n' "$wordlist" >&2
+    exit 1
+fi
+
+# Check if database needs created or updated
+msg=
+if ! [ -f "$anagram_db" ]; then
+    msg=Creating
+elif isolder "$anagram_db" "$wordlist"; then
+    msg=Updating
+fi
+
+if [ -n "$msg" ]; then
+    printf '%s anagram database...\n' "$msg" >&2
+    if ! mkdb; then
+        printf 'Failed to create database: %s\n' "$anagram_db" >&2
+        exit 1
+    fi
+fi
+
+# Convert given word into a key into the anagram database
+# (Remove spaces in case the "word" was more than one word)
+key=$(echo "$@" | tr [:upper:] [:lower:] | fold -w1 | sort | tr -d '\n' | tr -d ' ')
+
+# Search for key and print anagrams
+grep "^$key " "$anagram_db" | cut -d' ' -f2- | tr ' ' '\n'
+
