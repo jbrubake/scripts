@@ -1,0 +1,93 @@
+#!/bin/sh
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Copyright 2025 Jeremy Brubaker <jbru362@gmail.com>
+#
+# abstract: A simple command-line timer
+#
+# Defaults {{{1
+#
+TIMER=2
+MESSAGE='Timer expired'
+
+# Documentation {{{1
+#
+VERSION='1.0'
+
+print_help() {
+    [ -n "$2" ] && printf "%s\n" "$2"
+    cat <<EOF
+Usage: $0 [OPTION] [TIME]
+
+Run a background timer for TIME (Default: $TIMER) seconds.
+
+Options: 
+ -m [MESSAGE]    print MESSAGE when timer ends (Default: $MESSAGE)
+ -v              display the timer as it ticks down     
+ -V              display version info and exit
+ -h              display this help and exit
+EOF
+} >&2
+
+print_version() {
+    cat <<EOF
+$PROGNAME $VERSION
+Copyright (C) 2025 Orion Arts
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Jeremy Brubaker.
+EOF
+}
+
+# Process Options {{{1
+#
+verbose=
+while getopts 'm:vVh' opt; do
+    case $opt in
+        m) MESSAGE=$OPTARG ;;
+        v) verbose=y ;;
+        V) print_version; exit ;;
+        h) print_help; exit ;;
+        h|?) print_help; exit 1 ;;
+    esac
+done
+shift $((OPTIND - 1))
+OPTIND=1
+
+[ $# -eq 1 ] && TIMER=$1
+
+# Main {{{1
+#
+pid=
+while true; do
+    if [ -n "$pid" ]; then
+        time=$(ps -o etimes -p "$pid" | tail -1 | tr -d [:space:])
+        # The elapsed time (etimes) changes to ELAPSED when
+        # a sleep(1) timer expires
+        if [ "$time" = "ELAPSED" ]; then
+            printf '%s\n' "$MESSAGE"
+            exit
+        else
+            [ -n "$verbose" ] && echo $((TIMER - time))
+            sleep 1
+        fi
+    else
+        sleep "$TIMER" &
+        pid=$!
+    fi
+done &
+
