@@ -15,27 +15,8 @@
 #
 # Copyright 2024 Jeremy Brubaker <jbru362@gmail.com>
 #
-# abstract: update vim plugins and links
+# abstract: update vim plugins
 #
-MINPAC_OPT=$HOME/.vim/pack/minpac/opt
-FTDETECT=$HOME/.vim/ftdetect
-
-# Update plugins
-#
-#vim '+call minpac#init({"confirm":"false"})' \
-vim '+call minpac#clean()' \
-    '+call minpac#update("", {"do": "quitall"})'
-
-# Create links to all optional ftdetect scripts
-#
-for p in $(find "$MINPAC_OPT" \
-           -path '*/ftdetect/*.vim' \
-           -exec realpath -s --relative-to "$FTDETECT" {} \;
-         ); do
-    ln -sf "$p" "$FTDETECT/$(basename "$p")"
-done
-
-# Delete stale ftdetect links
-#
-find -L "$FTDETECT" -type l -exec rm {} \;
+vim '+call minpac#update("", {"do": "quitall"})'
+vim '+call minpac#clean() | exit'
 
