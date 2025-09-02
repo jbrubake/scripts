@@ -102,7 +102,7 @@ A collection of scripts that I wrote or modified from someone else
 - [truecolor](https://github.com/jbrubake/scripts/blob/master/truecolor) - test terminal true color capability
 - [trunc](https://github.com/jbrubake/scripts/blob/master/trunc) - truncate files
 - [update-fingerfarm](https://github.com/jbrubake/scripts/blob/master/update-fingerfarm) - upload .plan and .project to finger.farm
-- [update-vim-plugins](https://github.com/jbrubake/scripts/blob/master/update-vim-plugins) - update vim plugins and links
+- [vim2html](https://github.com/jbrubake/scripts/blob/master/vim2html) - Convert HTML of vim syntax highlighting
 - [vis](https://github.com/jbrubake/scripts/blob/master/vis) - show non-printing characters as hexadecimal escapes/
 - [watchfor](https://github.com/jbrubake/scripts/blob/master/watchfor) - report when someone logs on
 - [watchwho](https://github.com/jbrubake/scripts/blob/master/watchwho) - periodically report who has logged on and logged out
