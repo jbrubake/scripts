@@ -2,7 +2,7 @@
 #
 # Add clipboard contents as a buku bookmark
 #
-# Place in PATH and createt a keybinding to run bukuadd
+# Place in PATH and create a keybinding to run bukuadd
 
 if command -v xclip >/dev/null; then
     cmd=xclip
