@@ -36,12 +36,11 @@ END
 pipx_sys_home=/opt/pipx
 pipx_sys_bin_dir=/usr/local/bin
 use_emoji=false
-pipx=$pipx_sys_home/pipx/bin/pipx
 
 case "$1" in
     -h | --help)
         print_help;
-        USE_EMOJI=$use_emoji $pipx --help
+        USE_EMOJI=$use_emoji /usr/bin/pipx --help
         ;;
     -s | --system)
 
@@ -52,11 +51,11 @@ case "$1" in
 
         shift
         PIPX_HOME=$pipx_sys_home PIPX_BIN_DIR=$pipx_sys_bin_dir USE_EMOJI=$use_emoji \
-            $pipx "$@"
+            /usr/bin/pipx "$@"
         ;;
     *)
         PIPX_HOME=$pipx_sys_home PIPX_BIN_DIR=$pipx_sys_bin_dir USE_EMOJI=$use_emoji \
-            $pipx "$@"
+            /usr/bin/pipx "$@"
         ;;
 esac
 
