@@ -39,7 +39,9 @@ fi
 
 list=$(wmctrl -lx |
     awk '{print $3}' |
-    cut -d'.' -f2 |
+    rev |
+    cut -d'.' -f1 |
+    rev |
     tr '[:upper:]' '[:lower:]' |
     sort |
     uniq)
