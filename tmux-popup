@@ -1,0 +1,69 @@
+#!/bin/sh
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Copyright 2025 Jeremy Brubaker <jbru362@gmail.com>
+#
+# abstract: run a command in a tmux popup
+#
+# Documentation {{{1
+#
+print_help() (
+    cat <<EOF
+Usage: $0 [OPTION] COMMAND
+Run COMMAND in a tmux(1) popup
+
+ -h HEIGHT[%] set popup height to HEIGHT (lines or a percentage)
+ -w WIDTH[%]  set popup width to WIDTH (columns or a percentage)
+ -k           wait for any keypress after COMMAND completes. This is required if
+                  COMMAND exits immediately
+ -V           display version info and exit
+ -H           display this help and exit
+EOF
+) >&2
+
+print_version() (
+    cat <<EOF
+$0 $VERSION
+Copyright (C) 2025 Orion Arts
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Jeremy Brubaker.
+EOF
+) >&2
+
+# Process options {{{1
+#
+w=70%
+h=80%
+k=
+while getopts ':kw:h:VH' c; do
+    case $c in
+        h) h=$OPTARG ;;
+        w) w=$OPTARG ;;
+        k) k='stty -icanon min 1 time 0; dd bs=1 count=1' ;;
+        H) print_help; exit ;;
+        V) print_version; exit ;;
+        ?) echo 'huh?' >&2; print_help; exit 1 ;;
+    esac
+done
+shift $((OPTIND-1))
+OPTIND=1
+
+# Main {{{1
+#
+tmux display-popup -E -w"$w" -h"$h" "$1;$k"
+
