@@ -53,7 +53,7 @@ A collection of scripts that I wrote or modified from someone else
 - [hide](https://github.com/jbrubake/scripts/blob/master/hide) - rename <file> to .<file>
 - [hostdiscovery](https://github.com/jbrubake/scripts/blob/master/hostdiscovery) - get hardware, software, network, user, etc info from a host
 - [import-key](https://github.com/jbrubake/scripts/blob/master/import-key) - export and import gpg keys
-- [launchterm](https://github.com/jbrubake/scripts/blob/master/launchterm) - quick wrapper to support tmux, tmuxp and tabbed
+- [launchterm](https://github.com/jbrubake/scripts/blob/master/launchterm) - load a tmuxp session in a tabbed(1) terminal
 - [license](https://github.com/jbrubake/scripts/blob/master/license) - print various open source licenses
 - [linkpath](https://github.com/jbrubake/scripts/blob/master/linkpath) - print the absolute path of the target of a symbolic link
 - [logoutmsg](https://github.com/jbrubake/scripts/blob/master/logoutmsg) - presents a dialog box to verify that you really want to logout of X

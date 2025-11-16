@@ -1,10 +1,6 @@
 #!/bin/sh
 #
-# abstract: quick wrapper to support tmux, tmuxp and tabbed
+# abstract: load a tmuxp session in a tabbed(1) terminal
 
-if tmux ls | grep "^$1:" | grep -q '(attached)$'; then
-    $SHELL
-else
-    tmuxp load -y $1
-fi
+exec tabbed -cd -n "$1" -r2 alacritty --embed ID -e tmuxp load -y "$1"
 
