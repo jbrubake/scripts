@@ -18,6 +18,7 @@ A collection of scripts that I wrote or modified from someone else
 - [anagram](https://github.com/jbrubake/scripts/blob/master/anagram) - print list of words that contain only a given set of characters
 - [ansitest](https://github.com/jbrubake/scripts/blob/master/ansitest) - Test terminal ANSI escape capabilities
 - [argv](https://github.com/jbrubake/scripts/blob/master/argv) - dump arguments
+- [atwork](https://github.com/jbrubake/scripts/blob/master/atwork) - Return true if WiFi is connected to anything in $WORK_SSID
 - [bigbin](https://github.com/jbrubake/scripts/blob/master/bigbin) - print the <n> largest executables in $PATH
 - [bosskey](https://github.com/jbrubake/scripts/blob/master/bosskey) - "install" packages forever
 - [build-vmware-modules](https://github.com/jbrubake/scripts/blob/master/build-vmware-modules) - build patched VMware Workstation modules
