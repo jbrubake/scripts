@@ -88,7 +88,15 @@ mkshim() {
 #
 # flatpak shim managed by $PROGNAME
 #
-nohup flatpak run "$appid" "\$@" >/dev/null 2>&1 &
+app=$appid
+
+if [ \$# -eq 0 ]; then
+    # Run as a GUI application
+    nohup flatpak run "$appid" >/dev/null 2>&1 &
+else
+    # Run as a CLI application
+    flatpak run "$appid" "\$@"
+fi
 
 EOF
 
