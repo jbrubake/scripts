@@ -40,3 +40,7 @@ fi
 
 tmux display-popup -E $args "$cmd"
 
+# Return true to avoid the annoying extra
+# window that says the popup command failed
+true
+
