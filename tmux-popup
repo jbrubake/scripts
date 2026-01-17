@@ -18,11 +18,12 @@
 # abstract: run a command in a tmux popup
 #
 # Search all but last arg for custom switches
-unset args k
+unset args tmux k
 for i in $( seq $(($#-1)) ); do
     # Custom switches
     case $1 in
         -k) k='stty -icanon min 1 time 0; dd bs=1 count=1'; shift; continue ;;
+        -t) tmux=1; shift; continue ;;
     esac
 
     args="$args $1"
@@ -30,5 +31,12 @@ for i in $( seq $(($#-1)) ); do
 done
 
 # The last arg (all that is left) is the command to run
-tmux display-popup -E $args "$1;$k"
+cmd="$1;$k"
+
+# Run in a tmux session if asked to allow scrolling
+if [ -n "$tmux" ]; then
+    cmd="tmux new-session -A -s scratch \"$cmd\" \; set-option status off"
+fi
+
+tmux display-popup -E $args "$cmd"
 
