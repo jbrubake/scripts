@@ -18,7 +18,7 @@
 # abstract: run a command in a tmux popup
 #
 # Search all but last arg for custom switches
-unset args
+unset args k
 for i in $( seq $(($#-1)) ); do
     # Custom switches
     case $1 in
