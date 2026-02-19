@@ -101,6 +101,7 @@ A collection of scripts that I wrote or modified from someone else
 - [st-urlhandler](https://github.com/jbrubake/scripts/blob/master/st-urlhandler) - utility used by st(1) to open links from the terminal
 - [timer](https://github.com/jbrubake/scripts/blob/master/timer) - A simple command-line timer
 - [tmux-popup](https://github.com/jbrubake/scripts/blob/master/tmux-popup) - run a command in a tmux popup
+- [todo.sh](https://github.com/jbrubake/scripts/blob/master/todo) - Add per-directory todo list support to todo.sh
 - [truecolor](https://github.com/jbrubake/scripts/blob/master/truecolor) - test terminal true color capability
 - [trunc](https://github.com/jbrubake/scripts/blob/master/trunc) - truncate files
 - [update-fingerfarm](https://github.com/jbrubake/scripts/blob/master/update-fingerfarm) - upload .plan and .project to finger.farm
