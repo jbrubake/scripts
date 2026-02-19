@@ -39,14 +39,23 @@ fi
 
 list=$(wmctrl -lx |
     awk '{print $3}' |
-    rev |
-    cut -d'.' -f1 |
-    rev |
     tr '[:upper:]' '[:lower:]' |
     sort |
     uniq)
 
+# Deal will silly apps that use silly window names
+list=$(echo "$list" | sed \
+    -e 's/navigator/firefox/' \
+    -e 's/org.gnome.nautilus/nautilus/' |
+    cut -d'.' -f1)
+
 num=$(($(printf "$list" | tr -dc '\n' | wc -m)+1))
 
-wmctrl -x -a $(printf "$list" | dmenu $(make_dmenu_args) -l "$num" "$@")
+# The sed substitutions convert my sensible names
+# back to the actual silly names
+wmctrl -x -a $(
+    printf "$list" | dmenu $(make_dmenu_args) -l "$num" "$@" | sed \
+        -e 's/firefox/navigator/' \
+        -e 's/nautils/org.gnome.nautilus/'
+    )
 
