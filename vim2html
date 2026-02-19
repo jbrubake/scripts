@@ -87,7 +87,7 @@ OPTIND=1
 
 # Main {{{1
 #
-for f in $@; do
+for f in "$@"; do
     vim \
         +"syntax on | set background=$background" \
         ${colorscheme:++"colorscheme $colorscheme"} \
