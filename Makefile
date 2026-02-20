@@ -1,6 +1,8 @@
 SRC := $(wildcard *.c)
 BINS := $(patsubst %.c,%$(SUFFIX),$(SRC))
 
+readme := README.md
+
 all: $(BINS) $(readme)
 
 clean:
@@ -12,7 +14,6 @@ install: all
 
 # Generate README.md from 'abstract' tags
 #
-readme := README.md
 readme_hdr := readme.header
 readme_ext := readme.external
 
