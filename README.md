@@ -19,6 +19,7 @@ A collection of scripts that I wrote or modified from someone else
 - [ansitest](https://github.com/jbrubake/scripts/blob/master/ansitest) - Test terminal ANSI escape capabilities
 - [argv](https://github.com/jbrubake/scripts/blob/master/argv) - dump arguments
 - [atwork](https://github.com/jbrubake/scripts/blob/master/atwork) - Return true if WiFi is connected to anything in $WORK_SSID
+- [atworkd](https://github.com/jbrubake/scripts/blob/master/atworkd) - Daemon to set status for atwork to query
 - [bigbin](https://github.com/jbrubake/scripts/blob/master/bigbin) - print the <n> largest executables in $PATH
 - [bosskey](https://github.com/jbrubake/scripts/blob/master/bosskey) - "install" packages forever
 - [build-vmware-modules](https://github.com/jbrubake/scripts/blob/master/build-vmware-modules) - build patched VMware Workstation modules
@@ -61,7 +62,7 @@ A collection of scripts that I wrote or modified from someone else
 - [lxc-attach](https://github.com/jbrubake/scripts/blob/master/lxc-attach) - wrap lxc-attach so rootless containers work properly
 - [lxc-start](https://github.com/jbrubake/scripts/blob/master/lxc-start) - wrap lxc-start so rootless containers work properly
 - [maketree](https://github.com/jbrubake/scripts/blob/master/maketree) - create a Makefile dependency graph
-- [man.cx](https://github.com/jbrubake/scripts/blob/master/man) - command line interface to man.cx
+- [man.cx](https://github.com/jbrubake/scripts/blob/master/man.cx) - command line interface to man.cx
 - [mkthumbs](https://github.com/jbrubake/scripts/blob/master/mkthumbs) - create image thumbnails
 - [mtutest](https://github.com/jbrubake/scripts/blob/master/mtutest) - determine optimal MTU size
 - [my](https://github.com/jbrubake/scripts/blob/master/my) - execute the correct command from a list of alternatives
@@ -82,31 +83,31 @@ A collection of scripts that I wrote or modified from someone else
 - [portquiz](https://github.com/jbrubake/scripts/blob/master/portquiz) - use portquiz.net to find open ports
 - [ports](https://github.com/jbrubake/scripts/blob/master/ports) - show processes listening on TCP ports
 - [portscan](https://github.com/jbrubake/scripts/blob/master/portscan) - hasty portscan script when nmap is not available
-- [portscan.devtcp](https://github.com/jbrubake/scripts/blob/master/portscan) - quick and dirty /dev/tcp portscan
+- [portscan.devtcp](https://github.com/jbrubake/scripts/blob/master/portscan.devtcp) - quick and dirty /dev/tcp portscan
 - [ppeek](https://github.com/jbrubake/scripts/blob/master/ppeek) - send stdin to stdout and stderr
 - [pretty_make](https://github.com/jbrubake/scripts/blob/master/pretty_make) - make beautifier
 - [prpages](https://github.com/jbrubake/scripts/blob/master/prpages) - compute number of pages that pr will print
 - [raxfr](https://github.com/jbrubake/scripts/blob/master/raxfr) - perform a reverse zone transfer
 - [relpath](https://github.com/jbrubake/scripts/blob/master/relpath) - print the relative path from <src> to <tgt>
 - [rlook](https://github.com/jbrubake/scripts/blob/master/rlook) - get all IPv4 addresses for a host
-- [routines.sh](https://github.com/jbrubake/scripts/blob/master/routines) - dmenu shell routines
+- [routines.sh](https://github.com/jbrubake/scripts/blob/master/routines.sh) - dmenu shell routines
 - [ruler](https://github.com/jbrubake/scripts/blob/master/ruler) - print a ruler across the screen
 - [screenshot](https://github.com/jbrubake/scripts/blob/master/screenshot) - take a screenshot
 - [sidetone](https://github.com/jbrubake/scripts/blob/master/sidetone) - enable headset sidetone
 - [siggen](https://github.com/jbrubake/scripts/blob/master/siggen) - generate an email/Usenet signature with an optional fortune cookie
 - [sign](https://github.com/jbrubake/scripts/blob/master/sign) - digitally sign a file with a SSH key
-- [sizeof](https://github.com/jbrubake/scripts/blob/master/sizeof) - print sizes of C data types
-- [sound-change.sh](https://github.com/jbrubake/scripts/blob/master/sound-change) - change sound output device
-- [stdin2browser](https://github.com/jbrubake/scripts/blob/master/stdin2browser) - Pass stdin to $BROWSER
+- [sizeof](https://github.com/jbrubake/scripts/blob/master/sizeof.c) - print sizes of C data types
+- [sound-change.sh](https://github.com/jbrubake/scripts/blob/master/sound-change.sh) - change sound output device
 - [st-urlhandler](https://github.com/jbrubake/scripts/blob/master/st-urlhandler) - utility used by st(1) to open links from the terminal
+- [stdin2browser](https://github.com/jbrubake/scripts/blob/master/stdin2browser) - Pass stdin to $BROWSER
 - [timer](https://github.com/jbrubake/scripts/blob/master/timer) - A simple command-line timer
 - [tmux-popup](https://github.com/jbrubake/scripts/blob/master/tmux-popup) - run a command in a tmux popup
-- [todo.sh](https://github.com/jbrubake/scripts/blob/master/todo) - Add per-directory todo list support to todo.sh
+- [todo.sh](https://github.com/jbrubake/scripts/blob/master/todo.sh) - Add per-directory todo list support to todo.sh
 - [truecolor](https://github.com/jbrubake/scripts/blob/master/truecolor) - test terminal true color capability
 - [trunc](https://github.com/jbrubake/scripts/blob/master/trunc) - truncate files
 - [update-fingerfarm](https://github.com/jbrubake/scripts/blob/master/update-fingerfarm) - upload .plan and .project to finger.farm
 - [vim2html](https://github.com/jbrubake/scripts/blob/master/vim2html) - Convert HTML of vim syntax highlighting
-- [vis](https://github.com/jbrubake/scripts/blob/master/vis) - show non-printing characters as hexadecimal escapes/
+- [vis](https://github.com/jbrubake/scripts/blob/master/vis.c) - show non-printing characters as hexadecimal escapes/
 - [watchfor](https://github.com/jbrubake/scripts/blob/master/watchfor) - report when someone logs on
 - [watchwho](https://github.com/jbrubake/scripts/blob/master/watchwho) - periodically report who has logged on and logged out
 - [whichpkg](https://github.com/jbrubake/scripts/blob/master/whichpkg) - determine the package and package manager that provides a file
@@ -125,34 +126,34 @@ These files come from external repositories, but are synced here using [peru](ht
 (Files licensed under different terms than GPLv3 are indicated, along with the
  name of the license file if necessary.)
 
-- [cht.sh](https://cht.sh/:cht.sh) - The only cheat sheet you need
-- [curlvim](https://github.com/cowboy/dotfiles) - download and edit a remote file with Vim (MIT [LICENSE.benalman])
-- [emojify](https://github.com/mrowa44/emojify) - Emoji on the command linescream 
-- [git-current-branch](https://github.com/nvie/git-toolbelt) - Show the current branch name (BSD-3 [LICENSE.git-toolbelt])
-- [git-jump](https://github.com/cowboy/dotfiles) - replay git commits safely (MIT [LICENSE.benalman])
-- [git-remote-tracking-branch](https://github.com/nvie/git-toolbelt) - Print remote tracking branch name (BSD-3 [LICENSE.git-toolbelt])
-- [git-sha](https://github.com/nvie/git-toolbelt) - Show the latest commit SHA (BSD-3 [LICENSE.git-toolbelt])
-- [git-spinoff](https://github.com/nvie/git-toolbelt) - Spinoff a new branch from current work and reset current branch (BSD-3 [LICENSE.git-toolbelt])
-- [git-undo-commit](https://github.com/nvie/git-toolbelt) - Undo a commit but keep all the changes staged (BSD-3 [LICENSE.git-toolbelt])
-- [image2ascii](https://www.spinnaker.de/mutt/image2ascii) - Convert images to ASCII (useful for Mutt .mailcap)
-- [imagick_type_gen](https://legacy.imagemagick.org/Usage/scripts/imagick_type_gen) - Generate an ImageMagick font listn
-- [MIMEmbellish](https://gist.githubusercontent.com/oblitum/6eeffaebd9a4744e762e49e6eb19d189/raw/c39c19d7c505cacdcb798b5069d3dd2582b539aa/MIMEmbellish) - Transform text-only email to multipart text+HTML
-- [mini_ca](https://impson.tzo.com/~jdimpson/bin/mini_ca) - Low security certificate authority for testing
-- [mutt_bgrun](https://github.com/RichiH/mutt_bgrun) - View attachments in mutt in the background
-- [mutt-trim](https://github.com/Konfekt/mutt-trim) - unclutter and normalize quoted text in an e-mail 
-- [octet-filter](https://www.spinnaker.de/mutt/octet-filter) - Last-resort filter to convert any octet-stream data to ASCII (useful for Mutt .mailcap)
-- [passmenu](https://git.zx2c4.com/password-store) - A dmenu-based interface to pass(1)
-- [pid](https://github.com/cowboy/dotfiles) - get PIDs of processes matching pattern (MIT [LICENSE.benalman])
-- [pinentry-any](https://github.com/phenax/any-pinentry) - A flexible pinentry script for gpg. Uses dmenu by default (MIT [LICENSE.akshaynair])
-- [rename](https://github.com/ap/rename) - Rename multiple filesme
-- [serve](https://github.com/cowboy/dotfiles) - serve a directory over HTTP (MIT [LICENSE.benalman])
-- [sslrsh](https://impson.tzo.com/~jdimpson/bin/sslrsh) - SSL Remote Shell
-- [vcard-filter](https://www.spinnaker.de/mutt/vcard-filter) - Convert VCards to ASCII (useful for Mutt .mailcap)
-- [view-x-face](https://www.spinnaker.de/mutt/view-x-face) - View X-Face images embedded in emails
-- [wttr](https://github.com/chubin/wttr.in) - The right way to check the weather 
-- [zdvi2tty](https://www.spinnaker.de/mutt/zxdvi) - View gzipped DVI, PS and PDF files (useful for Mutt .mailcap)
-- [zghostview](https://www.spinnaker.de/mutt/zxdvi) - View gzipped DVI, PS and PDF files (useful for Mutt .mailcap)
-- [zgv](https://www.spinnaker.de/mutt/zxdvi) - View gzipped DVI, PS and PDF files (useful for Mutt .mailcap)
-- [zxdvi](https://www.spinnaker.de/mutt/zxdvi) - View gzipped DVI, PS and PDF files (useful for Mutt .mailcap)
-- [zxpdf](https://www.spinnaker.de/mutt/zxdvi) - View gzipped DVI, PS and PDF files (useful for Mutt .mailcap)
+- [cht.sh](https://cht.sh/:cht.sh/cht.sh) - The only cheat sheet you need
+- [curlvim](https://github.com/cowboy/dotfiles/curlvim) - download and edit a remote file with Vim (MIT [LICENSE.benalman])
+- [emojify](https://github.com/mrowa44/emojify/emojify) - Emoji on the command linescream 
+- [git-current-branch](https://github.com/nvie/git-toolbelt/git-current-branch) - Show the current branch name (BSD-3 [LICENSE.git-toolbelt])
+- [git-jump](https://github.com/cowboy/dotfiles/git-jump) - replay git commits safely (MIT [LICENSE.benalman])
+- [git-remote-tracking-branch](https://github.com/nvie/git-toolbelt/git-remote-tracking-branch) - Print remote tracking branch name (required for git-spinoff) (BSD-3 [LICENSE.git-toolbelt])
+- [git-sha](https://github.com/nvie/git-toolbelt/git-sha) - Show the latest commit SHA (BSD-3 [LICENSE.git-toolbelt])
+- [git-spinoff](https://github.com/nvie/git-toolbelt/git-spinoff) - Spinoff a new branch from current work and reset current branch (BSD-3 [LICENSE.git-toolbelt])
+- [git-undo-commit](https://github.com/nvie/git-toolbelt/git-undo-commit) - Undo a commit but keep all the changes staged (BSD-3 [LICENSE.git-toolbelt])
+- [image2ascii](https://www.spinnaker.de/mutt/image2ascii/image2ascii) - Convert images to ASCII (useful for Mutt .mailcap)
+- [imagick_type_gen](https://legacy.imagemagick.org/Usage/scripts/imagick_type_gen/imagick_type_gen) - Generate an ImageMagick font list "type.xml" file for ALL fonts
+- [MIMEmbellish](https://gist.githubusercontent.com/oblitum/6eeffaebd9a4744e762e49e6eb19d189/raw/c39c19d7c505cacdcb798b5069d3dd2582b539aa/MIMEmbellish/MIMEmbellish) - Transform text-only email to multipart text+HTML
+- [mini_ca](https://impson.tzo.com/~jdimpson/bin/mini_ca/mini_ca) - Low security certificate authority for testing
+- [mutt_bgrun](https://github.com/RichiH/mutt_bgrun/mutt_bgrun) - View attachments in mutt in the background
+- [mutt-trim](https://github.com/Konfekt/mutt-trim/mutt-trim) - unclutter and normalize quoted text in an e-mail 
+- [octet-filter](https://www.spinnaker.de/mutt/octet-filter/octet-filter) - Last-resort filter to convert any octet-stream data to ASCII (useful for Mutt .mailcap)
+- [passmenu](https://git.zx2c4.com/password-store/passmenu) - A dmenu-based interface to pass(1)
+- [pid](https://github.com/cowboy/dotfiles/pid) - get PIDs of processes matching pattern (MIT [LICENSE.benalman])
+- [pinentry-any](https://github.com/phenax/any-pinentry/pinentry-any) - A flexible pinentry script for gpg. Uses dmenu by default (MIT [LICENSE.akshaynair])
+- [rename](https://github.com/ap/rename/rename) - Rename multiple filesme
+- [serve](https://github.com/cowboy/dotfiles/serve) - serve a directory over HTTP (MIT [LICENSE.benalman])
+- [sslrsh](https://impson.tzo.com/~jdimpson/bin/sslrsh/sslrsh) - SSL Remote Shell
+- [vcard-filter](https://www.spinnaker.de/mutt/vcard-filter/vcard-filter) - Convert VCards to ASCII (useful for Mutt .mailcap)
+- [view-x-face](https://www.spinnaker.de/mutt/view-x-face/view-x-face) - View X-Face images embedded in emails
+- [wttr](https://github.com/chubin/wttr.in/wttr) - The right way to check the weather 
+- [zdvi2tty](https://www.spinnaker.de/mutt/zxdvi/zdvi2tty) - View gzipped DVI, PS and PDF files (useful for Mutt .mailcap)
+- [zghostview](https://www.spinnaker.de/mutt/zxdvi/zghostview) - View gzipped DVI, PS and PDF files (useful for Mutt .mailcap)
+- [zgv](https://www.spinnaker.de/mutt/zxdvi/zgv) - View gzipped DVI, PS and PDF files (useful for Mutt .mailcap)
+- [zxdvi](https://www.spinnaker.de/mutt/zxdvi/zxdvi) - View gzipped DVI, PS and PDF files (useful for Mutt .mailcap)
+- [zxpdf](https://www.spinnaker.de/mutt/zxdvi/zxpdf) - View gzipped DVI, PS and PDF files (useful for Mutt .mailcap)
 
