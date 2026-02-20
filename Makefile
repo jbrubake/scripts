@@ -34,7 +34,7 @@ $(readme): peru.yaml $(readme_hdr) $(readme_ext)  $(scripts)
 	> $@
 
 	cat $(readme_hdr) >> $@
-	./mkreadme.awk -v base_url=$(SRCPATH) $(filter-out $< $(readme_hdr) $(readme_ext),$^) | sort >> $@
+	./mkreadme.awk -v base_url=$(SRCPATH) $(filter-out $< $(readme_hdr) $(readme_ext),$^) >> $@
 	echo >> $@
 
 	cat $(readme_ext) >> $@
