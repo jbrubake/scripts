@@ -15,7 +15,8 @@
 #
 # Copyright 2025 Jeremy Brubaker <jbru362@gmail.com>
 #
-# abstract: Return true if WiFi is connected to anything in $WORK_SSID
+# abstract-atwork: Return true if WiFi is connected to anything in $WORK_SSID
+# abstract-atworkd: Daemon to set status for atwork to query
 #
 # Defaults {{{1
 #
