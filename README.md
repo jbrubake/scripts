@@ -124,7 +124,7 @@ A collection of scripts that I wrote or modified from someone else
 These files come from external repositories, but are synced here using [peru](https://github.com/buildinspace/peru)
 
 (Files licensed under different terms than GPLv3 are indicated, along with the
- name of the license file if necessary.)
+name of the license file if necessary.)
 
 - [cht.sh](https://cht.sh/:cht.sh/cht.sh) - The only cheat sheet you need
 - [curlvim](https://github.com/cowboy/dotfiles/curlvim) - download and edit a remote file with Vim (MIT [LICENSE.benalman])
