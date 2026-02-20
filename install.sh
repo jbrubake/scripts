@@ -125,6 +125,10 @@ for f in *; do
     fi
 
     # install
-    install $verbose $force -t "$DESTDIR" -- "$f"
+    if ! [ -L "$f" ]; then
+        install $verbose $force -t "$DESTDIR" -- "$f"
+    else
+        cp $verbose $force -d --preserve=all "$f" "$DESTDIR"
+    fi
 done
 
