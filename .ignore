@@ -8,3 +8,4 @@ mkreadme.awk
 *.o
 tags
 cscope.out
+readme.*

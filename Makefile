@@ -13,6 +13,8 @@ install: all
 # Generate README.md from 'abstract' tags
 #
 readme := README.md
+readme_hdr := readme.header
+readme_ext := readme.external
 
 # Base URL for README links
 SRCPATH := https://github.com/jbrubake/scripts/blob/master
@@ -28,25 +30,14 @@ ignore := $(filter-out %.c,$(ignore))
 # Use git ls-files to avoid pulling in untracked binaries
 scripts := $(filter-out $(ignore),$(shell git ls-files))
 
-$(readme): $(peru) $(scripts)
-	@echo Building $@...
-	@> $@
-	@echo "## My Scripts" >> $@
-	@echo >> $@
-	@echo "A collection of scripts that I wrote or modified from someone else" >> $@
-	@echo >> $@
-	@echo "(Files licensed under different terms than GPLv3 have the license" >> $@
-	@echo " embedded in the file.)" >> $@
-	@echo >> $@
-	./mkreadme.awk -v base_url=$(SRCPATH) $(filter-out $<,$^) >> $@
-	@echo >> $@
-	@echo "## External Files" >> $@
-	@echo >> $@
-	@echo "These files come from external repositories, but are synced here using [peru](https://github.com/buildinspace/peru)" >> $@
-	@echo >> $@
-	@echo "(Files licensed under different terms than GPLv3 are indicated, along with the" >> $@
-	@echo " name of the license file if necessary.)" >> $@
-	@echo >> $@
-	./mkreadme.awk < peru.yaml | sort >> $@
-	@echo >> $@
+$(readme): peru.yaml $(readme_hdr) $(readme_ext)  $(scripts)
+	> $@
+
+	cat $(readme_hdr) >> $@
+	./mkreadme.awk -v base_url=$(SRCPATH) $(filter-out $< $(readme_hdr) $(readme_ext),$^) | sort >> $@
+	echo >> $@
+
+	cat $(readme_ext) >> $@
+	./mkreadme.awk < $< | sort >> $@
+	echo >> $@
 
