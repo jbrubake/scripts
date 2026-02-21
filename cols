@@ -15,7 +15,7 @@
 #
 # Copyright 2014 Jeremy Brubaker <jbru362@gmail.com>
 #
-# abstract: print input in n columns based on command name (default = 2)
+# abstract: print input in n columns based on command name (cols default is 2)
 #
 
 name=$(basename "$0")

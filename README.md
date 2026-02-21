@@ -6,11 +6,11 @@ A collection of scripts that I wrote or modified from someone else
  embedded in the file.)
 
 - [$](https://github.com/jbrubake/scripts/blob/master/$) - Run copy-paste commands that accidentally start with '$'
-- [2](https://github.com/jbrubake/scripts/blob/master/2) - print input in n columns based on command name (default = 2)
-- [3](https://github.com/jbrubake/scripts/blob/master/3) - print input in n columns based on command name (default = 2)
-- [4](https://github.com/jbrubake/scripts/blob/master/4) - print input in n columns based on command name (default = 2)
+- [2](https://github.com/jbrubake/scripts/blob/master/2) - print input in n columns based on command name (cols default is 2)
+- [3](https://github.com/jbrubake/scripts/blob/master/3) - print input in n columns based on command name (cols default is 2)
+- [4](https://github.com/jbrubake/scripts/blob/master/4) - print input in n columns based on command name (cols default is 2)
 - [411](https://github.com/jbrubake/scripts/blob/master/411) - search personal phonebook for a pattern
-- [5](https://github.com/jbrubake/scripts/blob/master/5) - print input in n columns based on command name (default = 2)
+- [5](https://github.com/jbrubake/scripts/blob/master/5) - print input in n columns based on command name (cols default is 2)
 - [addcomma](https://github.com/jbrubake/scripts/blob/master/addcomma) - put commas in numbers
 - [addr](https://github.com/jbrubake/scripts/blob/master/addr) - list bound IP addresses
 - [addsigner](https://github.com/jbrubake/scripts/blob/master/addsigner) - add an SSH public key to an "allowed signers" file
@@ -35,7 +35,7 @@ A collection of scripts that I wrote or modified from someone else
 - [colcheck](https://github.com/jbrubake/scripts/blob/master/colcheck) - check consistency of columns
 - [colordump](https://github.com/jbrubake/scripts/blob/master/colordump) - dump 256 ansi colors to the terminal.
 - [colortrans](https://github.com/jbrubake/scripts/blob/master/colortrans) - convert values between RGB hex codes and xterm-256 color codes.
-- [cols](https://github.com/jbrubake/scripts/blob/master/cols) - print input in n columns based on command name (default = 2)
+- [cols](https://github.com/jbrubake/scripts/blob/master/cols) - print input in n columns based on command name (cols default is 2)
 - [diff](https://github.com/jbrubake/scripts/blob/master/diff) - pipe diff(1) to diff-so-fancy if it exists
 - [dmenu-menu](https://github.com/jbrubake/scripts/blob/master/dmenu-menu) - present a menu based on commands in a config file
 - [dmenu-run](https://github.com/jbrubake/scripts/blob/master/dmenu-run) - use dmenu as a run dialog
