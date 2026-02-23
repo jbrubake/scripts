@@ -39,7 +39,7 @@ git module wttr:
     share/bash-function.txt: wttr
   pick: wttr
   executable: wttr # abstract: The right way to check the weather 
-  rev: 7c2a0328eb54cb0944119cf0ff7497f41619e8c8
+  rev: f1eb35993f0a919bf8da147a59f8919cb21fcb89
 
 curl module mini_ca:
   url: https://impson.tzo.com/~jdimpson/bin/mini_ca
@@ -56,7 +56,7 @@ git module mutt-trim:
   url: https://github.com/Konfekt/mutt-trim
   pick: mutt-trim
   executable: mutt-trim # abstract: unclutter and normalize quoted text in an e-mail 
-  rev: af399cd86b0440998e9bd0fe9eb04be882805be9
+  rev: a2626fb6cbdd67ae1e769d97fe9407270035ae9a
 
 git module emojify:
   url: https://github.com/mrowa44/emojify
@@ -134,7 +134,7 @@ git module git-toolbelt:
     - git-remote-tracking-branch #  abstract: Print remote tracking branch name (required for git-spinoff)
     - git-spinoff # abstract: Spinoff a new branch from current work and reset current branch
     - git-undo-commit # abstract: Undo a commit but keep all the changes staged
-  rev: 3f568cf72ea0fe1b4234a1bf87574a9a4692bc3a
+  rev: 83f68db561686800165ca564874b8e7d3fcd9872
 
 curl module imagick_type_gen:
   url: https://legacy.imagemagick.org/Usage/scripts/imagick_type_gen
