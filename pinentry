@@ -87,7 +87,8 @@ then
 else
     export PINENTRY_BINARY="/usr/bin/pinentry-curses"
 fi
-$PINENTRY_BINARY "$@"
+
+exec $PINENTRY_BINARY "$@"
 
 # Original license:
 #
