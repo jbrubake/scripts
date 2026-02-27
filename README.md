@@ -126,6 +126,7 @@ These files come from external repositories, but are synced here using [peru](ht
 (Files licensed under different terms than GPLv3 are indicated, along with the
 name of the license file if necessary.)
 
+- [autotab](https://www.kylheku.com/git/c-snippets/autotab.c) - Report a file's tabbing style as a Vim command (BSD 2-Clause)
 - [cht.sh](https://cht.sh/:cht.sh/cht.sh) - The only cheat sheet you need
 - [curlvim](https://github.com/cowboy/dotfiles/curlvim) - download and edit a remote file with Vim (MIT [LICENSE.benalman])
 - [emojify](https://github.com/mrowa44/emojify/emojify) - Emoji on the command linescream 
