@@ -60,6 +60,9 @@ BEGINFILE {
     #
     if (FILENAME == "-") {
         target = name
+
+        # Strip source file extensions from name
+        name = gensub("\\.c$", "", 1, name);
     } else {
         target = FILENAME
     }
