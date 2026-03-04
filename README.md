@@ -93,7 +93,6 @@ A collection of scripts that I wrote or modified from someone else
 - [routines.sh](https://github.com/jbrubake/scripts/blob/master/routines.sh) - dmenu shell routines
 - [ruler](https://github.com/jbrubake/scripts/blob/master/ruler) - print a ruler across the screen
 - [screenshot](https://github.com/jbrubake/scripts/blob/master/screenshot) - take a screenshot
-- [sidetone](https://github.com/jbrubake/scripts/blob/master/sidetone) - enable headset sidetone
 - [siggen](https://github.com/jbrubake/scripts/blob/master/siggen) - generate an email/Usenet signature with an optional fortune cookie
 - [sign](https://github.com/jbrubake/scripts/blob/master/sign) - digitally sign a file with a SSH key
 - [sizeof](https://github.com/jbrubake/scripts/blob/master/sizeof.c) - print sizes of C data types
