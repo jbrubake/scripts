@@ -40,8 +40,8 @@ Usage: $(basename "$0") [OPTION]
 
 DESCRIPTION
 
-  -h   	    display this help and exit
-  -V        output version information and exit
+  -h, --help       display this help and exit
+  -V, --version    output version information and exit
 END
 } >&2
 
