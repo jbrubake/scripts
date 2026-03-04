@@ -71,6 +71,9 @@ BEGINFILE {
         target = FILENAME
     }
 
+    # Strip path from name
+    name = gensub("^.*/", "", 1, name);
+
     print_entry(name, url ? url : base_url, target, $0, license)
 
     # Skip ahead if we got what we needed

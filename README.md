@@ -2,8 +2,7 @@
 
 A collection of scripts that I wrote or modified from someone else
 
-(Files licensed under different terms than GPLv3 have the license
- embedded in the file.)
+(Files licensed under different terms than GPLv3 have the license embedded in the file.)
 
 - [$](https://github.com/jbrubake/scripts/blob/master/$) - Run copy-paste commands that accidentally start with '$'
 - [2](https://github.com/jbrubake/scripts/blob/master/2) - print input in n columns based on command name (cols default is 2)
@@ -123,38 +122,37 @@ A collection of scripts that I wrote or modified from someone else
 
 These files come from external repositories, but are synced here using [peru](https://github.com/buildinspace/peru)
 
-(Files licensed under different terms than GPLv3 are indicated, along with the
-name of the license file if necessary.)
+(Files licensed under different terms than GPLv3 are indicated, along with the name of the license file if necessary.)
 
 - [autotab](https://www.kylheku.com/git/c-snippets/autotab.c) - Report a file's tabbing style as a Vim command (BSD 2-Clause)
-- [cht.sh](https://cht.sh/:cht.sh/cht.sh) - The only cheat sheet you need
-- [curlvim](https://github.com/cowboy/dotfiles/curlvim) - download and edit a remote file with Vim (MIT [LICENSE.benalman])
-- [emojify](https://github.com/mrowa44/emojify/emojify) - Emoji on the command linescream 
-- [git-current-branch](https://github.com/nvie/git-toolbelt/git-current-branch) - Show the current branch name (BSD-3 [LICENSE.git-toolbelt])
-- [git-jump](https://github.com/cowboy/dotfiles/git-jump) - replay git commits safely (MIT [LICENSE.benalman])
-- [git-remote-tracking-branch](https://github.com/nvie/git-toolbelt/git-remote-tracking-branch) - Print remote tracking branch name (required for git-spinoff) (BSD-3 [LICENSE.git-toolbelt])
-- [git-sha](https://github.com/nvie/git-toolbelt/git-sha) - Show the latest commit SHA (BSD-3 [LICENSE.git-toolbelt])
-- [git-spinoff](https://github.com/nvie/git-toolbelt/git-spinoff) - Spinoff a new branch from current work and reset current branch (BSD-3 [LICENSE.git-toolbelt])
-- [git-undo-commit](https://github.com/nvie/git-toolbelt/git-undo-commit) - Undo a commit but keep all the changes staged (BSD-3 [LICENSE.git-toolbelt])
-- [image2ascii](https://www.spinnaker.de/mutt/image2ascii/image2ascii) - Convert images to ASCII (useful for Mutt .mailcap)
-- [imagick_type_gen](https://legacy.imagemagick.org/Usage/scripts/imagick_type_gen/imagick_type_gen) - Generate an ImageMagick font list "type.xml" file for ALL fonts
-- [MIMEmbellish](https://gist.githubusercontent.com/oblitum/6eeffaebd9a4744e762e49e6eb19d189/raw/c39c19d7c505cacdcb798b5069d3dd2582b539aa/MIMEmbellish/MIMEmbellish) - Transform text-only email to multipart text+HTML
-- [mini_ca](https://impson.tzo.com/~jdimpson/bin/mini_ca/mini_ca) - Low security certificate authority for testing
-- [mutt_bgrun](https://github.com/RichiH/mutt_bgrun/mutt_bgrun) - View attachments in mutt in the background
-- [mutt-trim](https://github.com/Konfekt/mutt-trim/mutt-trim) - unclutter and normalize quoted text in an e-mail 
-- [octet-filter](https://www.spinnaker.de/mutt/octet-filter/octet-filter) - Last-resort filter to convert any octet-stream data to ASCII (useful for Mutt .mailcap)
-- [passmenu](https://git.zx2c4.com/password-store/passmenu) - A dmenu-based interface to pass(1)
-- [pid](https://github.com/cowboy/dotfiles/pid) - get PIDs of processes matching pattern (MIT [LICENSE.benalman])
-- [pinentry-any](https://github.com/phenax/any-pinentry/pinentry-any) - A flexible pinentry script for gpg. Uses dmenu by default (MIT [LICENSE.akshaynair])
-- [rename](https://github.com/ap/rename/rename) - Rename multiple filesme
-- [serve](https://github.com/cowboy/dotfiles/serve) - serve a directory over HTTP (MIT [LICENSE.benalman])
-- [sslrsh](https://impson.tzo.com/~jdimpson/bin/sslrsh/sslrsh) - SSL Remote Shell
-- [vcard-filter](https://www.spinnaker.de/mutt/vcard-filter/vcard-filter) - Convert VCards to ASCII (useful for Mutt .mailcap)
-- [view-x-face](https://www.spinnaker.de/mutt/view-x-face/view-x-face) - View X-Face images embedded in emails
-- [wttr](https://github.com/chubin/wttr.in/wttr) - The right way to check the weather 
-- [zdvi2tty](https://www.spinnaker.de/mutt/zxdvi/zdvi2tty) - View gzipped DVI, PS and PDF files (useful for Mutt .mailcap)
-- [zghostview](https://www.spinnaker.de/mutt/zxdvi/zghostview) - View gzipped DVI, PS and PDF files (useful for Mutt .mailcap)
-- [zgv](https://www.spinnaker.de/mutt/zxdvi/zgv) - View gzipped DVI, PS and PDF files (useful for Mutt .mailcap)
-- [zxdvi](https://www.spinnaker.de/mutt/zxdvi/zxdvi) - View gzipped DVI, PS and PDF files (useful for Mutt .mailcap)
-- [zxpdf](https://www.spinnaker.de/mutt/zxdvi/zxpdf) - View gzipped DVI, PS and PDF files (useful for Mutt .mailcap)
+- [cht.sh](https://cht.sh/:cht.sh) - The only cheat sheet you need
+- [curlvim](https://github.com/cowboy/dotfiles) - download and edit a remote file with Vim (MIT [LICENSE.benalman])
+- [emojify](https://github.com/mrowa44/emojify) - Emoji on the command linescream 
+- [git-current-branch](https://github.com/nvie/git-toolbelt) - Show the current branch name (BSD-3 [LICENSE.git-toolbelt])
+- [git-jump](https://github.com/cowboy/dotfiles) - replay git commits safely (MIT [LICENSE.benalman])
+- [git-remote-tracking-branch](https://github.com/nvie/git-toolbelt) - Print remote tracking branch name (required for git-spinoff) (BSD-3 [LICENSE.git-toolbelt])
+- [git-sha](https://github.com/nvie/git-toolbelt) - Show the latest commit SHA (BSD-3 [LICENSE.git-toolbelt])
+- [git-spinoff](https://github.com/nvie/git-toolbelt) - Spinoff a new branch from current work and reset current branch (BSD-3 [LICENSE.git-toolbelt])
+- [git-undo-commit](https://github.com/nvie/git-toolbelt) - Undo a commit but keep all the changes staged (BSD-3 [LICENSE.git-toolbelt])
+- [image2ascii](https://www.spinnaker.de/mutt/image2ascii) - Convert images to ASCII (useful for Mutt .mailcap)
+- [imagick_type_gen](https://legacy.imagemagick.org/Usage/scripts/imagick_type_gen) - Generate an ImageMagick font list "type.xml" file for ALL fonts
+- [MIMEmbellish](https://gist.githubusercontent.com/oblitum/6eeffaebd9a4744e762e49e6eb19d189/raw/c39c19d7c505cacdcb798b5069d3dd2582b539aa/MIMEmbellish) - Transform text-only email to multipart text+HTML
+- [mini_ca](https://impson.tzo.com/~jdimpson/bin/mini_ca) - Low security certificate authority for testing
+- [mutt_bgrun](https://github.com/RichiH/mutt_bgrun) - View attachments in mutt in the background
+- [mutt-trim](https://github.com/Konfekt/mutt-trim) - unclutter and normalize quoted text in an e-mail 
+- [octet-filter](https://www.spinnaker.de/mutt/octet-filter) - Last-resort filter to convert any octet-stream data to ASCII (useful for Mutt .mailcap)
+- [passmenu](https://git.zx2c4.com/password-store) - A dmenu-based interface to pass(1)
+- [pid](https://github.com/cowboy/dotfiles) - get PIDs of processes matching pattern (MIT [LICENSE.benalman])
+- [pinentry-any](https://github.com/phenax/any-pinentry) - A flexible pinentry script for gpg. Uses dmenu by default (MIT [LICENSE.akshaynair])
+- [rename](https://github.com/ap/rename) - Rename multiple filesme
+- [serve](https://github.com/cowboy/dotfiles) - serve a directory over HTTP (MIT [LICENSE.benalman])
+- [sslrsh](https://impson.tzo.com/~jdimpson/bin/sslrsh) - SSL Remote Shell
+- [vcard-filter](https://www.spinnaker.de/mutt/vcard-filter) - Convert VCards to ASCII (useful for Mutt .mailcap)
+- [view-x-face](https://www.spinnaker.de/mutt/view-x-face) - View X-Face images embedded in emails
+- [wttr](https://github.com/chubin/wttr.in) - The right way to check the weather 
+- [zdvi2tty](https://www.spinnaker.de/mutt/zxdvi) - View gzipped DVI, PS and PDF files (useful for Mutt .mailcap)
+- [zghostview](https://www.spinnaker.de/mutt/zxdvi) - View gzipped DVI, PS and PDF files (useful for Mutt .mailcap)
+- [zgv](https://www.spinnaker.de/mutt/zxdvi) - View gzipped DVI, PS and PDF files (useful for Mutt .mailcap)
+- [zxdvi](https://www.spinnaker.de/mutt/zxdvi) - View gzipped DVI, PS and PDF files (useful for Mutt .mailcap)
+- [zxpdf](https://www.spinnaker.de/mutt/zxdvi) - View gzipped DVI, PS and PDF files (useful for Mutt .mailcap)
 
