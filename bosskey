@@ -69,7 +69,7 @@ if !  check_command dnf; then
 fi
 
 TMPFILE=$(mktemp "$(basename "$0").XXXXXX")
-trap 'rm -f "$TMPFILE"' EXIT
+trap 'clear; rm -f "$TMPFILE"' EXIT
 
 exec 3<>"$TMPFILE"
 rm "$TMPFILE"
