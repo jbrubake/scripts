@@ -1,6 +1,8 @@
 /*
  * Autotab.
  *
+ * abstract: Report a file's tabbing style as a Vim command
+ *
  * A program to detect the tabbing style of a text file, and report
  * it as a Vim command to set up the tabstop, shiftwidth and expandtab
  * parameters.
@@ -749,6 +751,7 @@ int main(int argc, char **argv)
   line_t *lines;
   int tabsize = 8, expandtabs = 1, shiftwidth = 8;
   int ret = EXIT_FAILURE;
+  const char *set = "set";
 
   if (argc > 1) {
     if (!strcmp(argv[1], "-d")) {
@@ -756,6 +759,8 @@ int main(int argc, char **argv)
     } else if (!strcmp(argv[1], "--version")) {
       printf("Autotab %d\n", AUTOTAB_VER);
       return EXIT_SUCCESS;
+    } else if (!strcmp(argv[1], "-l")) {
+      set = "setlocal";
     } else {
       fputs("invalid argument\n", stderr);
       return EXIT_FAILURE;
@@ -780,8 +785,8 @@ int main(int argc, char **argv)
     tabsize = shiftwidth;
 
 out_default:
-  printf("tabstop=%d shiftwidth=%d %sexpandtab\n", tabsize, shiftwidth,
-         expandtabs ? "" : "no");
+  printf("%s tabstop=%d | %s shiftwidth=%d | %s expandtab\n",
+          set, tabsize, set, shiftwidth, set, expandtabs ? "" : "no");
   ret = 0;
 
 out:

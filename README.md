@@ -19,6 +19,7 @@ A collection of scripts that I wrote or modified from someone else
 - [argv](https://github.com/jbrubake/scripts/blob/master/argv) - dump arguments
 - [atwork](https://github.com/jbrubake/scripts/blob/master/atwork) - Return true if WiFi is connected to anything in $WORK_SSID
 - [atworkd](https://github.com/jbrubake/scripts/blob/master/atworkd) - Daemon to set status for atwork to query
+- [autotab](https://github.com/jbrubake/scripts/blob/master/autotab.c) - Report a file's tabbing style as a Vim command
 - [bigbin](https://github.com/jbrubake/scripts/blob/master/bigbin) - print the <n> largest executables in $PATH
 - [bosskey](https://github.com/jbrubake/scripts/blob/master/bosskey) - "install" packages forever
 - [build-vmware-modules](https://github.com/jbrubake/scripts/blob/master/build-vmware-modules) - build patched VMware Workstation modules
@@ -124,7 +125,6 @@ These files come from external repositories, but are synced here using [peru](ht
 
 (Files licensed under different terms than GPLv3 are indicated, along with the name of the license file if necessary.)
 
-- [autotab](https://www.kylheku.com/git/c-snippets/autotab.c) - Report a file's tabbing style as a Vim command (BSD 2-Clause)
 - [cht.sh](https://cht.sh/:cht.sh) - The only cheat sheet you need
 - [curlvim](https://github.com/cowboy/dotfiles) - download and edit a remote file with Vim (MIT [LICENSE.benalman])
 - [emojify](https://github.com/mrowa44/emojify) - Emoji on the command linescream 

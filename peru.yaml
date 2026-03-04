@@ -1,6 +1,5 @@
 imports:
   anypinentry: ./
-  autotab: ./
   ben_alman: ./
   cheat_dot_sh: ./
   emojify: ./
@@ -24,11 +23,6 @@ imports:
   zxdvi|zghostview: ./
   zxdvi|zgv: ./
   zxdvi|zxpdf: ./
-
-git module autotab:
-  url: https://www.kylheku.com/git/c-snippets
-  # license: BSD 2-Clause
-  pick: autotab.c # abstract: Report a file's tabbing style as a Vim command
 
 git module anypinentry:
   url: https://github.com/phenax/any-pinentry
