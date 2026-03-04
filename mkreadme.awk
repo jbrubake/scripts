@@ -5,8 +5,11 @@ function print_entry(name, base_url, filename, description, license)
     # Extract the description
     sub("^.*abstract[^:]*:[[:space:]]*", "", description)
 
-    printf("- [%s](%s/%s) - %s%s\n",
-        name, base_url, filename, description, license ? " (" license ")" : "")
+    printf("- [%s](%s%s) - %s%s\n",
+        name, base_url,
+        filename ? "/" filename : "",
+        description,
+        license ? " (" license ")" : "")
 }
 
 BEGINFILE {
@@ -59,7 +62,8 @@ BEGINFILE {
     # Set url target
     #
     if (FILENAME == "-") {
-        target = name
+        # Use the exact URL from the url: tag
+        target = ""
 
         # Strip source file extensions from name
         name = gensub("\\.c$", "", 1, name);
