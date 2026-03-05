@@ -43,7 +43,7 @@ ignore := $(filter-out %.c,$(ignore))
 # Use git ls-files to avoid pulling in untracked binaries
 scripts := $(filter-out $(ignore),$(shell git ls-files))
 
-$(readme): peru.yaml $(readme_hdr) $(readme_ext)  $(scripts)
+$(readme): peru.yaml $(readme_hdr) $(readme_ext) $(scripts)
 	> $@
 
 	cat $(readme_hdr) >> $@
