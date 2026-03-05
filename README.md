@@ -48,7 +48,6 @@ A collection of scripts that I wrote or modified from someone else
 - [fortune-oneline](https://github.com/jbrubake/scripts/blob/master/fortune-oneline) - print a one-line fortune. Convert two-line fortunes to one-liners if possible
 - [geekcode](https://github.com/jbrubake/scripts/blob/master/geekcode) - convert a commented geekcode file into a proper geekcode
 - [gethost](https://github.com/jbrubake/scripts/blob/master/gethost) - extract hostname from an SSH config file by 'Host' entry
-- [git-last](https://github.com/jbrubake/scripts/blob/master/git-last) - print out last commit message for each file in tree
 - [git-pager](https://github.com/jbrubake/scripts/blob/master/git-pager) - git pager with fallback options
 - [gxpr](https://github.com/jbrubake/scripts/blob/master/gxpr) - like expr(1), but uses Google's calculator to evaluate <expression>
 - [headers](https://github.com/jbrubake/scripts/blob/master/headers) - show HTTP headers for <url>
