@@ -141,6 +141,7 @@ These files come from external repositories, but are synced here using [peru](ht
 - [mutt-trim](https://github.com/Konfekt/mutt-trim) - unclutter and normalize quoted text in an e-mail 
 - [octet-filter](https://www.spinnaker.de/mutt/octet-filter) - Last-resort filter to convert any octet-stream data to ASCII (useful for Mutt .mailcap)
 - [passmenu](https://git.zx2c4.com/password-store) - A dmenu-based interface to pass(1)
+- [paste.sh](https://github.com/dgl/paste.sh) - Client for the paste.sh pastebin (BSD-0 [LICENSE.paste.sh])
 - [pid](https://github.com/cowboy/dotfiles) - get PIDs of processes matching pattern (MIT [LICENSE.benalman])
 - [pinentry-any](https://github.com/phenax/any-pinentry) - A flexible pinentry script for gpg. Uses dmenu by default (MIT [LICENSE.akshaynair])
 - [rename](https://github.com/ap/rename) - Rename multiple filesme

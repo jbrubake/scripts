@@ -12,6 +12,7 @@ imports:
   mutt_bgrun: ./
   octet-filter: ./
   passmenu: ./
+  paste_sh: ./
   rename: ./
   sslrsh: ./
   vcard-filter: ./
@@ -76,6 +77,16 @@ git module passmenu:
   pick: passmenu
   executable: passmenu # abstract: A dmenu-based interface to pass(1)
   rev: 3ca13cd8882cae4083c1c478858adbf2e82dd037
+
+git module paste_sh:
+  url: https://github.com/dgl/paste.sh
+  # license: BSD-0 [LICENSE.paste.sh]
+  move:
+    COPYING: LICENSE.paste.sh
+  pick:
+    - paste.sh # abstract: Client for the paste.sh pastebin
+    - LICENSE.paste.sh
+  rev: f73120618ed01ae5e4d0f350d124d5c4e2263d28
 
 curl module cheat_dot_sh:
   url: https://cht.sh/:cht.sh
