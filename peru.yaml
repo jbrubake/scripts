@@ -2,6 +2,7 @@ imports:
   anypinentry: ./
   ben_alman: ./
   cheat_dot_sh: ./
+  emojibase: ./
   emojify: ./
   image2ascii: ./
   imagick_type_gen: ./
@@ -59,10 +60,18 @@ git module mutt-trim:
   executable: mutt-trim # abstract: unclutter and normalize quoted text in an e-mail 
   rev: a2626fb6cbdd67ae1e769d97fe9407270035ae9a
 
+# Emoji shortcode database used to generate emojify
+curl module emojibase:
+  url: https://raw.githubusercontent.com/milesj/emojibase/refs/heads/master/packages/data/en/shortcodes/emojibase.raw.json
+  move:
+    emojibase.raw.json: emoji.db
+  pick: emoji.db
+
 git module emojify:
   url: https://github.com/mrowa44/emojify
-  pick: emojify
-  executable: emojify # abstract: Emoji on the command linescream 
+  move:
+    emojify: emojify.tmpl
+  pick: emojify.tmpl # abstract: Emoji on the command linescream (included shortcodes regenerated in this repository)
   rev: 6dc2c1df9a484cf01e7f48e25a1e36e328c32816
 
 curl module MIMEmbellish:

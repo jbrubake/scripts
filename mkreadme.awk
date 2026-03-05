@@ -67,6 +67,7 @@ BEGINFILE {
 
         # Strip source file extensions from name
         name = gensub("\\.c$", "", 1, name);
+        name = gensub("\\.tmpl$", "", 1, name);
     } else {
         target = FILENAME
     }

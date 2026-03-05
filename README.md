@@ -125,7 +125,7 @@ These files come from external repositories, but are synced here using [peru](ht
 
 - [cht.sh](https://cht.sh/:cht.sh) - The only cheat sheet you need
 - [curlvim](https://github.com/cowboy/dotfiles) - download and edit a remote file with Vim (MIT [LICENSE.benalman])
-- [emojify](https://github.com/mrowa44/emojify) - Emoji on the command linescream 
+- [emojify](https://github.com/mrowa44/emojify) - Emoji on the command linescream (included shortcodes regenerated in this repository)
 - [git-current-branch](https://github.com/nvie/git-toolbelt) - Show the current branch name (BSD-3 [LICENSE.git-toolbelt])
 - [git-jump](https://github.com/cowboy/dotfiles) - replay git commits safely (MIT [LICENSE.benalman])
 - [git-remote-tracking-branch](https://github.com/nvie/git-toolbelt) - Print remote tracking branch name (required for git-spinoff) (BSD-3 [LICENSE.git-toolbelt])

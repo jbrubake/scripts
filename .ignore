@@ -10,3 +10,5 @@ mkreadme.awk
 tags
 cscope.out
 readme.*
+*.tmpl
+emoji.db
