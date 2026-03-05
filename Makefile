@@ -3,6 +3,8 @@ BINS := $(patsubst %.c,%$(SUFFIX),$(SRC))
 
 readme := README.md
 
+peru = .peru/lastimports
+
 all: $(BINS) $(readme)
 
 clean:
@@ -41,4 +43,9 @@ $(readme): peru.yaml $(readme_hdr) $(readme_ext)  $(scripts)
 	cat $(readme_ext) >> $@
 	./mkreadme.awk < $< | sort >> $@
 	echo >> $@
+
+$(peru): peru.yaml
+	peru sync
+	# peru sync does not set mtime
+	touch $@
 
