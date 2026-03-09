@@ -93,7 +93,7 @@ case $(basename $0) in
             [ -f "$ATWORK_FILE" ]
         else
             printf 'atworkd not running. To be safe you are currently "at work"\n'
-            false
+            true
         fi
         ;;
 
