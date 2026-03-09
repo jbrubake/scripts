@@ -21,10 +21,14 @@
 # Defaults {{{1
 #
 if [ "$(id -u)" -eq 0 ]; then
-    ATWORK_FILE_DFLT=/var/cache/atwork
+    ATWORK_DIR=/run/atwork
 else
-    ATWORK_FILE_DFLT=${XDG_CACHE_HOME:-"$HOME/.cache"}/atwork
+    ATWORK_DIR=${XDG_RUNTIME_DIR:-${XDG_CACHE_HOME:-"$HOME/.cache"}}/atwork
 fi
+mkdir -p $ATWORK_DIR
+
+ATWORK_FILE=$ATWORK_DIR/atwork
+ATWORK_PID_FILE=$ATWORK_DIR/atwork.pid
 
 # Documentation {{{1
 #
@@ -85,7 +89,7 @@ OPTIND=1
 #
 case $(basename $0) in
     atwork)
-        if pgrep atworkd >/dev/null; then
+        if kill -0 "$(cat "$ATWORK_PID_FILE")" 2>/dev/null; then
             [ -f "$ATWORK_FILE" ]
         else
             printf 'atworkd not running. To be safe you are currently "at work"\n'
@@ -94,6 +98,9 @@ case $(basename $0) in
         ;;
 
     atworkd)
+        trap 'rm -f $ATWORK_PID_FILE $ATWORK_FILE' EXIT
+        echo $$ > "$ATWORK_PID_FILE"
+
         while true; do
             if echo "$WORK_SSID" | grep -qs \
                 "\<$(nmcli dev wifi show 2>/dev/null | grep SSID | cut -d' ' -f2)\>"; then
