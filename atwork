@@ -40,7 +40,6 @@ Usage: $0 [OPTION]
 
 Check if connected to an SSID found in \$WORK_SSID
 
-  -f [FILE] use FILE as the marker (Default: $ATWORK_FILE_DFLT)
   -h   	    display this help and exit
   -V        output version information and exit
 END
@@ -51,7 +50,6 @@ Usage: $0 [OPTION]
 
 Continually check if connected to an SSID found in \$WORK_SSID
 
-  -f [FILE] use FILE as the marker (Default: $ATWORK_FILE_DFLT)
   -h   	    display this help and exit
   -V        output version information and exit
 END
@@ -73,10 +71,8 @@ END
 
 # Process options {{{1
 #
-ATWORK_FILE=$ATWORK_FILE_DFLT
-while getopts ':fhV' c; do
+while getopts ':hV' c; do
     case $c in
-        f) ATWORK_FILE=$OPTARG ;;
         h) print_help; exit 0 ;;
         V) print_version; exit 0 ;;
         ?) print_help "Invalid option: -$OPTARG";  exit 1 ;;
