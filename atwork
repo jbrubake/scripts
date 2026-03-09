@@ -105,9 +105,9 @@ case $(basename $0) in
             if echo "$WORK_SSID" | grep -qs \
                 "\<$(nmcli dev wifi show 2>/dev/null | grep SSID | cut -d' ' -f2)\>"; then
 
-            touch "$ATWORK_FILE"
-        else
-            rm -f "$ATWORK_FILE"
+                touch "$ATWORK_FILE"
+            else
+                rm -f "$ATWORK_FILE"
             fi
             sleep 10
         done
