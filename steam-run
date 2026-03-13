@@ -1,0 +1,83 @@
+#!/bin/sh
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+# Copyright 2026 Jeremy Brubaker <jbru362@gmail.com>
+#
+# abstract: Run steam games from the command line
+#
+# Defaults {{{1
+#
+# grep regex of games to ignore, one per line
+blacklist='
+^Steam Linux Runtime .*
+^Proton .*
+^Steamworks Common Redistributables
+'
+steam_path=${XDG_DATA_HOME:-"$HOME/.local/share"}/Steam/steamapps
+
+# Documentation {{{1
+#
+VERSION=1.0
+print_version() { # {{{2
+    cat <<END
+$(basename "$0") $VERSION
+Copyright (C) 2026 Orion Arts
+License GPLv3+: GNU GPL version 3 or later <https://gnu.org/licenses/gpl.html>.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Written by Jeremy Brubaker.
+END
+} >&2
+
+print_help() { # {{{2
+    cat <<END
+Usage: $(basename "$0") [GAME]
+
+Run the Steam game with the first game with a name that matches GAME.
+If GAME is empty, list the installed games
+
+  -h, --help       display this help and exit
+  -V, --version    output version information and exit
+END
+} >&2
+
+# Main {{{1
+#
+blacklist=$(printf '%s' "$blacklist" | paste -sd'|' | sed 's/^|//')
+
+get_ids() {
+    find "$steam_path" -maxdepth 1 -type f -name '*.acf' -exec \
+        awk -F"\"" '
+            /appid/ { id = $4 }
+            /name/  { name = $4 }
+            END     { print name "|" id }' {} \; |
+        grep -Ev "$blacklist"
+}
+
+get_id_by_name() { get_ids | grep -i "$1" | cut -d'|' -f2; }
+get_games()      { get_ids | cut -d'|' -f1 | sort; }
+
+case $1 in
+    -h|--help)    print_help ; exit ;;
+    -V|--version) print_version ; exit ;;
+esac
+
+if [ $# = 0 ]; then
+    get_games
+else
+    steam -applaunch "$(get_id_by_name "$*")"
+fi
+

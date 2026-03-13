@@ -98,6 +98,7 @@ A collection of scripts that I wrote or modified from someone else
 - [sound-change.sh](https://github.com/jbrubake/scripts/blob/master/sound-change.sh) - change sound output device
 - [st-urlhandler](https://github.com/jbrubake/scripts/blob/master/st-urlhandler) - utility used by st(1) to open links from the terminal
 - [stdin2browser](https://github.com/jbrubake/scripts/blob/master/stdin2browser) - Pass stdin to $BROWSER
+- [steam-run](https://github.com/jbrubake/scripts/blob/master/steam-run) - Run steam games from the command line
 - [timer](https://github.com/jbrubake/scripts/blob/master/timer) - A simple command-line timer
 - [tmux-popup](https://github.com/jbrubake/scripts/blob/master/tmux-popup) - run a command in a tmux popup
 - [todo.sh](https://github.com/jbrubake/scripts/blob/master/todo.sh) - Add per-directory todo list support to todo.sh
