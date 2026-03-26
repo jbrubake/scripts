@@ -138,6 +138,7 @@ These files come from external repositories, but are synced here using [peru](ht
 - [MIMEmbellish](https://gist.githubusercontent.com/oblitum/6eeffaebd9a4744e762e49e6eb19d189/raw/c39c19d7c505cacdcb798b5069d3dd2582b539aa/MIMEmbellish) - Transform text-only email to multipart text+HTML
 - [mini_ca](https://impson.tzo.com/~jdimpson/bin/mini_ca) - Low security certificate authority for testing
 - [mutt_bgrun](https://github.com/RichiH/mutt_bgrun) - View attachments in mutt in the background
+- [mutt_print_md](https://github.com/calligraffiti/mutt_print_md) - print emails as Markdown or PDF (UNKNOWN)
 - [mutt-trim](https://github.com/Konfekt/mutt-trim) - unclutter and normalize quoted text in an e-mail 
 - [octet-filter](https://www.spinnaker.de/mutt/octet-filter) - Last-resort filter to convert any octet-stream data to ASCII (useful for Mutt .mailcap)
 - [passmenu](https://git.zx2c4.com/password-store) - A dmenu-based interface to pass(1)

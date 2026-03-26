@@ -11,6 +11,7 @@ imports:
   mini_ca: ./
   mutt-trim: ./
   mutt_bgrun: ./
+  mutt_print_md: ./
   octet-filter: ./
   passmenu: ./
   paste_sh: ./
@@ -59,6 +60,14 @@ git module mutt-trim:
   pick: mutt-trim
   executable: mutt-trim # abstract: unclutter and normalize quoted text in an e-mail 
   rev: a2626fb6cbdd67ae1e769d97fe9407270035ae9a
+
+git module mutt_print_md:
+  url: https://github.com/calligraffiti/mutt_print_md
+  # license: UNKNOWN
+  move:
+    mutt_print_md.sh: mutt_print_md
+  pick: mutt_print_md
+  executable: mutt_print_md # abstract: print emails as Markdown or PDF
 
 # Emoji shortcode database used to generate emojify
 curl module emojibase:
