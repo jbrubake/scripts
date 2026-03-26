@@ -94,11 +94,11 @@ for opt in "$@"; do
             #
             # $optarg is set so we can process the option
             if [ -n "$optarg" ]; then
-                echo "Got --long-only=$optarg"
+                echo "Got $opt=$optarg"
             # $optarg is not set so we set a flag to the name of this option so
             # the next time through the loop we can match this block again
             else
-                grab=--long-only
+                grab=$opt
             fi
             ;;
 
