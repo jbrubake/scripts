@@ -233,5 +233,5 @@ for r in $(rclone listremotes); do
 done
 
 [ -n "$remote" ] && [ -z "$found" ] &&
-        printf '%s:Remote "%s" does not exist\n' "$(eval "$date")" "${remote%:}" | tee -a "$logfile" >&2
+    printf '%s:Remote "%s" does not exist\n' "$(eval "$date")" "${remote%:}" | tee -a "$logfile" >&2
 
