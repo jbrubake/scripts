@@ -24,11 +24,13 @@ SYNC_ROOT_DFLT=${RCLONE_SYNC_ROOT:-$HOME/.sync}
 
 RCLONE_SYNC_OPTIONS='--check-access --resilient --recover --max-lock 2m'
 
-if [ -d ~/var/log ]; then
-    logfile=~/var/log/cloudsync.log
+if [ -d "$HOME/var/log" ]; then
+    logdir=$HOME/var/log
 else
-    logfile=/dev/null
+    logdir=${XDG_STATE_HOME:-"$HOME/.local/state"}
 fi
+
+logfile=$logdir/cloudsync.log
 
 # Documentation {{{1
 #
