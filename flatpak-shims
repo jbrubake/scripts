@@ -22,7 +22,7 @@
 # Defaults {{{1
 VERBOSE_DFLT=
 SHIMDIR_DFLT=$HOME/bin/.flatpak
-MAPFILE_DFLT=${XDG_DATA_HOME:-~/.local/share}/flatpak-shims/mapping.conf
+MAPFILE_DFLT=${XDG_CONFIG_HOME:-~/.config}/flatpak-shims/mapping.conf
 
 # Documentation {{{1
 #
