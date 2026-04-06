@@ -78,6 +78,6 @@ esac
 if [ $# = 0 ]; then
     get_games
 else
-    steam -applaunch "$(get_id_by_name "$*")"
+    exec steam -applaunch "$(get_id_by_name "$*")"
 fi
 
