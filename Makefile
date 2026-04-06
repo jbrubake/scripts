@@ -3,8 +3,6 @@ BINS := $(patsubst %.c,%$(SUFFIX),$(SRC))
 
 readme := README.md
 
-peru = .peru/lastimports
-
 emojify_tmpl     := emojify.tmpl
 emoji_db         := emoji.db
 emoji_shortcodes := emoji.short
@@ -67,12 +65,4 @@ $(emoji_shortcodes): $(emoji_db)
 	< $< jq -r 'keys[] as $$k | "[\":\([.[$$k]] | flatten | .[]):\"]=\"\\U\($$k)\""' | sed 's/-/\\U/g' >> $@
 
 	echo ')' >> $@
-
-$(emoji_db) $(emojify_tmpl):
-	peru sync
-
-$(peru): peru.yaml
-	peru sync
-	# peru sync does not set mtime
-	touch $@
 
