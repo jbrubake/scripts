@@ -18,4 +18,4 @@
 # abstract: Run copy-paste commands that accidentally start with '$'
 #
 
-"$@"
+exec "$@"
