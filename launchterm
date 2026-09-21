@@ -1,6 +1,29 @@
 #!/bin/sh
 #
-# abstract: load a tmuxp session in a tabbed(1) terminal
+# abstract: start a terminal (and optional command) with tabbed(1)
 
-exec tabbed -cd -n "$1" -r2 alacritty --embed ID -e tmuxp load -y "$1"
+print_help() {
+    printf 'Usage: %s [-t TERMINAL] [-n WINDOW_NAME] [COMMAND STRING]\n' "$0"
+} >&2
 
+name=
+term=xterm
+while getopts ":n:t:" opt; do
+    case $opt in
+        n) name=$OPTARG ;;
+        t) term=$OPTARG ;;
+        *) print_help; exit ;;
+    esac
+done
+shift $((OPTIND-1))
+
+case $term in
+    alacritty)
+        args="-r2 alacritty --embed ID ${1:+-e}"
+        ;;
+    xterm)
+        args="-r2 xterm -into ID ${1:+-e}"
+        ;;
+esac
+
+exec tabbed -c "${name:+-n "$name"}" $args "$@"
