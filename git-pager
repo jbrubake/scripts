@@ -25,4 +25,3 @@ elif command -v >/dev/null "$PAGER"; then
 else
     less
 fi
-

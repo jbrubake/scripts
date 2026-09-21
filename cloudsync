@@ -42,6 +42,7 @@ print_help() {
         addcheck) # {{{
     cat <<EOF
 Usage: $0 addcheck [REMOTE]
+
 Create rclone 'check-access' file
  
  -h              display this help and exit
@@ -50,6 +51,7 @@ EOF
         sync) # {{{
     cat <<EOF
 Usage: $0 sync [REMOTE]
+
 Run 'rclone bisync'
  
  -h              display this help and exit
@@ -57,7 +59,8 @@ EOF
         ;; # }}}
         resync) # {{{
     cat <<EOF
-Usage: $0 [REMOTE]
+Usage: $0 resync [REMOTE]
+
 Run 'rclone bisync --resync'
  
  -y              do not ask for resync confirmation
