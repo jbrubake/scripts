@@ -17,8 +17,9 @@
 #
 # abstract: git pager with fallback options
 #
-
-if command -v diff-so-fancy >/dev/null; then
+  if command -v delta >/dev/null; then
+    delta --color-only --diff-so-fancy
+elif command -v diff-so-fancy >/dev/null; then
     diff-so-fancy | less --tabs=4 -RFX
 elif command -v >/dev/null "$PAGER"; then
     $PAGER
