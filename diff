@@ -24,6 +24,6 @@ elif command -v diff-so-fancy >/dev/null; then
     /usr/bin/diff -u "$@" | diff-so-fancy
     (exit "${PIPESTATUS[0]}") # Exit with $? from diff
 else
-    /usr/bin/diff "$@"
+    exec /usr/bin/diff "$@"
 fi
 
