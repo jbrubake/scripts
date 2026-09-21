@@ -46,8 +46,9 @@ list=$(wmctrl -lx |
 # Deal will silly apps that use silly window names
 list=$(echo "$list" | sed \
     -e 's/navigator/firefox/' \
-    -e 's/org.gnome.nautilus/nautilus/' |
-    cut -d'.' -f1)
+    -e 's/org.gnome.nautilus/nautilus/' \
+    -e 's/org.signal/signal/' \
+    | cut -d'.' -f1)
 
 num=$(($(printf "$list" | tr -dc '\n' | wc -m)+1))
 
