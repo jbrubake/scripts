@@ -82,6 +82,6 @@ fi
 
 if [ "$print_cookie" = "y" ]; then
     printf "%s\n" ""
-    fortune-oneline -f "$cookie_file"
+    fortune-oneline "$cookie_file"
 fi
 
